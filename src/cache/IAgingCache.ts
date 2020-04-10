@@ -34,7 +34,7 @@ export interface IAgingCache<TKey, TValue> {
    * @param force If true force read from the top level instead of lower levels first
    * @returns The value if it's in the cache or null
    */
-  get(key: TKey, force: boolean): Promise<TValue | null>;
+  get(key: TKey, force?: boolean): Promise<TValue | null>;
 
   /**
    * @param key The key to set
@@ -42,14 +42,14 @@ export interface IAgingCache<TKey, TValue> {
    * @param force If true write to all levels of hierarchy unconditionally
    * @returns If the write succeeded or the error condition
    */
-  set(key: TKey, value: TValue, force: boolean): Promise<AgingCacheWriteStatus>;
+  set(key: TKey, value: TValue, force?: boolean): Promise<AgingCacheWriteStatus>;
 
   /**
    * @param key The key to the value to delete
    * @param force If true write to all levels of hierarchy unconditionally
    * @returns If the write succeeded or the error condition
    */
-  delete(key: TKey, force: boolean): Promise<AgingCacheWriteStatus>;
+  delete(key: TKey, force?: boolean): Promise<AgingCacheWriteStatus>;
 
   /**
    * @returns The keys that are currently in the cache
