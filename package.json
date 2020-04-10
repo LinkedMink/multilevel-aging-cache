@@ -1,0 +1,42 @@
+{
+  "name": "multilevel-aging-cache",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "author": {
+    "name": "Harlan Sang",
+    "email": "harlan@linkedmink.space"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LinkedMink/multilevel-aging-cache"
+  },
+  "private": true,
+  "scripts": {
+    "start": "tsc --project ./tsconfig.cli.json && node ./cli/demo/CliSampleApp.js",
+    "build": "tsc --project ./tsconfig.json",
+    "test": "cross-env NODE_ENV=test jest",
+    "lint": "eslint -c .eslintrc.js --ext .ts --fix ./src",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "bintrees": "^1.0.2",
+    "ioredis": "^4.16.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/bintrees": "^1.0.2",
+    "@types/jest": "^25.1.4",
+    "@types/ioredis": "^4.14.8",
+    "@typescript-eslint/eslint-plugin": "^2.23.0",
+    "@typescript-eslint/parser": "^2.23.0",
+    "cross-env": "^7.0.2",
+    "eslint": "^6.8.0",
+    "ioredis-mock": "^4.19.0",
+    "jest": "^25.1.0",
+    "ts-jest": "^25.2.1",
+    "typescript": "^3.8.3"
+  }
+}
