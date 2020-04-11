@@ -1,0 +1,1 @@
+{"version":3,"file":"StringSerializer.d.ts","sourceRoot":"","sources":["../../src/serialization/StringSerializer.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAE,MAAM,eAAe,CAAC;AAU5C;;GAEG;AACH,qBAAa,gBAAiB,YAAW,WAAW,CAAC,MAAM,CAAC;IAC1D,SAAS,2BAAa;IACtB,WAAW,2BAAe;CAC3B"}

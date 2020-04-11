@@ -1,0 +1,10 @@
+import { IAgingCacheDeleteStrategy } from "./IAgingCacheWriteStrategy";
+import { AgingCacheWriteStatus } from "../IAgingCache";
+import { AgingCacheWriteStrategy } from "./AgingCacheWriteStrategy";
+/**
+ * Strategy to overwrite regardless of the higher level value
+ */
+export declare class OverwriteAlwaysDeleteStrategy<TKey, TValue> extends AgingCacheWriteStrategy<TKey, TValue> implements IAgingCacheDeleteStrategy<TKey> {
+    delete(key: TKey, force: boolean): Promise<AgingCacheWriteStatus>;
+}
+//# sourceMappingURL=OverwriteAlwaysDeleteStrategy.d.ts.map
