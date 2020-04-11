@@ -11,6 +11,7 @@ import { ISerializer, SerializeFunction, DeserializeFunction } from "./serializa
 import { JsonSerializer } from "./serialization/JsonSerializer";
 import { StringSerializer } from "./serialization/StringSerializer";
 
+import { IDisposable } from "./shared/IDisposable";
 import { Logger } from "./shared/Logger"
 
 import { IRedisStorageProviderOptions, getStringKeyJsonValueOptions } from "./storage//IRedisStorageProviderOptions";
@@ -33,6 +34,7 @@ export {
   DeserializeFunction,
   JsonSerializer,
   StringSerializer,
+  IDisposable,
   Logger,
   IRedisStorageProviderOptions,
   getStringKeyJsonValueOptions,

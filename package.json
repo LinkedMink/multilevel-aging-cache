@@ -17,8 +17,9 @@
   "scripts": {
     "start": "tsc --project ./tsconfig.cli.json && node ./cli/demo/CliSampleApp.js",
     "build": "tsc --project ./tsconfig.json",
-    "test": "cross-env NODE_ENV=test jest",
-    "lint": "eslint -c .eslintrc.js --ext .ts --fix ./src",
+    "test": "cross-env NODE_ENV=unitTest jest",
+    "lint": "eslint -c .eslintrc.js --ext .ts ./src ./tests",
+    "lintFix": "eslint -c .eslintrc.js --ext .ts --fix ./src ./tests",
     "prepare": "npm run build"
   },
   "dependencies": {

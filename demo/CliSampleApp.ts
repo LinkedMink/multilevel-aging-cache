@@ -1,6 +1,6 @@
 import readline from "readline";
-//import Redis from "ioredis";
-import Redis from "ioredis-mock";
+import Redis from "ioredis";
+//import Redis from "ioredis-mock";
 import winston from "winston";
 
 import { StorageHierarchy } from "../src/storage/StorageHierarchy";
@@ -14,9 +14,8 @@ Logger.options = {
   level: "debug",
   format: winston.format.json(),
   transports: [
-    // new winston.transports.File({ filename: 'error.log', level: 'error' }),
     new winston.transports.File({ filename: "combined.log" }),
-    //new winston.transports.Console({ format: winston.format.simple() })
+    new winston.transports.Console({ format: winston.format.simple() })
   ],
 };
 
@@ -44,13 +43,13 @@ const PROMPT_COMMAND = "Enter a command to read/write cache: "
 const PROMPT_KEY = "Enter the key: "
 const PROMPT_VALUE = "Enter the value: "
 
-const promptInput = (prompt: string) => {
+const promptInput = (prompt: string): Promise<string> => {
   return new Promise<string>(resolve => cliReadline.question(prompt, ans => {
     resolve(ans);
   }))
 }
 
-const main = async () => {
+const main = async (): Promise<number> => {
   while(true) {
     const command = (await promptInput(PROMPT_COMMAND)).toLowerCase();
     if (command === "get") {

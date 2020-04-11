@@ -4,6 +4,7 @@ import { IAgingCacheOptions, getDefaultAgingCacheOptions, AgingCacheReplacementP
 import { ISerializer, SerializeFunction, DeserializeFunction } from "./serialization/ISerializer";
 import { JsonSerializer } from "./serialization/JsonSerializer";
 import { StringSerializer } from "./serialization/StringSerializer";
+import { IDisposable } from "./shared/IDisposable";
 import { Logger } from "./shared/Logger";
 import { IRedisStorageProviderOptions, getStringKeyJsonValueOptions } from "./storage//IRedisStorageProviderOptions";
 import { IStorageHierarchy, StorageHierarchyUpdatePolicy } from "./storage//IStorageHierarchy";
@@ -11,5 +12,5 @@ import { IStorageProvider } from "./storage//IStorageProvider";
 import { MemoryStorageProvider } from "./storage//MemoryStorageProvider";
 import { RedisStorageProvider } from "./storage//RedisStorageProvider";
 import { StorageHierarchy } from "./storage/StorageHierarchy";
-export { IAgingCache, AgingCacheWriteStatus, createAgingCache, IAgingCacheOptions, getDefaultAgingCacheOptions, AgingCacheReplacementPolicy, AgingCacheWriteMode, ISerializer, SerializeFunction, DeserializeFunction, JsonSerializer, StringSerializer, Logger, IRedisStorageProviderOptions, getStringKeyJsonValueOptions, IStorageHierarchy, StorageHierarchyUpdatePolicy, IStorageProvider, MemoryStorageProvider, RedisStorageProvider, StorageHierarchy };
+export { IAgingCache, AgingCacheWriteStatus, createAgingCache, IAgingCacheOptions, getDefaultAgingCacheOptions, AgingCacheReplacementPolicy, AgingCacheWriteMode, ISerializer, SerializeFunction, DeserializeFunction, JsonSerializer, StringSerializer, IDisposable, Logger, IRedisStorageProviderOptions, getStringKeyJsonValueOptions, IStorageHierarchy, StorageHierarchyUpdatePolicy, IStorageProvider, MemoryStorageProvider, RedisStorageProvider, StorageHierarchy };
 //# sourceMappingURL=index.d.ts.map
