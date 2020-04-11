@@ -210,6 +210,9 @@ var StorageHierarchy = /** @class */ (function () {
             return _this.getAtLevel(key, updateLevel, false)
                 .then(function (agedValue) {
                 if (agedValue) {
+                    if (value !== undefined && agedValue.age == value.age) {
+                        return Promise.resolve(IAgingCache_1.AgingCacheWriteStatus.Success);
+                    }
                     return updateUnconditionally(key, value);
                 }
                 StorageHierarchy.logger.debug("Key doesn't exist, ignoring subscribed update: " + key);

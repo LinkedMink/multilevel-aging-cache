@@ -240,6 +240,9 @@ export class StorageHierarchy<TKey, TValue> implements IStorageHierarchy<TKey, T
       return this.getAtLevel(key, updateLevel, false)
         .then(agedValue => {
           if (agedValue) {
+            if (value !== undefined && agedValue.age == value.age) {
+              return Promise.resolve(AgingCacheWriteStatus.Success);
+            }
             return updateUnconditionally(key, value);
           }
           StorageHierarchy.logger.debug(`Key doesn't exist, ignoring subscribed update: ${key}`)
