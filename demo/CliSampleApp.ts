@@ -1,11 +1,10 @@
 import readline from "readline";
 import Redis from "ioredis";
-//import Redis from "ioredis-mock";
 import winston from "winston";
 
 import { StorageHierarchy } from "../src/storage/StorageHierarchy";
 import { MemoryStorageProvider } from "../src/storage/MemoryStorageProvider";
-import { RedisStorageProvider } from "../src/storage/RedisStorageProvider";
+import { RedisPubSubStorageProvider } from "../src/storage/RedisPubSubStorageProvider";
 import { getStringKeyJsonValueOptions } from "../src/storage/IRedisStorageProviderOptions";
 import { Logger } from "../src/shared/Logger";
 import { createAgingCache } from "../src/cache/IAgingCacheFactory";
@@ -21,15 +20,15 @@ Logger.options = {
 
 const redisClient = new Redis(
   6379,
-  "travmink.redis.cache.windows.net");
+  "localhost");
 
 const redisChannel = new Redis(
   6379,
-  "travmink.redis.cache.windows.net");
+  "localhost");
 
 const storageHierarchy = new StorageHierarchy<string, object>([
   new MemoryStorageProvider(),
-  new RedisStorageProvider(redisClient, getStringKeyJsonValueOptions(), redisChannel)
+  new RedisPubSubStorageProvider(redisClient, getStringKeyJsonValueOptions(), redisChannel)
 ]);
 
 const cache = createAgingCache<string, object>(storageHierarchy);

@@ -1,9 +1,10 @@
-import { IStorageProvider, StorageProviderUpdateHandler } from "./IStorageProvider";
+import { IStorageProvider } from "./IStorageProvider";
 import { IAgedValue } from "../cache/expire/IAgedQueue";
 import { AgingCacheWriteStatus } from "../cache/IAgingCache";
 import { Logger } from "../shared/Logger";
 import { IDisposable } from "../shared/IDisposable";
 import { IStorageHierarchy, StorageHierarchyUpdatePolicy } from "./IStorageHierarchy";
+import { ISubscribableStorageProvider, StorageProviderUpdateHandler, isISubscribableStorageProvider } from "./ISubscribableStorageProvider";
 
 type SubscriberUpdateHandler<TKey, TValue> = (key: TKey, value?: IAgedValue<TValue>) => Promise<AgingCacheWriteStatus>
 
@@ -37,7 +38,11 @@ export class StorageHierarchy<TKey, TValue> implements IStorageHierarchy<TKey, T
    */
   public dispose(): Promise<void> {
     this.storageChangedHandlers.forEach((handler, level) => {
-      this.levels[level].unsubscribe(handler);
+      const currentLevel = this.levels[level];
+      if (isISubscribableStorageProvider(currentLevel)) {
+        currentLevel.unsubscribe(handler);
+      }
+      
       this.storageChangedHandlers.delete(level);
     });
 
@@ -183,21 +188,26 @@ export class StorageHierarchy<TKey, TValue> implements IStorageHierarchy<TKey, T
   }
 
   private subscribeAtLevel(level: number): void {
-    if (level <= 0) {
+    if (level < 0) {
       return;
     }
 
-    StorageHierarchy.logger.debug(`subscribe to level: ${level}`);
-
     const nextLevel = level - 1;
-    let handler = this.getUpdateHandlerAlways(nextLevel);
-    if (this.updatePolicy === StorageHierarchyUpdatePolicy.OnlyIfKeyExist) {
-      handler = this.getUpdateHandlerOnlyIfKeyExist(nextLevel, handler);
+
+    const currentLevel = this.levels[level];
+    if (isISubscribableStorageProvider(currentLevel)) {
+      StorageHierarchy.logger.debug(`subscribe to level: ${level}`);
+
+      let handler = this.getUpdateHandlerAlways(nextLevel);
+      if (this.updatePolicy === StorageHierarchyUpdatePolicy.OnlyIfKeyExist) {
+        handler = this.getUpdateHandlerOnlyIfKeyExist(nextLevel, handler);
+      }
+  
+      const wrappedHandler = this.getManagedPromiseSubscribe(handler);
+      currentLevel.subscribe(wrappedHandler);
+      this.storageChangedHandlers.set(level, wrappedHandler);
     }
 
-    const wrappedHandler = this.getManagedPromiseSubscribe(handler);
-    this.levels[level].subscribe(wrappedHandler);
-    this.storageChangedHandlers.set(level, wrappedHandler);
     this.subscribeAtLevel(nextLevel);
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "@linkedmink/multilevel-aging-cache",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Package provides an interface to cache and persist data to Redis, MongoDB, memory",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,19 +17,21 @@
     "start": "tsc --project ./tsconfig.cli.json && node ./cli/demo/CliSampleApp.js",
     "build": "tsc --project ./tsconfig.json",
     "test": "cross-env NODE_ENV=unitTest jest",
-    "lint": "eslint -c .eslintrc.js --ext .ts ./src ./tests",
-    "lintFix": "eslint -c .eslintrc.js --ext .ts --fix ./src ./tests",
+    "lint": "eslint -c .eslintrc.js --ext .ts ./src ./demo",
+    "lintFix": "eslint -c .eslintrc.js --ext .ts --fix ./src ./demo",
     "prepare": "npm run build"
   },
   "dependencies": {
     "bintrees": "^1.0.2",
     "ioredis": "^4.16.1",
+    "mongodb": "^3.5.5",
     "winston": "^3.2.1"
   },
   "devDependencies": {
     "@types/bintrees": "^1.0.2",
     "@types/jest": "^25.1.4",
     "@types/ioredis": "^4.14.9",
+    "@types/mongodb": "^3.5.5",
     "@typescript-eslint/eslint-plugin": "^2.23.0",
     "@typescript-eslint/parser": "^2.23.0",
     "cross-env": "^7.0.2",
