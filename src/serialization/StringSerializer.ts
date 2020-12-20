@@ -6,7 +6,7 @@ const serialize = (data: string): string => {
 
 const deserialize = (data: string): string => {
   return data;
-}
+};
 
 /**
  * Simply here to satisfy the interface and make programming simpler

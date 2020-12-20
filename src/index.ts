@@ -1,21 +1,31 @@
-import { IAgingCache, AgingCacheWriteStatus } from "./cache/IAgingCache"
-import { createAgingCache } from "./cache/IAgingCacheFactory"
-import { 
-  IAgingCacheOptions, 
-  getDefaultAgingCacheOptions, 
-  AgingCacheReplacementPolicy, 
-  AgingCacheWriteMode 
-} from "./cache/IAgingCacheOptions"
+import { IAgingCache, AgingCacheWriteStatus } from "./cache/IAgingCache";
+import { createAgingCache } from "./cache/IAgingCacheFactory";
+import {
+  IAgingCacheOptions,
+  getDefaultAgingCacheOptions,
+  AgingCacheReplacementPolicy,
+  AgingCacheWriteMode,
+} from "./cache/IAgingCacheOptions";
 
-import { ISerializer, SerializeFunction, DeserializeFunction } from "./serialization/ISerializer";
+import {
+  ISerializer,
+  SerializeFunction,
+  DeserializeFunction,
+} from "./serialization/ISerializer";
 import { JsonSerializer } from "./serialization/JsonSerializer";
 import { StringSerializer } from "./serialization/StringSerializer";
 
 import { IDisposable } from "./shared/IDisposable";
-import { Logger } from "./shared/Logger"
+import { Logger } from "./shared/Logger";
 
-import { IRedisStorageProviderOptions, getStringKeyJsonValueOptions } from "./storage//IRedisStorageProviderOptions";
-import { IStorageHierarchy, StorageHierarchyUpdatePolicy } from "./storage//IStorageHierarchy";
+import {
+  IRedisStorageProviderOptions,
+  getStringKeyJsonValueOptions,
+} from "./storage//IRedisStorageProviderOptions";
+import {
+  IStorageHierarchy,
+  StorageHierarchyUpdatePolicy,
+} from "./storage//IStorageHierarchy";
 import { IStorageProvider } from "./storage//IStorageProvider";
 import { MemoryStorageProvider } from "./storage//MemoryStorageProvider";
 import { RedisStorageProvider } from "./storage//RedisStorageProvider";
@@ -43,5 +53,5 @@ export {
   IStorageProvider,
   MemoryStorageProvider,
   RedisStorageProvider,
-  StorageHierarchy
-}
+  StorageHierarchy,
+};

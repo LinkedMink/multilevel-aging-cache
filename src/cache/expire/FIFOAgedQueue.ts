@@ -5,10 +5,10 @@ import { Logger } from "../../shared/Logger";
 
 const compare = (ageA: number, ageB: number): number => {
   return ageA - ageB;
-}
+};
 
 export class FIFOAgedQueue<TKey> implements IAgedQueue<TKey> {
-  private static readonly logger = Logger.get('FIFOAgedQueue');
+  private static readonly logger = Logger.get(FIFOAgedQueue.name);
   private readonly ageLimit: number;
   private readonly ageTree: RBTree<number> = new RBTree(compare);
   private readonly ageMap: Map<TKey, number> = new Map();
@@ -18,10 +18,7 @@ export class FIFOAgedQueue<TKey> implements IAgedQueue<TKey> {
    * @param maxEntries The maximum number of entries to store in the cache, undefined for no max
    * @param ageLimit The maximum time to keep entries in minutes
    */
-  constructor(
-    private readonly maxEntries?: number,
-    ageLimit = 200) {
-
+  constructor(private readonly maxEntries?: number, ageLimit = 200) {
     this.ageLimit = ageLimit * 1000 * 60;
   }
 
@@ -84,7 +81,9 @@ export class FIFOAgedQueue<TKey> implements IAgedQueue<TKey> {
 
     const age = this.ageMap.get(next);
     if (age !== undefined && age + this.ageLimit < Date.now()) {
-      FIFOAgedQueue.logger.debug(`Age Limit Exceeded: age=${age},limit=${this.ageLimit}`);
+      FIFOAgedQueue.logger.debug(
+        `Age Limit Exceeded: age=${age},limit=${this.ageLimit}`
+      );
       return true;
     }
 
@@ -126,12 +125,12 @@ export class FIFOAgedQueue<TKey> implements IAgedQueue<TKey> {
    */
   size(): number {
     return this.ageMap.size;
-  };
+  }
 
   private addBucket(age: number, key: TKey): void {
     const bucket = this.ageBuckets.get(age);
     if (bucket === undefined) {
-      this.ageBuckets.set(age, new Set([key]))
+      this.ageBuckets.set(age, new Set([key]));
     } else {
       bucket.add(key);
     }

@@ -1,0 +1,1 @@
+{"version":3,"file":"MockTransport.d.ts","sourceRoot":"","sources":["../../src/shared/MockTransport.ts"],"names":[],"mappings":"AAAA,OAAO,SAAS,MAAM,mBAAmB,CAAA;AAEzC,MAAM,CAAC,OAAO,OAAO,aAAc,SAAQ,SAAS;IAClD,OAAO,CAAC,UAAU,CAAY;IAC9B,IAAI,KAAK,UAER;gBAEW,IAAI,EAAE,SAAS,CAAC,sBAAsB;IAIlD,KAAK;IAIL,GAAG,CAAC,IAAI,EAAE,GAAG,EAAE,IAAI,EAAE,MAAM,IAAI;CAIhC"}

@@ -2,7 +2,10 @@ import { Collection, ObjectID, UpdateWriteOpResult } from "mongodb";
 
 import { IStorageProvider } from "./IStorageProvider";
 import { IAgedValue } from "../cache/expire/IAgedQueue";
-import { IMongoCollectionProviderOptions, MongoCollectioonProviderSetMode } from "./IMongoCollectionProviderOptions";
+import {
+  IMongoCollectionProviderOptions,
+  MongoCollectioonProviderSetMode,
+} from "./IMongoCollectionProviderOptions";
 
 /**
  * A MongoDB record that has fields to track when it's written.
@@ -15,10 +18,12 @@ export interface IMongoCollectionRecord {
 }
 
 /**
- * 
+ *
  */
-export class MongoCollectionProvider<TKey, TValue extends IMongoCollectionRecord> 
-  implements IStorageProvider<TKey, TValue> {
+export class MongoCollectionProvider<
+  TKey,
+  TValue extends IMongoCollectionRecord
+> implements IStorageProvider<TKey, TValue> {
   private readonly setMode: MongoCollectioonProviderSetMode;
   private readonly keyProperty: string;
 
@@ -28,8 +33,8 @@ export class MongoCollectionProvider<TKey, TValue extends IMongoCollectionRecord
    */
   constructor(
     private readonly collection: Collection,
-    options: IMongoCollectionProviderOptions<TKey, TValue>) {
-
+    options: IMongoCollectionProviderOptions<TKey, TValue>
+  ) {
     this.keyProperty = options.keyProperty;
     this.setMode = options.setMode;
   }
@@ -49,11 +54,11 @@ export class MongoCollectionProvider<TKey, TValue extends IMongoCollectionRecord
         const age = record.modifiedDate.getMilliseconds();
         return {
           age,
-          value: record as TValue
+          value: record as TValue,
         };
-      })
+      });
   }
-  
+
   /**
    * @param key The key to set
    * @param value The value to set
@@ -65,14 +70,20 @@ export class MongoCollectionProvider<TKey, TValue extends IMongoCollectionRecord
 
     let operation: Promise<UpdateWriteOpResult>;
     if (this.setMode == MongoCollectioonProviderSetMode.Replace) {
-      operation = this.collection
-        .replaceOne({ [this.keyProperty]: key }, record, { upsert: true });
+      operation = this.collection.replaceOne(
+        { [this.keyProperty]: key },
+        record,
+        { upsert: true }
+      );
     } else {
-      operation = this.collection
-        .updateOne({ [this.keyProperty]: key }, record, { upsert: true });
+      operation = this.collection.updateOne(
+        { [this.keyProperty]: key },
+        record,
+        { upsert: true }
+      );
     }
 
-    return operation.then(status => status.modifiedCount > 0)
+    return operation.then(status => status.modifiedCount > 0);
   }
 
   /**
@@ -84,7 +95,7 @@ export class MongoCollectionProvider<TKey, TValue extends IMongoCollectionRecord
       .deleteOne({ [this.keyProperty]: key })
       .then(status => {
         return status.deletedCount !== undefined && status.deletedCount > 0;
-      })
+      });
   }
 
   /**

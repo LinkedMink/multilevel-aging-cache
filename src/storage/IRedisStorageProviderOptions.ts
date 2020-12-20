@@ -2,7 +2,7 @@ import { ISerializer } from "../serialization/ISerializer";
 import { StringSerializer } from "../serialization/StringSerializer";
 import { JsonSerializer } from "../serialization/JsonSerializer";
 
-const DEFAULT_KEY_PREFIX = 'node';
+const DEFAULT_KEY_PREFIX = "node";
 
 /**
  * Options to build a RedisStorageProvider
@@ -33,14 +33,16 @@ export interface IRedisStorageProviderOptions<TKey, TValue> {
  * @param keyPrefix The Redis key prefix that should match that used with the IORedis client
  * @return Options to construct a Redis storage provider with string keys and JSON object values
  */
-export function getStringKeyJsonValueOptions(keyPrefix?: string): IRedisStorageProviderOptions<string, object> {
-  const prefix = keyPrefix 
+export function getStringKeyJsonValueOptions(
+  keyPrefix?: string
+): IRedisStorageProviderOptions<string, object> {
+  const prefix = keyPrefix
     ? keyPrefix
     : DEFAULT_KEY_PREFIX + Math.round(Math.random() * 1000000);
 
   return {
     keyPrefix: prefix,
     keySerializer: new StringSerializer(),
-    valueSerializer: new JsonSerializer()
-  }
+    valueSerializer: new JsonSerializer(),
+  };
 }

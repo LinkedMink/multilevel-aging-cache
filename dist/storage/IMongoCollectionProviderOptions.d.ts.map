@@ -1,0 +1,1 @@
+{"version":3,"file":"IMongoCollectionProviderOptions.d.ts","sourceRoot":"","sources":["../../src/storage/IMongoCollectionProviderOptions.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,oBAAY,+BAA+B;IACzC,OAAO,IAAA;IACP,MAAM,IAAA;CACP;AAED;;GAEG;AACH,MAAM,WAAW,+BAA+B,CAAC,IAAI,EAAE,MAAM;IAC3D;;OAEG;IACH,OAAO,EAAE,+BAA+B,CAAC;IACzC;;OAEG;IACH,WAAW,EAAE,MAAM,CAAC;CACrB"}

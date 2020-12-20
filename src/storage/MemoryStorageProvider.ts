@@ -5,8 +5,9 @@ import { IStorageProvider } from "./IStorageProvider";
 /**
  * A key/value storage system for local memory. This is essentially a wrapper of a Map
  */
-export class MemoryStorageProvider<TKey, TValue> implements IStorageProvider<TKey, TValue> {
-  private static readonly logger = Logger.get("MemoryStorageProvider");
+export class MemoryStorageProvider<TKey, TValue>
+  implements IStorageProvider<TKey, TValue> {
+  private static readonly logger = Logger.get(MemoryStorageProvider.name);
   private readonly data: Map<TKey, TValue> = new Map();
   private readonly ages: Map<TKey, number> = new Map();
 
@@ -20,10 +21,12 @@ export class MemoryStorageProvider<TKey, TValue> implements IStorageProvider<TKe
       const age = this.ages.get(key);
       return Promise.resolve({
         value: localValue,
-        age: age ? age : 0
+        age: age ? age : 0,
       });
     } else {
-      MemoryStorageProvider.logger.debug(`Attempted to get key that doesn't exist: ${key}`);
+      MemoryStorageProvider.logger.debug(
+        `Attempted to get key that doesn't exist: ${key}`
+      );
       return Promise.resolve(null);
     }
   }
@@ -47,7 +50,9 @@ export class MemoryStorageProvider<TKey, TValue> implements IStorageProvider<TKe
     const isDeleted = this.data.delete(key);
     this.ages.delete(key);
     if (!isDeleted) {
-      MemoryStorageProvider.logger.debug(`Attempted to delete key that doesn't exist: ${key}`);
+      MemoryStorageProvider.logger.debug(
+        `Attempted to delete key that doesn't exist: ${key}`
+      );
     }
 
     return Promise.resolve(isDeleted);

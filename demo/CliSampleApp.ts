@@ -14,21 +14,21 @@ Logger.options = {
   format: winston.format.json(),
   transports: [
     new winston.transports.File({ filename: "combined.log" }),
-    new winston.transports.Console({ format: winston.format.simple() })
+    new winston.transports.Console({ format: winston.format.simple() }),
   ],
 };
 
-const redisClient = new Redis(
-  6379,
-  "localhost");
+const redisClient = new Redis(6379, "localhost");
 
-const redisChannel = new Redis(
-  6379,
-  "localhost");
+const redisChannel = new Redis(6379, "localhost");
 
 const storageHierarchy = new StorageHierarchy<string, object>([
   new MemoryStorageProvider(),
-  new RedisPubSubStorageProvider(redisClient, getStringKeyJsonValueOptions(), redisChannel)
+  new RedisPubSubStorageProvider(
+    redisClient,
+    getStringKeyJsonValueOptions(),
+    redisChannel
+  ),
 ]);
 
 const cache = createAgingCache<string, object>(storageHierarchy);
@@ -38,18 +38,20 @@ const cliReadline = readline.createInterface({
   output: process.stdout,
 });
 
-const PROMPT_COMMAND = "Enter a command to read/write cache: "
-const PROMPT_KEY = "Enter the key: "
-const PROMPT_VALUE = "Enter the value: "
+const PROMPT_COMMAND = "Enter a command to read/write cache: ";
+const PROMPT_KEY = "Enter the key: ";
+const PROMPT_VALUE = "Enter the value: ";
 
 const promptInput = (prompt: string): Promise<string> => {
-  return new Promise<string>(resolve => cliReadline.question(prompt, ans => {
-    resolve(ans);
-  }))
-}
+  return new Promise<string>(resolve =>
+    cliReadline.question(prompt, ans => {
+      resolve(ans);
+    })
+  );
+};
 
 const main = async (): Promise<number> => {
-  while(true) {
+  while (true) {
     const command = (await promptInput(PROMPT_COMMAND)).toLowerCase();
     if (command === "get") {
       const key = await promptInput(PROMPT_KEY);
@@ -66,15 +68,15 @@ const main = async (): Promise<number> => {
       console.log(status);
     } else if (command === "keys") {
       const keys = await cache.keys();
-      console.log(keys);     
+      console.log(keys);
     } else if (command === "exit") {
       return 0;
     } else {
       console.error("Invalid Command");
     }
   }
-}
+};
 
 main()
   .then(code => process.exit(code))
-  .catch(error => process.exit(1))
+  .catch(error => process.exit(1));

@@ -5,16 +5,16 @@ export enum AgingCacheReplacementPolicy {
   /**
    * Replace items in a First-in First-out manner
    */
-  FIFO
+  FIFO,
 }
 
 /**
- * In a distributed environment, multiple instances could write to cache at once. This option 
+ * In a distributed environment, multiple instances could write to cache at once. This option
  * determines what should happen if an exiting entry is found in a higher level cache.
  */
 export enum AgingCacheWriteMode {
   /**
-   * When a higher level cache has a key, refresh the lower level keys and only overwrite if 
+   * When a higher level cache has a key, refresh the lower level keys and only overwrite if
    * the force option is supplied
    */
   RefreshAlways,
@@ -26,7 +26,7 @@ export enum AgingCacheWriteMode {
   /**
    * Unconditionally overwrite the value that's stored in higher level caches
    */
-  OverwriteAlways
+  OverwriteAlways,
 }
 
 /**
@@ -72,5 +72,5 @@ export function getDefaultAgingCacheOptions(): IAgingCacheOptions {
     replacementPolicy: AgingCacheReplacementPolicy.FIFO,
     setMode: AgingCacheWriteMode.OverwriteAged,
     deleteMode: AgingCacheWriteMode.OverwriteAged,
-  }
+  };
 }

@@ -1,7 +1,7 @@
 import { AgingCacheWriteStatus } from "../IAgingCache";
 
 /**
- * Implements customized cache set behavior based on the IAgingCacheOptions 
+ * Implements customized cache set behavior based on the IAgingCacheOptions
  */
 export interface IAgingCacheSetStrategy<TKey, TValue> {
   /**
@@ -14,7 +14,7 @@ export interface IAgingCacheSetStrategy<TKey, TValue> {
 }
 
 /**
- * Implements customized cache delete behavior based on the IAgingCacheOptions 
+ * Implements customized cache delete behavior based on the IAgingCacheOptions
  */
 export interface IAgingCacheDeleteStrategy<TKey> {
   /**

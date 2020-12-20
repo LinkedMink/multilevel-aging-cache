@@ -1,17 +1,25 @@
 import { IStorageProvider } from "../src/storage/IStorageProvider";
 import { ISerializer } from "../src/serialization/ISerializer";
-import { IAgingCacheSetStrategy, IAgingCacheDeleteStrategy } from "../src/cache/write/IAgingCacheWriteStrategy";
+import {
+  IAgingCacheSetStrategy,
+  IAgingCacheDeleteStrategy,
+} from "../src/cache/write/IAgingCacheWriteStrategy";
 import { AgingCacheWriteStatus } from "../src/cache/IAgingCache";
 import { IStorageHierarchy } from "../src/storage/IStorageHierarchy";
 import { IAgedQueue } from "../src/cache/expire/IAgedQueue";
 
 export class MockSerializer implements ISerializer<string> {
   static testSerializePrefix = "TEST12345_";
-  serialize = jest.fn((data: string) => MockSerializer.testSerializePrefix + data);
-  deserialize = jest.fn((data: string) => data.substring(MockSerializer.testSerializePrefix.length));
+  serialize = jest.fn(
+    (data: string) => MockSerializer.testSerializePrefix + data
+  );
+  deserialize = jest.fn((data: string) =>
+    data.substring(MockSerializer.testSerializePrefix.length)
+  );
 }
 
-export class MockStorageProvider<TKey, TValue> implements IStorageProvider<TKey, TValue> {
+export class MockStorageProvider<TKey, TValue>
+  implements IStorageProvider<TKey, TValue> {
   get = jest.fn().mockResolvedValue(null);
   set = jest.fn().mockResolvedValue(true);
   delete = jest.fn().mockResolvedValue(true);
@@ -21,7 +29,8 @@ export class MockStorageProvider<TKey, TValue> implements IStorageProvider<TKey,
   unsubscribe = jest.fn().mockReturnValue(true);
 }
 
-export class MockStorageHierarchy<TKey, TValue> implements IStorageHierarchy<TKey, TValue> {
+export class MockStorageHierarchy<TKey, TValue>
+  implements IStorageHierarchy<TKey, TValue> {
   getAtLevel = jest.fn().mockResolvedValue(null);
   setAtLevel = jest.fn().mockResolvedValue(AgingCacheWriteStatus.Success);
   deleteAtLevel = jest.fn().mockResolvedValue(AgingCacheWriteStatus.Success);
@@ -32,11 +41,13 @@ export class MockStorageHierarchy<TKey, TValue> implements IStorageHierarchy<TKe
   setBelowTopLevel = jest.fn().mockResolvedValue(AgingCacheWriteStatus.Success);
 }
 
-export class MockAgingCacheSetStrategy<TKey, TValue> implements IAgingCacheSetStrategy<TKey, TValue> {
+export class MockAgingCacheSetStrategy<TKey, TValue>
+  implements IAgingCacheSetStrategy<TKey, TValue> {
   set = jest.fn().mockResolvedValue(AgingCacheWriteStatus.Success);
 }
 
-export class MockAgingCacheDeleteStrategy<TKey> implements IAgingCacheDeleteStrategy<TKey> {
+export class MockAgingCacheDeleteStrategy<TKey>
+  implements IAgingCacheDeleteStrategy<TKey> {
   delete = jest.fn().mockResolvedValue(AgingCacheWriteStatus.Success);
 }
 

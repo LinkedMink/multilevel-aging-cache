@@ -11,7 +11,8 @@ const RESPONSE_OK = "OK";
  * A storage provider that uses IORedis. This implemenation uses Redis pub/sub as a method to retrieve
  * updates from other nodes whenever keys change.
  */
-export class RedisStorageProvider<TKey, TValue> implements IStorageProvider<TKey, TValue> {
+export class RedisStorageProvider<TKey, TValue>
+  implements IStorageProvider<TKey, TValue> {
   private readonly keyPrefix: string;
   private readonly keySerializer: ISerializer<TKey>;
   private readonly valueSerializer: ISerializer<TValue>;
@@ -19,13 +20,13 @@ export class RedisStorageProvider<TKey, TValue> implements IStorageProvider<TKey
   /**
    * @param client The IORedis client for general read/write that has been initialized
    * @param config The set of options for the behavior of this storage provider
-   * @param channel The IORedis client for listening to updates from other nodes that has been 
+   * @param channel The IORedis client for listening to updates from other nodes that has been
    * initialized, undefined if subscribe/unsubscribe isn't needed.
    */
   constructor(
     private readonly client: Redis | Cluster,
-    config: IRedisStorageProviderOptions<TKey, TValue>) {
-    
+    config: IRedisStorageProviderOptions<TKey, TValue>
+  ) {
     this.keyPrefix = config.keyPrefix;
     this.keySerializer = config.keySerializer;
     this.valueSerializer = config.valueSerializer;
@@ -37,16 +38,15 @@ export class RedisStorageProvider<TKey, TValue> implements IStorageProvider<TKey
    */
   get(key: TKey): Promise<IAgedValue<TValue> | null> {
     const serializedKey = this.keySerializer.serialize(key);
-    return this.client.get(serializedKey)
-      .then(value => {
-        if (!value) {
-          return null;
-        }
+    return this.client.get(serializedKey).then(value => {
+      if (!value) {
+        return null;
+      }
 
-        const agedValue = JSON.parse(value);
-        agedValue.value = this.valueSerializer.deserialize(agedValue.value);
-        return agedValue;
-      });
+      const agedValue = JSON.parse(value);
+      agedValue.value = this.valueSerializer.deserialize(agedValue.value);
+      return agedValue;
+    });
   }
 
   /**
@@ -59,13 +59,12 @@ export class RedisStorageProvider<TKey, TValue> implements IStorageProvider<TKey
     const serializedValue = this.valueSerializer.serialize(agedValue.value);
     const serializedAgeValue = JSON.stringify({
       age: agedValue.age,
-      value: serializedValue
+      value: serializedValue,
     });
 
-    return this.client.set(serializedKey, serializedAgeValue)
-      .then(response => {
-        return response === RESPONSE_OK;
-      });
+    return this.client.set(serializedKey, serializedAgeValue).then(response => {
+      return response === RESPONSE_OK;
+    });
   }
 
   /**
@@ -74,10 +73,9 @@ export class RedisStorageProvider<TKey, TValue> implements IStorageProvider<TKey
    */
   delete(key: TKey): Promise<boolean> {
     const serializedKey = this.keySerializer.serialize(key);
-    return this.client.del(serializedKey)
-      .then(response => {
-        return response > 0;
-      });
+    return this.client.del(serializedKey).then(response => {
+      return response > 0;
+    });
   }
 
   /**
@@ -93,8 +91,6 @@ export class RedisStorageProvider<TKey, TValue> implements IStorageProvider<TKey
    * @returns The number of elements in this storage system
    */
   size(): Promise<number> {
-    return this.client
-      .keys(`${this.keyPrefix}*`)
-      .then(keys => keys.length);
+    return this.client.keys(`${this.keyPrefix}*`).then(keys => keys.length);
   }
 }

@@ -5,9 +5,9 @@ import { AgingCacheWriteStrategy } from "./AgingCacheWriteStrategy";
 /**
  * Strategy to overwrite regardless of the higher level value
  */
-export class OverwriteAlwaysDeleteStrategy<TKey, TValue> 
-  extends AgingCacheWriteStrategy<TKey, TValue> implements IAgingCacheDeleteStrategy<TKey> {
-    
+export class OverwriteAlwaysDeleteStrategy<TKey, TValue>
+  extends AgingCacheWriteStrategy<TKey, TValue>
+  implements IAgingCacheDeleteStrategy<TKey> {
   delete(key: TKey, force: boolean): Promise<AgingCacheWriteStatus> {
     return this.executeDelete(key);
   }

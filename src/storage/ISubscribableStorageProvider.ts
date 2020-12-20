@@ -6,13 +6,17 @@ import { IAgedValue } from "../cache/expire/IAgedQueue";
  * @param key The key that was set/delete
  * @param value The value that was set or undefined if it was a delete
  */
-export type StorageProviderUpdateHandler<TKey, TValue> = (key: TKey, value?: IAgedValue<TValue>) => void;
+export type StorageProviderUpdateHandler<TKey, TValue> = (
+  key: TKey,
+  value?: IAgedValue<TValue>
+) => void;
 
 /**
  * A storage provider that can propogate changes through the cluster. In a distributed system where
  * data is partially stored at the node level, some systems require a mechanism to sychronize writes.
  */
-export interface ISubscribableStorageProvider<TKey, TValue> extends IStorageProvider<TKey, TValue> {
+export interface ISubscribableStorageProvider<TKey, TValue>
+  extends IStorageProvider<TKey, TValue> {
   /**
    * Whenever a key/value changes, the storage provider can notify observers, so that
    * they can react accordingly. This will add the observer until an unsubscribe() is called
@@ -29,7 +33,10 @@ export interface ISubscribableStorageProvider<TKey, TValue> extends IStorageProv
 }
 
 export function isISubscribableStorageProvider<TKey, TValue>(
-  provider: IStorageProvider<TKey, TValue>): provider is ISubscribableStorageProvider<TKey, TValue> {
-
-  return (provider as ISubscribableStorageProvider<TKey, TValue>).subscribe !== undefined;
+  provider: IStorageProvider<TKey, TValue>
+): provider is ISubscribableStorageProvider<TKey, TValue> {
+  return (
+    (provider as ISubscribableStorageProvider<TKey, TValue>).subscribe !==
+    undefined
+  );
 }

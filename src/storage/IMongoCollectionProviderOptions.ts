@@ -1,21 +1,21 @@
 /**
- * 
+ *
  */
 export enum MongoCollectioonProviderSetMode {
   Replace,
-  Update
+  Update,
 }
 
 /**
- * 
+ *
  */
 export interface IMongoCollectionProviderOptions<TKey, TValue> {
   /**
-   * 
+   *
    */
   setMode: MongoCollectioonProviderSetMode;
   /**
-   * 
+   *
    */
   keyProperty: string;
 }
