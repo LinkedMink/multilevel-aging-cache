@@ -2,7 +2,7 @@ import winston = require("winston");
 
 import { Logger } from "../../src/shared/Logger";
 
-describe("Logger.ts", () => {
+describe(Logger.name, () => {
   test("should return shared instance when label is the same", () => {
     const testLabel = "TEST";
 

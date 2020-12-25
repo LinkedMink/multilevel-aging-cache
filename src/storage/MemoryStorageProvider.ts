@@ -1,15 +1,15 @@
-import { IStorageProvider, StorageProviderUpdateHandler } from "./IStorageProvider";
 import { IAgedValue } from "../cache/expire/IAgedQueue";
 import { Logger } from "../shared/Logger";
+import { IStorageProvider } from "./IStorageProvider";
 
 /**
  * A key/value storage system for local memory. This is essentially a wrapper of a Map
  */
-export class MemoryStorageProvider<TKey, TValue> implements IStorageProvider<TKey, TValue> {
-  private static readonly logger = Logger.get("MemoryStorageProvider");
+export class MemoryStorageProvider<TKey, TValue>
+  implements IStorageProvider<TKey, TValue> {
+  private static readonly logger = Logger.get(MemoryStorageProvider.name);
   private readonly data: Map<TKey, TValue> = new Map();
   private readonly ages: Map<TKey, number> = new Map();
-  private readonly updateHandlers: StorageProviderUpdateHandler<TKey, TValue>[] = [];
 
   /**
    * @param key The key to retrieve
@@ -21,10 +21,12 @@ export class MemoryStorageProvider<TKey, TValue> implements IStorageProvider<TKe
       const age = this.ages.get(key);
       return Promise.resolve({
         value: localValue,
-        age: age ? age : 0
+        age: age ? age : 0,
       });
     } else {
-      MemoryStorageProvider.logger.debug(`Attempted to get key that doesn't exist: ${key}`);
+      MemoryStorageProvider.logger.debug(
+        `Attempted to get key that doesn't exist: ${key}`
+      );
       return Promise.resolve(null);
     }
   }
@@ -37,7 +39,6 @@ export class MemoryStorageProvider<TKey, TValue> implements IStorageProvider<TKe
   set(key: TKey, agedValue: IAgedValue<TValue>): Promise<boolean> {
     this.data.set(key, agedValue.value);
     this.ages.set(key, agedValue.age);
-    this.updateHandlers.forEach(handler => handler(key, agedValue));
     return Promise.resolve(true);
   }
 
@@ -48,10 +49,10 @@ export class MemoryStorageProvider<TKey, TValue> implements IStorageProvider<TKe
   delete(key: TKey): Promise<boolean> {
     const isDeleted = this.data.delete(key);
     this.ages.delete(key);
-    if (isDeleted) {
-      this.updateHandlers.forEach(handler => handler(key));
-    } else {
-      MemoryStorageProvider.logger.debug(`Attempted to delete key that doesn't exist: ${key}`);
+    if (!isDeleted) {
+      MemoryStorageProvider.logger.debug(
+        `Attempted to delete key that doesn't exist: ${key}`
+      );
     }
 
     return Promise.resolve(isDeleted);
@@ -70,37 +71,5 @@ export class MemoryStorageProvider<TKey, TValue> implements IStorageProvider<TKe
    */
   size(): Promise<number> {
     return Promise.resolve(this.data.size);
-  }
-  
-  /**
-   * Whenever a key/value changes, the storage provider can notify observers, so that
-   * they can react accordingly. This will add the observer until an unsubscribe() is called
-   * @param handler The function that will execute when a key/value changes
-   * @return If subscribing to changes was successful
-   */
-  subscribe(handler: StorageProviderUpdateHandler<TKey, TValue>): boolean {
-    const index = this.updateHandlers.indexOf(handler);
-    if (index >= 0) {
-      MemoryStorageProvider.logger.warn("Attempted to subscribe function that is already subscribed");
-      return false;
-    }
-
-    this.updateHandlers.push(handler);
-    return true;
-  }
-
-  /**
-   * @param handler The function to remove
-   * @return If unsubscribing to changes was successful
-   */
-  unsubscribe(handler: StorageProviderUpdateHandler<TKey, TValue>): boolean {
-    const index = this.updateHandlers.indexOf(handler);
-    if (index >= 0) {
-      this.updateHandlers.splice(index, 1);
-      return true;
-    }
-    
-    MemoryStorageProvider.logger.warn("Attempted to unsubscribe with function that was never subscribed");
-    return false;
   }
 }

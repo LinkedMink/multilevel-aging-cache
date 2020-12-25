@@ -3,19 +3,22 @@ import { StorageHierarchy } from "../../../src/storage/StorageHierarchy";
 import { MockStorageHierarchy, MockAgedQueue } from "../../Mocks";
 import { AgingCacheWriteStatus } from "../../../src/cache/IAgingCache";
 
-describe("OverwriteAlwaysDeleteStrategy.ts", () => {
+describe(OverwriteAlwaysDeleteStrategy.name, () => {
   let hierarchyMock: StorageHierarchy<string, string>;
   let evictQueueMock: MockAgedQueue<string>;
   let strategy: OverwriteAlwaysDeleteStrategy<string, string>;
 
   beforeEach(() => {
-    hierarchyMock = new MockStorageHierarchy() as unknown as StorageHierarchy<string, string>;
+    hierarchyMock = (new MockStorageHierarchy() as unknown) as StorageHierarchy<
+      string,
+      string
+    >;
     evictQueueMock = new MockAgedQueue<string>();
     strategy = new OverwriteAlwaysDeleteStrategy(hierarchyMock, evictQueueMock);
-  })
+  });
 
   test("should return instance when constructor parameters are valid", () => {
-    expect(strategy).toBeDefined()
+    expect(strategy).toBeDefined();
   });
 
   test("should execute delete unconditionally when delete() is called", () => {
@@ -24,8 +27,8 @@ describe("OverwriteAlwaysDeleteStrategy.ts", () => {
     const promise = strategy.delete(testKey, false);
 
     return promise.then(status => {
-      expect(status).toEqual(AgingCacheWriteStatus.Success)
+      expect(status).toEqual(AgingCacheWriteStatus.Success);
       expect(hierarchyMock.deleteAtLevel).toBeCalledWith(testKey);
-    })
+    });
   });
 });

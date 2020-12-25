@@ -3,7 +3,7 @@
  */
 export interface IDisposable {
   /**
-   * Clean up the object when it's no longer used. After a dispose(), an object 
+   * Clean up the object when it's no longer used. After a dispose(), an object
    * is no longer guaranteed to be usable.
    */
   dispose(): void | Promise<void>;

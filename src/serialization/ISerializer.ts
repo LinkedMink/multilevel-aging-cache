@@ -2,7 +2,7 @@
  * @param data The data to convert
  * @return The input data as a string
  */
-export type SerializeFunction<T> = (data: T) => string
+export type SerializeFunction<T> = (data: T) => string;
 
 /**
  * @param data The data to convert

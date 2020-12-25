@@ -1,13 +1,6 @@
 import { IAgedValue } from "../cache/expire/IAgedQueue";
 
 /**
- * A function to execute when a IStorageProvider key/value changes. Used with subscribe/unsubscribe
- * @param key The key that was set/delete
- * @param value The value that was set or undefined if it was a delete
- */
-export type StorageProviderUpdateHandler<TKey, TValue> = (key: TKey, value?: IAgedValue<TValue>) => void;
-
-/**
  * Represents a key/value storage system
  */
 export interface IStorageProvider<TKey, TValue> {
@@ -39,18 +32,4 @@ export interface IStorageProvider<TKey, TValue> {
    * @returns The number of elements in this storage system
    */
   size(): Promise<number>;
-
-  /**
-   * Whenever a key/value changes, the storage provider can notify observers, so that
-   * they can react accordingly. This will add the observer until an unsubscribe() is called
-   * @param handler The function that will execute when a key/value changes
-   * @return If subscribing to changes was successful
-   */
-  subscribe(handler: StorageProviderUpdateHandler<TKey, TValue>): boolean;
-
-  /**
-   * @param handler The function to remove
-   * @return If unsubscribing to changes was successful
-   */
-  unsubscribe(handler: StorageProviderUpdateHandler<TKey, TValue>): boolean;
 }

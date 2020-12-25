@@ -6,7 +6,7 @@ import { IAgedValue } from "../cache/expire/IAgedQueue";
  */
 export enum StorageHierarchyUpdatePolicy {
   /**
-   * Only update lower level storage if the key currently resides in them. The next get on the key 
+   * Only update lower level storage if the key currently resides in them. The next get on the key
    * will be forced to retrieve from the higher level, so this maintains consistency while not requiring
    * extra storage (at the cost of performance).
    */
@@ -15,13 +15,13 @@ export enum StorageHierarchyUpdatePolicy {
    * Set the key/value in our lower level storage unconditionally. This might be important for permenant
    * storage hierarchies or higher read performance (at the cost of write performance and space).
    */
-  Always
+  Always,
 }
 
 /**
  * Represent a key/value multilevel storage hierarchy where read/writes are propogated up/down the hierarchy.
  * Typically, this is used in a system where different levels of the hierarchy have varying performance
- * characteristics (such as a memory system siting below a database). 
+ * characteristics (such as a memory system siting below a database).
  */
 export interface IStorageHierarchy<TKey, TValue> {
   /**
@@ -33,7 +33,8 @@ export interface IStorageHierarchy<TKey, TValue> {
   getAtLevel(
     key: TKey,
     level?: number,
-    isAscending?: boolean): Promise<IAgedValue<TValue> | null>;
+    isAscending?: boolean
+  ): Promise<IAgedValue<TValue> | null>;
 
   /**
    * @param key The key to set
@@ -43,10 +44,11 @@ export interface IStorageHierarchy<TKey, TValue> {
    * @returns If the write succeeded to all levels going up/down or the error condition
    */
   setAtLevel(
-    key: TKey, 
-    value: IAgedValue<TValue>, 
+    key: TKey,
+    value: IAgedValue<TValue>,
     level?: number,
-    isAscending?: boolean): Promise<AgingCacheWriteStatus>;
+    isAscending?: boolean
+  ): Promise<AgingCacheWriteStatus>;
 
   /**
    * @param key The key to delete
@@ -54,10 +56,11 @@ export interface IStorageHierarchy<TKey, TValue> {
    * @param isAscending To go up the hierarchy (true) or down (false) from level
    * @returns If the write succeeded to all levels going up/down or the error condition
    */
-  deleteAtLevel( 
-    key: TKey, 
+  deleteAtLevel(
+    key: TKey,
     level?: number,
-    isAscending?: boolean): Promise<AgingCacheWriteStatus>;
+    isAscending?: boolean
+  ): Promise<AgingCacheWriteStatus>;
 
   /**
    * @param level The level at which to search
@@ -88,5 +91,8 @@ export interface IStorageHierarchy<TKey, TValue> {
    * @param value The value to set
    * @returns If the write succeeded to all levels going up/down or the error condition
    */
-  setBelowTopLevel(key: TKey, value: IAgedValue<TValue>): Promise<AgingCacheWriteStatus>;
+  setBelowTopLevel(
+    key: TKey,
+    value: IAgedValue<TValue>
+  ): Promise<AgingCacheWriteStatus>;
 }

@@ -21,7 +21,7 @@ export enum AgingCacheWriteStatus {
   /**
    * An error occured while writing
    */
-  UnspecifiedError
+  UnspecifiedError,
 }
 
 /**
@@ -42,7 +42,11 @@ export interface IAgingCache<TKey, TValue> {
    * @param force If true write to all levels of hierarchy unconditionally
    * @returns If the write succeeded or the error condition
    */
-  set(key: TKey, value: TValue, force?: boolean): Promise<AgingCacheWriteStatus>;
+  set(
+    key: TKey,
+    value: TValue,
+    force?: boolean
+  ): Promise<AgingCacheWriteStatus>;
 
   /**
    * @param key The key to the value to delete

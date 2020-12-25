@@ -6,7 +6,7 @@ const serialize = <T>(data: T): string => {
 
 const deserialize = <T>(data: string): T => {
   return JSON.parse(data);
-}
+};
 
 /**
  * De/Serialize JSON objects with the native JSON.stringify and JSON.parse

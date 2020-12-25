@@ -11,15 +11,12 @@
       "program": "${workspaceFolder}/node_modules/jest/bin/jest",
       "args": [
         "--runInBand",
-        "--config=jest.debug.config.js"
+        "--coverage=false"
       ],
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "disableOptimisticBPs": true,
-      "env": {
-        "NODE_ENV": "unitTest" 
-      }
+      "disableOptimisticBPs": true
     },
     {
       "type": "node",
