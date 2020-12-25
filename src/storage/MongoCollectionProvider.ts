@@ -1,21 +1,16 @@
-import { Collection, ObjectID, UpdateWriteOpResult } from "mongodb";
+import { Collection, UpdateWriteOpResult } from "mongodb";
 
 import { IStorageProvider } from "./IStorageProvider";
 import { IAgedValue } from "../cache/expire/IAgedQueue";
 import {
   IMongoCollectionProviderOptions,
+  IMongoCollectionRecord,
   MongoCollectionProviderSetMode,
 } from "./IMongoCollectionProviderOptions";
-
-/**
- * A MongoDB record that has fields to track when it's written.
- */
-export interface IMongoCollectionRecord {
-  _id?: ObjectID;
-  createdDate?: Date;
-  modifiedDate?: Date;
-  [property: string]: unknown;
-}
+import {
+  getDotSeperatedPropertyValue,
+  setDotSeperatedPropertyValue,
+} from "../shared/Helpers";
 
 /**
  * Use mongodb as a persistent storage mechanism
@@ -26,6 +21,7 @@ export class MongoCollectionProvider<
 > implements IStorageProvider<TKey, TValue> {
   private readonly setMode: MongoCollectionProviderSetMode;
   private readonly keyProperty: string;
+  private readonly modifiedDateProperty: string;
 
   /**
    * @param collection The collection from an active MongoClient connection with documents as values
@@ -36,6 +32,7 @@ export class MongoCollectionProvider<
     options: IMongoCollectionProviderOptions<TKey, TValue>
   ) {
     this.keyProperty = options.keyProperty;
+    this.modifiedDateProperty = options.modifiedDateProperty;
     this.setMode = options.setMode;
   }
 
@@ -51,8 +48,12 @@ export class MongoCollectionProvider<
           return null;
         }
 
-        const age = record.modifiedDate
-          ? record.modifiedDate.getTime()
+        const modifiedDate = getDotSeperatedPropertyValue(
+          record,
+          this.modifiedDateProperty
+        );
+        const age = modifiedDate
+          ? (record.modifiedDate as Date).getTime()
           : new Date().getTime();
         return {
           age,
@@ -68,7 +69,11 @@ export class MongoCollectionProvider<
    */
   set(key: TKey, value: IAgedValue<TValue>): Promise<boolean> {
     const record = value.value;
-    record.modifiedDate = new Date(value.age);
+    setDotSeperatedPropertyValue(
+      record,
+      this.modifiedDateProperty,
+      new Date(value.age)
+    );
 
     let operation: Promise<UpdateWriteOpResult>;
     if (this.setMode == MongoCollectionProviderSetMode.Replace) {

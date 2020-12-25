@@ -1,6 +1,15 @@
-import { IMongoCollectionRecord } from "./MongoCollectionProvider";
+import { ObjectID } from "mongodb";
 
 const DEFAULT_KEY_PROPERTY = "_id";
+const DEFAULT_MODIFIED_DATE_PROPERTY = "modifiedDate";
+
+/**
+ * A MongoDB record that has fields to track when it's written.
+ */
+export interface IMongoCollectionRecord {
+  _id?: ObjectID;
+  [property: string]: unknown;
+}
 
 /**
  * When set() is called should the entire document be replaced or only the fields that are provided
@@ -22,9 +31,13 @@ export interface IMongoCollectionProviderOptions<
    */
   setMode: MongoCollectionProviderSetMode;
   /**
-   * The property to use as the search key on a document
+   * The property (with . seperators for nested properties) to use as the search key on a document
    */
   keyProperty: string;
+  /**
+   * The property (with . seperators for nested properties) that stores when the the document was last modified
+   */
+  modifiedDateProperty: string;
 }
 
 /**
@@ -37,5 +50,6 @@ export function getDefaultOptions<
   return {
     setMode: MongoCollectionProviderSetMode.Update,
     keyProperty: DEFAULT_KEY_PROPERTY,
+    modifiedDateProperty: DEFAULT_MODIFIED_DATE_PROPERTY,
   };
 }

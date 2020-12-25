@@ -1,10 +1,10 @@
 import { Collection, MongoClient, ObjectID } from "mongodb";
 import { IAgedValue } from "../../src/cache/expire/IAgedQueue";
-import { getDefaultOptions } from "../../src/storage/IMongoCollectionProviderOptions";
 import {
+  getDefaultOptions,
   IMongoCollectionRecord,
-  MongoCollectionProvider,
-} from "../../src/storage/MongoCollectionProvider";
+} from "../../src/storage/IMongoCollectionProviderOptions";
+import { MongoCollectionProvider } from "../../src/storage/MongoCollectionProvider";
 
 interface TestRecord extends IMongoCollectionRecord {
   value: string;
