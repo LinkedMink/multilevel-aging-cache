@@ -27,6 +27,7 @@ export class OverwriteAgedSetStrategy<TKey, TValue>
       }
 
       AgingCacheWriteStrategy.logger.debug(
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         `Set deferred: key=${key},ageToSet=${currentAge},ageFound=${highestAgedValue.age}`
       );
       return this.setFromHighestLevel(key, highestAgedValue);

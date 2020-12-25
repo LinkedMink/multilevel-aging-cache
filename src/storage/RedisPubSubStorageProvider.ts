@@ -12,6 +12,21 @@ import { Logger } from "../shared/Logger";
 const RESPONSE_OK = "OK";
 const DEFAULT_PUBLISH_CHANNEL = "PublishedKey";
 
+interface IPublishDeleteMessage {
+  key: string;
+}
+
+interface IPublishUpdateMessage extends IPublishDeleteMessage {
+  age: number;
+  value: string;
+}
+
+const isIPublishUpdateMessage = (
+  value: unknown
+): value is IPublishUpdateMessage => {
+  return (value as IPublishUpdateMessage).value !== undefined;
+};
+
 /**
  * A storage provider that uses IORedis. This implemenation uses Redis pub/sub as a method to retrieve
  * updates from other nodes whenever keys change.
@@ -59,9 +74,11 @@ export class RedisPubSubStorageProvider<TKey, TValue>
         return null;
       }
 
-      const agedValue = JSON.parse(value);
-      agedValue.value = this.valueSerializer.deserialize(agedValue.value);
-      return agedValue;
+      const agedValue = JSON.parse(value) as IAgedValue<string>;
+      return {
+        age: agedValue.age,
+        value: this.valueSerializer.deserialize(agedValue.value),
+      };
     });
   }
 
@@ -89,6 +106,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
         return this.channel
           .publish(this.channelName, message)
           .then(channelCount => {
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             RedisPubSubStorageProvider.logger.debug(`Published Set: ${key}`);
             return true;
           });
@@ -111,6 +129,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
         return this.channel
           .publish(this.channelName, message)
           .then(channelCount => {
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             RedisPubSubStorageProvider.logger.debug(`Published Delete: ${key}`);
             return true;
           });
@@ -213,11 +232,11 @@ export class RedisPubSubStorageProvider<TKey, TValue>
     RedisPubSubStorageProvider.logger.debug(
       `Received Message from ${channel}: ${message}`
     );
-    const parsed = JSON.parse(message);
+    const parsed = JSON.parse(message) as IPublishDeleteMessage;
     const key = this.keySerializer.deserialize(parsed.key);
 
     let agedValue: IAgedValue<TValue>;
-    if (parsed.value) {
+    if (isIPublishUpdateMessage(parsed)) {
       agedValue = {
         age: parsed.age,
         value: this.valueSerializer.deserialize(parsed.value),

@@ -41,9 +41,11 @@ export class RedisStorageProvider<TKey, TValue>
         return null;
       }
 
-      const agedValue = JSON.parse(value);
-      agedValue.value = this.valueSerializer.deserialize(agedValue.value);
-      return agedValue;
+      const agedValue = JSON.parse(value) as IAgedValue<string>;
+      return {
+        age: agedValue.age,
+        value: this.valueSerializer.deserialize(agedValue.value),
+      };
     });
   }
 

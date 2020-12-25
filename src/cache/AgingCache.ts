@@ -58,6 +58,7 @@ export class AgingCache<TKey, TValue>
    * @returns The value if it's in the cache or undefined
    */
   public get(key: TKey, force = false): Promise<TValue | null> {
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     AgingCache.logger.debug(`Getting Key: ${key}`);
     return this.hierarchy.getAtLevel(key, undefined, !force).then(agedValue => {
       if (agedValue) {
@@ -78,9 +79,10 @@ export class AgingCache<TKey, TValue>
     value: TValue,
     force = false
   ): Promise<AgingCacheWriteStatus> {
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     AgingCache.logger.debug(`Setting Key: ${key}`);
     if (this.evictQueue.isNextExpired()) {
-      this.evict();
+      void this.evict();
     }
 
     return this.setStrategy.set(key, value, force);
@@ -91,6 +93,7 @@ export class AgingCache<TKey, TValue>
    * @returns If deleting the value was successful
    */
   public delete(key: TKey, force = false): Promise<AgingCacheWriteStatus> {
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     AgingCache.logger.debug(`Deleting Key: ${key}`);
     return this.deleteStrategy.delete(key, force);
   }
@@ -133,6 +136,7 @@ export class AgingCache<TKey, TValue>
   private evict(): Promise<AgingCacheWriteStatus> {
     const nextKey = this.evictQueue.next();
     if (nextKey) {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       AgingCache.logger.debug(`Evicting Key: ${nextKey}`);
       return this.delete(nextKey);
     }

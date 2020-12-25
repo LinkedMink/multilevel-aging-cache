@@ -35,10 +35,10 @@ export interface IRedisStorageProviderOptions<TKey, TValue> {
  */
 export function getStringKeyJsonValueOptions(
   keyPrefix?: string
-): IRedisStorageProviderOptions<string, object> {
+): IRedisStorageProviderOptions<string, Record<string, unknown>> {
   const prefix = keyPrefix
     ? keyPrefix
-    : DEFAULT_KEY_PREFIX + Math.round(Math.random() * 1000000);
+    : `${DEFAULT_KEY_PREFIX}${Math.round(Math.random() * 1000000)}`;
 
   return {
     keyPrefix: prefix,

@@ -27,10 +27,10 @@ type SubscriberUpdateHandler<TKey, TValue> = (
 export class StorageHierarchy<TKey, TValue>
   implements IStorageHierarchy<TKey, TValue>, IDisposable {
   private static readonly logger = Logger.get(StorageHierarchy.name);
-  private readonly storageChangedHandlers: Map<
+  private readonly storageChangedHandlers = new Map<
     number,
     StorageProviderUpdateHandler<TKey, TValue>
-  > = new Map();
+  >();
   private readonly pendingUpdates: Set<Promise<void>> = new Set();
 
   /**
@@ -94,6 +94,7 @@ export class StorageHierarchy<TKey, TValue>
           return agedValue;
         } else {
           StorageHierarchy.logger.debug(
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             `Cache miss: level=${rLevel}, key=${key}`
           );
           return this.getAtLevel(
@@ -105,6 +106,7 @@ export class StorageHierarchy<TKey, TValue>
       })
       .catch(error => {
         StorageHierarchy.logger.debug(
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           `Failed to Get: level=${rLevel}, key=${key}, error=${error}`
         );
         return this.getAtLevel(
@@ -149,6 +151,7 @@ export class StorageHierarchy<TKey, TValue>
       })
       .catch(error => {
         StorageHierarchy.logger.warn(
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           `Error setting: level=${rLevel}, key=${key}, error=${error}`
         );
         return this.getErrorByLevelAndDirection(isAscending, rLevel);
@@ -182,6 +185,7 @@ export class StorageHierarchy<TKey, TValue>
       })
       .catch(error => {
         StorageHierarchy.logger.warn(
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           `Error deleting: level=${rLevel}, key=${key}, error=${error}`
         );
         return this.getErrorByLevelAndDirection(isAscending, rLevel);
@@ -321,6 +325,7 @@ export class StorageHierarchy<TKey, TValue>
           return updateUnconditionally(key, value);
         }
         StorageHierarchy.logger.debug(
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           `Key doesn't exist, ignoring subscribed update: ${key}`
         );
         return Promise.resolve(AgingCacheWriteStatus.UnspecifiedError);

@@ -8,8 +8,8 @@ import { IStorageProvider } from "./IStorageProvider";
 export class MemoryStorageProvider<TKey, TValue>
   implements IStorageProvider<TKey, TValue> {
   private static readonly logger = Logger.get(MemoryStorageProvider.name);
-  private readonly data: Map<TKey, TValue> = new Map();
-  private readonly ages: Map<TKey, number> = new Map();
+  private readonly data = new Map<TKey, TValue>();
+  private readonly ages = new Map<TKey, number>();
 
   /**
    * @param key The key to retrieve
@@ -25,6 +25,7 @@ export class MemoryStorageProvider<TKey, TValue>
       });
     } else {
       MemoryStorageProvider.logger.debug(
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         `Attempted to get key that doesn't exist: ${key}`
       );
       return Promise.resolve(null);
@@ -51,6 +52,7 @@ export class MemoryStorageProvider<TKey, TValue>
     this.ages.delete(key);
     if (!isDeleted) {
       MemoryStorageProvider.logger.debug(
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         `Attempted to delete key that doesn't exist: ${key}`
       );
     }

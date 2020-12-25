@@ -7,8 +7,8 @@ export class FIFOAgedQueue<TKey> implements IAgedQueue<TKey> {
   private static readonly logger = Logger.get(FIFOAgedQueue.name);
   private readonly ageLimit: number;
   private readonly ageTree: RBTree<number> = new RBTree(compareAscending);
-  private readonly ageMap: Map<TKey, number> = new Map();
-  private readonly ageBuckets: Map<number, Set<TKey>> = new Map();
+  private readonly ageMap = new Map<TKey, number>();
+  private readonly ageBuckets = new Map<number, Set<TKey>>();
 
   /**
    * @param maxEntries The maximum number of entries to store in the cache, undefined for no max
@@ -45,7 +45,7 @@ export class FIFOAgedQueue<TKey> implements IAgedQueue<TKey> {
     }
 
     const iterator = minBucket.values().next();
-    return iterator.value;
+    return iterator.value as TKey;
   }
 
   /**

@@ -13,10 +13,15 @@ module.exports = {
   },
   plugins: ["@typescript-eslint"],
   rules: {
-    "@typescript-eslint/interface-name-prefix": [
+    "@typescript-eslint/naming-convention": [
       "error",
       {
-        prefixWithI: "always",
+        selector: "interface",
+        format: ["PascalCase"],
+        custom: {
+          regex: "^I[A-Z]",
+          match: true,
+        },
       },
     ],
     "@typescript-eslint/no-unused-vars": "off",
@@ -24,7 +29,7 @@ module.exports = {
   overrides: [
     {
       files: ["*.js"],
-      processor: "espree",
+      rules: {},
     },
   ],
 };

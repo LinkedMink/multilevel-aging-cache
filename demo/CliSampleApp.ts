@@ -22,7 +22,7 @@ const redisClient = new Redis(6379, "localhost");
 
 const redisChannel = new Redis(6379, "localhost");
 
-const storageHierarchy = new StorageHierarchy<string, object>([
+const storageHierarchy = new StorageHierarchy<string, Record<string, unknown>>([
   new MemoryStorageProvider(),
   new RedisPubSubStorageProvider(
     redisClient,
@@ -31,7 +31,9 @@ const storageHierarchy = new StorageHierarchy<string, object>([
   ),
 ]);
 
-const cache = createAgingCache<string, object>(storageHierarchy);
+const cache = createAgingCache<string, Record<string, unknown>>(
+  storageHierarchy
+);
 
 const cliReadline = readline.createInterface({
   input: process.stdin,
@@ -51,6 +53,7 @@ const promptInput = (prompt: string): Promise<string> => {
 };
 
 const main = async (): Promise<number> => {
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     const command = (await promptInput(PROMPT_COMMAND)).toLowerCase();
     if (command === "get") {
@@ -59,7 +62,10 @@ const main = async (): Promise<number> => {
       console.log(data);
     } else if (command === "set") {
       const key = await promptInput(PROMPT_KEY);
-      const value = JSON.parse(await promptInput(PROMPT_VALUE));
+      const value = JSON.parse(await promptInput(PROMPT_VALUE)) as Record<
+        string,
+        unknown
+      >;
       const status = await cache.set(key, value, false);
       console.log(status);
     } else if (command === "delete") {

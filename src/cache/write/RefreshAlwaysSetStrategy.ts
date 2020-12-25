@@ -32,6 +32,7 @@ export class RefreshAlwaysSetStrategy<TKey, TValue>
         }
 
         AgingCacheWriteStrategy.logger.debug(
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           `Delete deferred: key=${key},ageToSet=${
             lowestAgedValue ? lowestAgedValue.age : "null"
           },ageFound=${highestAgedValue.age}`
