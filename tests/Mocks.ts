@@ -1,4 +1,3 @@
-import { IStorageProvider } from "../src/storage/IStorageProvider";
 import { ISerializer } from "../src/serialization/ISerializer";
 import {
   IAgingCacheSetStrategy,
@@ -7,6 +6,7 @@ import {
 import { AgingCacheWriteStatus } from "../src/cache/IAgingCache";
 import { IStorageHierarchy } from "../src/storage/IStorageHierarchy";
 import { IAgedQueue } from "../src/cache/expire/IAgedQueue";
+import { ISubscribableStorageProvider } from "../src/storage/ISubscribableStorageProvider";
 
 export class MockSerializer implements ISerializer<string> {
   static testSerializePrefix = "TEST12345_";
@@ -19,7 +19,7 @@ export class MockSerializer implements ISerializer<string> {
 }
 
 export class MockStorageProvider<TKey, TValue>
-  implements IStorageProvider<TKey, TValue> {
+  implements ISubscribableStorageProvider<TKey, TValue> {
   get = jest.fn().mockResolvedValue(null);
   set = jest.fn().mockResolvedValue(true);
   delete = jest.fn().mockResolvedValue(true);

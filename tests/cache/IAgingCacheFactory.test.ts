@@ -1,3 +1,4 @@
+import path from "path";
 import { getDefaultAgingCacheOptions } from "../../src/cache/IAgingCacheOptions";
 import * as cacheFactory from "../../src/cache/IAgingCacheFactory";
 import * as cacheOptions from "../../src/cache/IAgingCacheOptions";
@@ -12,7 +13,7 @@ const getMockStorageHierarchy = () => {
   >;
 };
 
-describe(__filename, () => {
+describe(path.basename(__filename, ".test.ts"), () => {
   describe(cacheFactory.createAgingCache.name, () => {
     test("should return instance with default options when no options provided", () => {
       const getDefaultAgingCacheOptionsSpy = jest.spyOn(

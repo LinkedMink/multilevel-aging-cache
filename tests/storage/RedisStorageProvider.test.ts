@@ -8,8 +8,6 @@ import { MockSerializer } from "../Mocks";
 
 const Redis = require("ioredis-mock");
 
-const PUBLISH_CHANNEL = "PublishedKey";
-
 describe(RedisStorageProvider.name, () => {
   const mockSerializer = new MockSerializer();
 

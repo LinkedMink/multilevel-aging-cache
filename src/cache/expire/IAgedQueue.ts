@@ -1,4 +1,19 @@
 /**
+ * @param ageA The first age to compare
+ * @param ageB The second age to compare
+ * @return 0 if same order, positive if ageA after ageB, negative if ageA before ageB
+ */
+export type AgedCompareFunc = (ageA: number, ageB: number) => number;
+
+export const compareDescending = (ageA: number, ageB: number): number => {
+  return ageB - ageA;
+};
+
+export const compareAscending = (ageA: number, ageB: number): number => {
+  return ageA - ageB;
+};
+
+/**
  * Age bits that will very by replacement algorithm
  */
 export interface IAged {
@@ -53,7 +68,7 @@ export interface IAgedQueue<TKey> {
    * @param ageB The second age to compare
    * @return 0 if same order, positive if ageA after ageB, negative if ageA before ageB
    */
-  compare(ageA: number, ageB: number): number;
+  compare: AgedCompareFunc;
 
   /**
    * @return The number of keys in the queue

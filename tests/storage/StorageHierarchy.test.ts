@@ -1,14 +1,14 @@
 import { StorageHierarchy } from "../../src/storage/StorageHierarchy";
-import {
-  IStorageProvider,
-  StorageProviderUpdateHandler,
-} from "../../src/storage/IStorageProvider";
 import { AgingCacheWriteStatus } from "../../src/cache/IAgingCache";
 import { MockStorageProvider } from "../Mocks";
 import { StorageHierarchyUpdatePolicy } from "../../src/storage/IStorageHierarchy";
+import {
+  ISubscribableStorageProvider,
+  StorageProviderUpdateHandler,
+} from "../../src/storage/ISubscribableStorageProvider";
 
-xdescribe(StorageHierarchy.name, () => {
-  let levels: IStorageProvider<string, string>[];
+describe(StorageHierarchy.name, () => {
+  let levels: ISubscribableStorageProvider<string, string>[];
   let hierarchy: StorageHierarchy<string, string>;
 
   beforeEach(() => {
@@ -324,6 +324,7 @@ xdescribe(StorageHierarchy.name, () => {
     test("should set lower levels when higher level storage provider updates key that exist for update policy OnlyIfKeyExist", () => {
       const testKey = "TEST_KEY";
       const testValue = { value: "TEST_VALUE", age: 0 };
+      const testValueUpdated = { value: "TEST_VALUE2", age: 1 };
       levels.forEach(level => (level.set = jest.fn().mockResolvedValue(true)));
       let subscriptionFunc: StorageProviderUpdateHandler<
         string,
@@ -342,10 +343,14 @@ xdescribe(StorageHierarchy.name, () => {
       );
       const setAtLevelSpy = jest.spyOn(hierarchy, "setAtLevel");
 
-      subscriptionFunc(testKey, testValue);
+      subscriptionFunc(testKey, testValueUpdated);
 
       return hierarchy.dispose().then(() => {
-        expect(setAtLevelSpy).toHaveBeenCalledWith(testKey, testValue, 1);
+        expect(setAtLevelSpy).toHaveBeenCalledWith(
+          testKey,
+          testValueUpdated,
+          1
+        );
       });
     });
 

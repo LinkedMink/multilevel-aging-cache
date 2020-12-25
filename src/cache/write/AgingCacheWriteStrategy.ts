@@ -7,7 +7,7 @@ import { IStorageHierarchy } from "../../storage/IStorageHierarchy";
  * Keep common methods and data for each set/delete strategy here
  */
 export abstract class AgingCacheWriteStrategy<TKey, TValue> {
-  protected static readonly logger = Logger.get("AgingCacheWriteStrategy");
+  protected static readonly logger = Logger.get(AgingCacheWriteStrategy.name);
 
   /**
    * @param hierarchy The storage hierarchy to operate on

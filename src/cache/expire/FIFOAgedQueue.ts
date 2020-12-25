@@ -1,16 +1,12 @@
 import { RBTree } from "bintrees";
 
-import { IAgedQueue } from "./IAgedQueue";
+import { compareAscending, IAgedQueue } from "./IAgedQueue";
 import { Logger } from "../../shared/Logger";
-
-const compare = (ageA: number, ageB: number): number => {
-  return ageA - ageB;
-};
 
 export class FIFOAgedQueue<TKey> implements IAgedQueue<TKey> {
   private static readonly logger = Logger.get(FIFOAgedQueue.name);
   private readonly ageLimit: number;
-  private readonly ageTree: RBTree<number> = new RBTree(compare);
+  private readonly ageTree: RBTree<number> = new RBTree(compareAscending);
   private readonly ageMap: Map<TKey, number> = new Map();
   private readonly ageBuckets: Map<number, Set<TKey>> = new Map();
 
@@ -118,7 +114,7 @@ export class FIFOAgedQueue<TKey> implements IAgedQueue<TKey> {
    * @param ageB The second age to compare
    * @return 0 if same order, positive if ageA after ageB, negative if ageA before ageB
    */
-  compare = compare;
+  compare = compareAscending;
 
   /**
    * @return The number of keys in the queue

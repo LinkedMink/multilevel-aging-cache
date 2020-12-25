@@ -20,8 +20,6 @@ export class RedisStorageProvider<TKey, TValue>
   /**
    * @param client The IORedis client for general read/write that has been initialized
    * @param config The set of options for the behavior of this storage provider
-   * @param channel The IORedis client for listening to updates from other nodes that has been
-   * initialized, undefined if subscribe/unsubscribe isn't needed.
    */
   constructor(
     private readonly client: Redis | Cluster,

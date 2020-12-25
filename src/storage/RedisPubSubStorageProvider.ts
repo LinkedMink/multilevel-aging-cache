@@ -38,7 +38,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
   constructor(
     private readonly client: Redis,
     config: IRedisStorageProviderOptions<TKey, TValue>,
-    private readonly channel?: Redis
+    private readonly channel: Redis
   ) {
     this.keyPrefix = config.keyPrefix;
     this.keySerializer = config.keySerializer;
@@ -80,7 +80,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
 
     return this.client.set(serializedKey, serializedAgeValue).then(response => {
       const isSuccessful = response === RESPONSE_OK;
-      if (this.channel && isSuccessful) {
+      if (isSuccessful) {
         const message = JSON.stringify({
           key: serializedKey,
           age: agedValue.age,
@@ -106,7 +106,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
     const serializedKey = this.keySerializer.serialize(key);
     return this.client.del(serializedKey).then(response => {
       const isSuccessful = response > 0;
-      if (this.channel && isSuccessful) {
+      if (isSuccessful) {
         const message = JSON.stringify({ key: serializedKey });
         return this.channel
           .publish(this.channelName, message)
@@ -178,12 +178,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
    * @return If subscribing the Redis channel was successful.
    */
   listen(): Promise<boolean> {
-    if (!this.channel) {
-      RedisPubSubStorageProvider.logger.warn(
-        "Attempted to listen when not provided a channel in constructor"
-      );
-      return Promise.resolve(false);
-    } else if (this.isListening) {
+    if (this.isListening) {
       RedisPubSubStorageProvider.logger.warn(
         "Attempted to listen when already listening"
       );
@@ -198,7 +193,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
         return false;
       }
 
-      (this.channel as Redis).on("message", this.handleChannelMessage);
+      this.channel.on("message", this.handleChannelMessage);
       this.isListening = true;
       RedisPubSubStorageProvider.logger.info(
         `Listening to channel: ${this.channelName}, totalChannels=${subscribedCount}`

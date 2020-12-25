@@ -1,7 +1,7 @@
-import Transport from 'winston-transport'
+import Transport from "winston-transport";
 
-export default class MockTransport extends Transport {
-  private callsValue: any[] = []
+export class MockTransport extends Transport {
+  private callsValue: any[] = [];
   get calls() {
     return this.callsValue;
   }
@@ -11,11 +11,11 @@ export default class MockTransport extends Transport {
   }
 
   reset() {
-    this.callsValue = []
+    this.callsValue = [];
   }
 
   log(info: any, next: () => void) {
-    this.callsValue.push(info)
+    this.callsValue.push(info);
     next();
   }
-};
+}

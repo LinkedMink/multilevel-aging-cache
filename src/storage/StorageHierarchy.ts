@@ -1,5 +1,9 @@
 import { IStorageProvider } from "./IStorageProvider";
-import { IAgedValue } from "../cache/expire/IAgedQueue";
+import {
+  AgedCompareFunc,
+  compareAscending,
+  IAgedValue,
+} from "../cache/expire/IAgedQueue";
 import { AgingCacheWriteStatus } from "../cache/IAgingCache";
 import { Logger } from "../shared/Logger";
 import { IDisposable } from "../shared/IDisposable";
@@ -8,7 +12,6 @@ import {
   StorageHierarchyUpdatePolicy,
 } from "./IStorageHierarchy";
 import {
-  ISubscribableStorageProvider,
   StorageProviderUpdateHandler,
   isISubscribableStorageProvider,
 } from "./ISubscribableStorageProvider";
@@ -36,7 +39,8 @@ export class StorageHierarchy<TKey, TValue>
    */
   constructor(
     private readonly levels: IStorageProvider<TKey, TValue>[],
-    private readonly updatePolicy: StorageHierarchyUpdatePolicy = StorageHierarchyUpdatePolicy.OnlyIfKeyExist
+    private readonly updatePolicy: StorageHierarchyUpdatePolicy = StorageHierarchyUpdatePolicy.OnlyIfKeyExist,
+    private readonly ageCompareFunc: AgedCompareFunc = compareAscending
   ) {
     if (this.levels.length < 1) {
       throw new Error(
@@ -233,7 +237,7 @@ export class StorageHierarchy<TKey, TValue>
   }
 
   private subscribeAtLevel(level: number): void {
-    if (level < 0) {
+    if (level <= 0) {
       return;
     }
 
@@ -308,7 +312,10 @@ export class StorageHierarchy<TKey, TValue>
     ): Promise<AgingCacheWriteStatus> => {
       return this.getAtLevel(key, updateLevel, false).then(agedValue => {
         if (agedValue) {
-          if (value !== undefined && agedValue.age == value.age) {
+          if (
+            value !== undefined &&
+            this.ageCompareFunc(agedValue.age, value.age) >= 0
+          ) {
             return Promise.resolve(AgingCacheWriteStatus.Success);
           }
           return updateUnconditionally(key, value);

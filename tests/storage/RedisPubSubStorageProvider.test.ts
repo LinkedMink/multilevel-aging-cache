@@ -27,7 +27,11 @@ describe(RedisPubSubStorageProvider.name, () => {
       valueSerializer: new MockSerializer(),
     };
 
-    provider = new RedisPubSubStorageProvider(clientMock, optionsMock, channelMock);
+    provider = new RedisPubSubStorageProvider(
+      clientMock,
+      optionsMock,
+      channelMock
+    );
   });
 
   test("should return instance when constructor parameters are valid", () => {
@@ -191,19 +195,6 @@ describe(RedisPubSubStorageProvider.name, () => {
 
     return promise.then(isListening => {
       expect(subscribeSpy).toHaveBeenCalled();
-    });
-  });
-
-  test("should not call Redis client subscribe when listen is called without a channel", () => {
-    const subscribeSpy = jest
-      .spyOn(channelMock, "subscribe")
-      .mockResolvedValue(1);
-
-    provider = new RedisPubSubStorageProvider(clientMock, optionsMock, channelMock);
-    const promise = provider.listen();
-
-    return promise.then(isListening => {
-      expect(subscribeSpy).not.toHaveBeenCalled();
     });
   });
 

@@ -1,8 +1,7 @@
 import winston, { LoggerOptions } from "winston";
-import TransportStream from "winston-transport";
-import MockTransport from "./MockTransport";
+import { MockTransport } from "./MockTransport";
 
-const NODE_ENV_TEST = 'test'
+const NODE_ENV_TEST = "test";
 
 /**
  * Expose the logger constructor, so that output can be customized
@@ -38,24 +37,23 @@ export class Logger {
   private static optionsValue: LoggerOptions;
 }
 
-const transports: TransportStream[] = [];
-
+// Set default to console since we need at least one transport, should override in actual app
 if (process.env.NODE_ENV !== NODE_ENV_TEST) {
-  transports.push(
-    new winston.transports.Console({
-      format: winston.format.simple(),
-    })
-  );
+  Logger.options = {
+    transports: [
+      new winston.transports.Console({
+        format: winston.format.simple(),
+      }),
+    ],
+  };
 } else {
-  transports.push(
-    new MockTransport({
-      format: winston.format.simple(),
-    })
-  );
+  // TODO shouldn't have mock classes in actual source, but since ts-jest is runtime, we can't
+  // reference Logger until it's transpiled. We need to set default before static construction of classes
+  Logger.options = {
+    transports: [
+      new MockTransport({
+        format: winston.format.simple(),
+      }),
+    ],
+  };
 }
-
-const options = {
-  transports,
-} as LoggerOptions;
-
-Logger.options = options;

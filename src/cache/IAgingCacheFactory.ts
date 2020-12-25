@@ -1,3 +1,4 @@
+import path from "path";
 import { IAgingCache } from "./IAgingCache";
 import {
   getDefaultAgingCacheOptions,
@@ -21,7 +22,7 @@ import {
   IAgingCacheDeleteStrategy,
 } from "./write/IAgingCacheWriteStrategy";
 
-const logger = Logger.get("IAgingCacheFactory");
+const logger = Logger.get(path.basename(__filename));
 
 type IAgedQueueConstructor = new <TKey>(
   maxEntries?: number,

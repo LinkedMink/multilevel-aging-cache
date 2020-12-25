@@ -28,6 +28,7 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^1.2.3",
     "@types/bintrees": "^1.0.2",
     "@types/ioredis": "^4.17.9",
     "@types/jest": "^26.0.19",

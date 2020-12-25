@@ -4,27 +4,27 @@ import { IStorageProvider } from "./IStorageProvider";
 import { IAgedValue } from "../cache/expire/IAgedQueue";
 import {
   IMongoCollectionProviderOptions,
-  MongoCollectioonProviderSetMode,
+  MongoCollectionProviderSetMode,
 } from "./IMongoCollectionProviderOptions";
 
 /**
  * A MongoDB record that has fields to track when it's written.
  */
 export interface IMongoCollectionRecord {
-  _id: ObjectID;
-  createdDate: Date;
-  modifiedDate: Date;
+  _id?: ObjectID;
+  createdDate?: Date;
+  modifiedDate?: Date;
   [property: string]: unknown;
 }
 
 /**
- *
+ * Use mongodb as a persistent storage mechanism
  */
 export class MongoCollectionProvider<
   TKey,
   TValue extends IMongoCollectionRecord
 > implements IStorageProvider<TKey, TValue> {
-  private readonly setMode: MongoCollectioonProviderSetMode;
+  private readonly setMode: MongoCollectionProviderSetMode;
   private readonly keyProperty: string;
 
   /**
@@ -51,7 +51,9 @@ export class MongoCollectionProvider<
           return null;
         }
 
-        const age = record.modifiedDate.getMilliseconds();
+        const age = record.modifiedDate
+          ? record.modifiedDate.getTime()
+          : new Date().getTime();
         return {
           age,
           value: record as TValue,
@@ -69,16 +71,16 @@ export class MongoCollectionProvider<
     record.modifiedDate = new Date(value.age);
 
     let operation: Promise<UpdateWriteOpResult>;
-    if (this.setMode == MongoCollectioonProviderSetMode.Replace) {
+    if (this.setMode == MongoCollectionProviderSetMode.Replace) {
       operation = this.collection.replaceOne(
         { [this.keyProperty]: key },
-        record,
+        { $set: record },
         { upsert: true }
       );
     } else {
       operation = this.collection.updateOne(
         { [this.keyProperty]: key },
-        record,
+        { $set: record },
         { upsert: true }
       );
     }
@@ -102,7 +104,6 @@ export class MongoCollectionProvider<
    * @returns The keys that are currently available in the provider
    */
   keys(): Promise<TKey[]> {
-    const keyProperty = this.keyProperty;
     return this.collection
       .find<TValue>({})
       .map<TKey>(record => record[this.keyProperty] as TKey)
@@ -113,6 +114,6 @@ export class MongoCollectionProvider<
    * @returns The number of elements in this storage system
    */
   size(): Promise<number> {
-    return this.collection.count();
+    return this.collection.countDocuments();
   }
 }
