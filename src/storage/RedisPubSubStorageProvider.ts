@@ -1,4 +1,4 @@
-import { Redis } from "ioredis";
+import { Cluster, Redis } from "ioredis";
 
 import {
   ISubscribableStorageProvider,
@@ -51,9 +51,9 @@ export class RedisPubSubStorageProvider<TKey, TValue>
    * initialized, undefined if subscribe/unsubscribe isn't needed.
    */
   constructor(
-    private readonly client: Redis,
+    private readonly client: Redis | Cluster,
     config: IRedisStorageProviderOptions<TKey, TValue>,
-    private readonly channel: Redis
+    private readonly channel: Redis | Cluster
   ) {
     this.keyPrefix = config.keyPrefix;
     this.keySerializer = config.keySerializer;
