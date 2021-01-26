@@ -178,7 +178,11 @@ export class StorageHierarchy<TKey, TValue>
       .delete(key)
       .then(isSuccessful => {
         if (isSuccessful) {
-          return this.deleteAtLevel(key, rLevel - 1);
+          return this.deleteAtLevel(
+            key, 
+            isAscending ? rLevel + 1 : rLevel - 1,
+            isAscending
+          );
         }
 
         return this.getErrorByLevelAndDirection(isAscending, rLevel);
