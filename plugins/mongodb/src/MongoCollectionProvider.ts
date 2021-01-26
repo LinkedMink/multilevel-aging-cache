@@ -1,7 +1,9 @@
 import { Collection, UpdateWriteOpResult } from "mongodb";
 
-import { IStorageProvider } from "./IStorageProvider";
-import { IAgedValue } from "../cache/expire/IAgedQueue";
+import {
+  IAgedValue,
+  IStorageProvider,
+} from "@linkedmink/multilevel-aging-cache";
 import {
   IMongoCollectionProviderOptions,
   IMongoCollectionRecord,
@@ -10,7 +12,7 @@ import {
 import {
   getDotSeperatedPropertyValue,
   setDotSeperatedPropertyValue,
-} from "../shared/Helpers";
+} from "./Helpers";
 
 /**
  * Use mongodb as a persistent storage mechanism

@@ -22,8 +22,6 @@ import {
   IAgingCacheDeleteStrategy,
 } from "./write/IAgingCacheWriteStrategy";
 
-const logger = Logger.get(path.basename(__filename));
-
 type IAgedQueueConstructor = new <TKey>(
   maxEntries?: number,
   ageLimit?: number
@@ -98,6 +96,7 @@ export function createAgingCache<TKey, TValue>(
   } else {
     const validationError = checkAgingCacheOptionsValid(options);
     if (validationError) {
+      const logger = Logger.get(path.basename(__filename));
       logger.error(validationError.message);
       throw validationError;
     }

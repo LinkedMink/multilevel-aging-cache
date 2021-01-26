@@ -26,7 +26,7 @@ type SubscriberUpdateHandler<TKey, TValue> = (
  */
 export class StorageHierarchy<TKey, TValue>
   implements IStorageHierarchy<TKey, TValue>, IDisposable {
-  private static readonly logger = Logger.get(StorageHierarchy.name);
+  private readonly logger = Logger.get(StorageHierarchy.name);
   private readonly storageChangedHandlers = new Map<
     number,
     StorageProviderUpdateHandler<TKey, TValue>
@@ -48,7 +48,7 @@ export class StorageHierarchy<TKey, TValue>
       );
     }
 
-    StorageHierarchy.logger.info(
+    this.logger.info(
       `Created storage hierarchy with levels: ${this.levels.length}`
     );
     this.subscribeAtLevel(this.levels.length - 1);
@@ -93,7 +93,7 @@ export class StorageHierarchy<TKey, TValue>
         if (agedValue) {
           return agedValue;
         } else {
-          StorageHierarchy.logger.debug(
+          this.logger.debug(
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
             `Cache miss: level=${rLevel}, key=${key}`
           );
@@ -105,7 +105,7 @@ export class StorageHierarchy<TKey, TValue>
         }
       })
       .catch(error => {
-        StorageHierarchy.logger.debug(
+        this.logger.debug(
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           `Failed to Get: level=${rLevel}, key=${key}, error=${error}`
         );
@@ -150,7 +150,7 @@ export class StorageHierarchy<TKey, TValue>
         return this.getErrorByLevelAndDirection(isAscending, rLevel);
       })
       .catch(error => {
-        StorageHierarchy.logger.warn(
+        this.logger.warn(
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           `Error setting: level=${rLevel}, key=${key}, error=${error}`
         );
@@ -179,7 +179,7 @@ export class StorageHierarchy<TKey, TValue>
       .then(isSuccessful => {
         if (isSuccessful) {
           return this.deleteAtLevel(
-            key, 
+            key,
             isAscending ? rLevel + 1 : rLevel - 1,
             isAscending
           );
@@ -188,7 +188,7 @@ export class StorageHierarchy<TKey, TValue>
         return this.getErrorByLevelAndDirection(isAscending, rLevel);
       })
       .catch(error => {
-        StorageHierarchy.logger.warn(
+        this.logger.warn(
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           `Error deleting: level=${rLevel}, key=${key}, error=${error}`
         );
@@ -253,7 +253,7 @@ export class StorageHierarchy<TKey, TValue>
 
     const currentLevel = this.levels[level];
     if (isISubscribableStorageProvider(currentLevel)) {
-      StorageHierarchy.logger.debug(`subscribe to level: ${level}`);
+      this.logger.debug(`subscribe to level: ${level}`);
 
       let handler = this.getUpdateHandlerAlways(nextLevel);
       if (this.updatePolicy === StorageHierarchyUpdatePolicy.OnlyIfKeyExist) {
@@ -328,7 +328,7 @@ export class StorageHierarchy<TKey, TValue>
           }
           return updateUnconditionally(key, value);
         }
-        StorageHierarchy.logger.debug(
+        this.logger.debug(
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           `Key doesn't exist, ignoring subscribed update: ${key}`
         );

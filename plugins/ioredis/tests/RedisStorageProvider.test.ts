@@ -1,15 +1,20 @@
-import { RedisStorageProvider } from "../../src/storage/RedisStorageProvider";
+import { RedisStorageProvider } from "../src/RedisStorageProvider";
 import {
   getStringKeyJsonValueOptions,
   IRedisStorageProviderOptions,
-} from "../../src/storage/IRedisStorageProviderOptions";
+} from "../src/IRedisStorageProviderOptions";
 import { Redis as IRedis } from "ioredis";
-import { MockSerializer } from "../Mocks";
+import { MockSerializer } from "../../../tests/Mocks";
+import { setGlobalMockTransport } from "../../../tests/MockTransport";
 
 const Redis = require("ioredis-mock");
 
 describe(RedisStorageProvider.name, () => {
   const mockSerializer = new MockSerializer();
+
+  beforeAll(() => {
+    setGlobalMockTransport();
+  });
 
   let clientMock: IRedis;
   let optionsMock: IRedisStorageProviderOptions<string, string>;

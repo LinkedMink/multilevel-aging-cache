@@ -3,11 +3,11 @@ import { Cluster, Redis } from "ioredis";
 import {
   ISubscribableStorageProvider,
   StorageProviderUpdateHandler,
-} from "./ISubscribableStorageProvider";
-import { ISerializer } from "../serialization/ISerializer";
+  ISerializer,
+  IAgedValue,
+  Logger,
+} from "@linkedmink/multilevel-aging-cache";
 import { IRedisStorageProviderOptions } from "./IRedisStorageProviderOptions";
-import { IAgedValue } from "../cache/expire/IAgedQueue";
-import { Logger } from "../shared/Logger";
 
 const RESPONSE_OK = "OK";
 const DEFAULT_PUBLISH_CHANNEL = "PublishedKey";
@@ -33,7 +33,7 @@ const isIPublishUpdateMessage = (
  */
 export class RedisPubSubStorageProvider<TKey, TValue>
   implements ISubscribableStorageProvider<TKey, TValue> {
-  private static readonly logger = Logger.get(RedisPubSubStorageProvider.name);
+  private readonly logger = Logger.get(RedisPubSubStorageProvider.name);
   private readonly keyPrefix: string;
   private readonly channelName: string;
   private readonly keySerializer: ISerializer<TKey>;
@@ -107,7 +107,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
           .publish(this.channelName, message)
           .then(channelCount => {
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            RedisPubSubStorageProvider.logger.debug(`Published Set: ${key}`);
+            this.logger.debug(`Published Set: ${key}`);
             return true;
           });
       }
@@ -130,7 +130,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
           .publish(this.channelName, message)
           .then(channelCount => {
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            RedisPubSubStorageProvider.logger.debug(`Published Delete: ${key}`);
+            this.logger.debug(`Published Delete: ${key}`);
             return true;
           });
       }
@@ -164,7 +164,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
   subscribe(handler: StorageProviderUpdateHandler<TKey, TValue>): boolean {
     const index = this.updateHandlers.indexOf(handler);
     if (index >= 0) {
-      RedisPubSubStorageProvider.logger.warn(
+      this.logger.warn(
         "Attempted to subscribe function that is already subscribed"
       );
       return false;
@@ -185,7 +185,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
       return true;
     }
 
-    RedisPubSubStorageProvider.logger.warn(
+    this.logger.warn(
       "Attempted to unsubscribe with function that was never subscribed"
     );
     return false;
@@ -198,23 +198,19 @@ export class RedisPubSubStorageProvider<TKey, TValue>
    */
   listen(): Promise<boolean> {
     if (this.isListening) {
-      RedisPubSubStorageProvider.logger.warn(
-        "Attempted to listen when already listening"
-      );
+      this.logger.warn("Attempted to listen when already listening");
       return Promise.resolve(false);
     }
 
     return this.channel.subscribe(this.channelName).then(subscribedCount => {
       if (subscribedCount < 1) {
-        RedisPubSubStorageProvider.logger.error(
-          "Redis returned no channels are subscribed to"
-        );
+        this.logger.error("Redis returned no channels are subscribed to");
         return false;
       }
 
       this.channel.on("message", this.handleChannelMessage);
       this.isListening = true;
-      RedisPubSubStorageProvider.logger.info(
+      this.logger.info(
         `Listening to channel: ${this.channelName}, totalChannels=${subscribedCount}`
       );
       return true;
@@ -223,15 +219,13 @@ export class RedisPubSubStorageProvider<TKey, TValue>
 
   private handleChannelMessage = (channel: string, message: string): void => {
     if (channel !== this.channelName) {
-      RedisPubSubStorageProvider.logger.warn(
+      this.logger.warn(
         `Message from foreign channel: ${channel}, message=${message}`
       );
       return;
     }
 
-    RedisPubSubStorageProvider.logger.debug(
-      `Received Message from ${channel}: ${message}`
-    );
+    this.logger.debug(`Received Message from ${channel}: ${message}`);
     const parsed = JSON.parse(message) as IPublishDeleteMessage;
     const key = this.keySerializer.deserialize(parsed.key);
 

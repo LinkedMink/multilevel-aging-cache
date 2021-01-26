@@ -1,0 +1,25 @@
+{
+  "name": "@linkedmink/multilevel-aging-cache-demo",
+  "version": "0.4.3",
+  "description": "Demo App",
+  "main": "dist/CliSampleApp.js",
+  "license": "MIT",
+  "author": {
+    "name": "Harlan Sang",
+    "email": "harlan@linkedmink.space"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LinkedMink/multilevel-aging-cache"
+  },
+  "scripts": {
+    "start": "npm run build && node ./dist/CliSampleApp.js",
+    "build": "tsc --project ./tsconfig.json",
+    "lint": "eslint -c ../.eslintrc.js ./CliSampleApp.ts",
+    "format": "prettier --write ./**/*.ts"
+  },
+  "dependencies": {
+    "@linkedmink/multilevel-aging-cache": "0.4.3",
+    "@linkedmink/multilevel-aging-cache-redis": "0.3.0"
+  }
+}

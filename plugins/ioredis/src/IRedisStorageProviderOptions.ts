@@ -1,6 +1,8 @@
-import { ISerializer } from "../serialization/ISerializer";
-import { StringSerializer } from "../serialization/StringSerializer";
-import { JsonSerializer } from "../serialization/JsonSerializer";
+import {
+  ISerializer,
+  StringSerializer,
+  JsonSerializer,
+} from "@linkedmink/multilevel-aging-cache";
 
 const DEFAULT_KEY_PREFIX = "node";
 

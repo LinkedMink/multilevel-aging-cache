@@ -6,10 +6,10 @@
 .pnp.js
 
 # testing
-/coverage
+coverage
 
 # production
-/dist
+dist
 
 # misc
 .DS_Store
@@ -25,7 +25,3 @@ yarn-error.log*
 report.*.json
 
 .env
-
-/cli
-
-/globalConfig.json

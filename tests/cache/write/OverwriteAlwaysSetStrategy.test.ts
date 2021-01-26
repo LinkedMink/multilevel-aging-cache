@@ -2,11 +2,16 @@ import { OverwriteAlwaysSetStrategy } from "../../../src/cache/write/OverwriteAl
 import { StorageHierarchy } from "../../../src/storage/StorageHierarchy";
 import { MockStorageHierarchy, MockAgedQueue } from "../../Mocks";
 import { AgingCacheWriteStatus } from "../../../src/cache/IAgingCache";
+import { setGlobalMockTransport } from "../../MockTransport";
 
 describe(OverwriteAlwaysSetStrategy.name, () => {
   let hierarchyMock: StorageHierarchy<string, string>;
   let evictQueueMock: MockAgedQueue<string>;
   let strategy: OverwriteAlwaysSetStrategy<string, string>;
+
+  beforeAll(() => {
+    setGlobalMockTransport();
+  });
 
   beforeEach(() => {
     hierarchyMock = (new MockStorageHierarchy() as unknown) as StorageHierarchy<

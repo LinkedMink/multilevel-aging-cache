@@ -4,7 +4,7 @@ import { compareAscending, IAgedQueue } from "./IAgedQueue";
 import { Logger } from "../../shared/Logger";
 
 export class FIFOAgedQueue<TKey> implements IAgedQueue<TKey> {
-  private static readonly logger = Logger.get(FIFOAgedQueue.name);
+  private readonly logger = Logger.get(FIFOAgedQueue.name);
   private readonly ageLimit: number;
   private readonly ageTree: RBTree<number> = new RBTree(compareAscending);
   private readonly ageMap = new Map<TKey, number>();
@@ -66,7 +66,7 @@ export class FIFOAgedQueue<TKey> implements IAgedQueue<TKey> {
    */
   isNextExpired(): boolean {
     if (this.maxEntries && this.ageMap.size > this.maxEntries) {
-      FIFOAgedQueue.logger.debug(`Max Entries Exceeded: ${this.maxEntries}`);
+      this.logger.debug(`Max Entries Exceeded: ${this.maxEntries}`);
       return true;
     }
 
@@ -77,7 +77,7 @@ export class FIFOAgedQueue<TKey> implements IAgedQueue<TKey> {
 
     const age = this.ageMap.get(next);
     if (age !== undefined && age + this.ageLimit < Date.now()) {
-      FIFOAgedQueue.logger.debug(
+      this.logger.debug(
         `Age Limit Exceeded: age=${age},limit=${this.ageLimit}`
       );
       return true;

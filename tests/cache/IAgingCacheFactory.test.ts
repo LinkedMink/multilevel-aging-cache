@@ -5,6 +5,7 @@ import * as cacheOptions from "../../src/cache/IAgingCacheOptions";
 import { StorageHierarchy } from "../../src/storage/StorageHierarchy";
 import { RefreshAlwaysSetStrategy } from "../../src/cache/write/RefreshAlwaysSetStrategy";
 import { MockStorageHierarchy } from "../Mocks";
+import { setGlobalMockTransport } from "../MockTransport";
 
 const getMockStorageHierarchy = () => {
   return (new MockStorageHierarchy() as unknown) as StorageHierarchy<
@@ -14,6 +15,10 @@ const getMockStorageHierarchy = () => {
 };
 
 describe(path.basename(__filename, ".test.ts"), () => {
+  beforeAll(() => {
+    setGlobalMockTransport();
+  });
+
   describe(cacheFactory.createAgingCache.name, () => {
     test("should return instance with default options when no options provided", () => {
       const getDefaultAgingCacheOptionsSpy = jest.spyOn(

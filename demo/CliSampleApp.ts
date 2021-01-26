@@ -1,13 +1,18 @@
+#!/usr/bin/env node
 import readline from "readline";
 import Redis from "ioredis";
 import winston from "winston";
 
-import { StorageHierarchy } from "../src/storage/StorageHierarchy";
-import { MemoryStorageProvider } from "../src/storage/MemoryStorageProvider";
-import { RedisPubSubStorageProvider } from "../src/storage/RedisPubSubStorageProvider";
-import { getStringKeyJsonValueOptions } from "../src/storage/IRedisStorageProviderOptions";
-import { Logger } from "../src/shared/Logger";
-import { createAgingCache } from "../src/cache/IAgingCacheFactory";
+import {
+  StorageHierarchy,
+  MemoryStorageProvider,
+  Logger,
+  createAgingCache,
+} from "@linkedmink/multilevel-aging-cache";
+import {
+  getStringKeyJsonValueOptions,
+  RedisPubSubStorageProvider,
+} from "@linkedmink/multilevel-aging-cache-ioredis";
 
 Logger.options = {
   level: "debug",

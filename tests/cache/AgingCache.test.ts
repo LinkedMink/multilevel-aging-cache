@@ -7,6 +7,7 @@ import {
   MockStorageHierarchy,
   MockAgedQueue,
 } from "../Mocks";
+import { setGlobalMockTransport } from "../MockTransport";
 
 describe(AgingCache.name, () => {
   jest.useFakeTimers();
@@ -16,6 +17,10 @@ describe(AgingCache.name, () => {
   let deleteStrategyMock: MockAgingCacheDeleteStrategy<string>;
   let evictQueueMock: MockAgedQueue<string>;
   let cache: AgingCache<string, string>;
+
+  beforeAll(() => {
+    setGlobalMockTransport();
+  });
 
   beforeEach(() => {
     hierarchyMock = (new MockStorageHierarchy() as unknown) as StorageHierarchy<

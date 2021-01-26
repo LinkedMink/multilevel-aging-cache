@@ -1,9 +1,11 @@
 import { Redis, Cluster } from "ioredis";
 
-import { IStorageProvider } from "./IStorageProvider";
-import { ISerializer } from "../serialization/ISerializer";
+import {
+  IStorageProvider,
+  ISerializer,
+  IAgedValue,
+} from "@linkedmink/multilevel-aging-cache";
 import { IRedisStorageProviderOptions } from "./IRedisStorageProviderOptions";
-import { IAgedValue } from "../cache/expire/IAgedQueue";
 
 const RESPONSE_OK = "OK";
 

@@ -2,11 +2,16 @@ import { RefreshAlwaysSetStrategy } from "../../../src/cache/write/RefreshAlways
 import { StorageHierarchy } from "../../../src/storage/StorageHierarchy";
 import { MockStorageHierarchy, MockAgedQueue } from "../../Mocks";
 import { AgingCacheWriteStatus } from "../../../src/cache/IAgingCache";
+import { setGlobalMockTransport } from "../../MockTransport";
 
 describe(RefreshAlwaysSetStrategy.name, () => {
   let hierarchyMock: StorageHierarchy<string, string>;
   let evictQueueMock: MockAgedQueue<string>;
   let strategy: RefreshAlwaysSetStrategy<string, string>;
+
+  beforeAll(() => {
+    setGlobalMockTransport();
+  });
 
   beforeEach(() => {
     hierarchyMock = (new MockStorageHierarchy() as unknown) as StorageHierarchy<

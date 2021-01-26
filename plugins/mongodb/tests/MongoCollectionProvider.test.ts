@@ -1,10 +1,11 @@
 import { Collection, MongoClient, ObjectID } from "mongodb";
-import { IAgedValue } from "../../src/cache/expire/IAgedQueue";
+import { IAgedValue } from "../../../src/cache/expire/IAgedQueue";
 import {
   getDefaultOptions,
   IMongoCollectionRecord,
-} from "../../src/storage/IMongoCollectionProviderOptions";
-import { MongoCollectionProvider } from "../../src/storage/MongoCollectionProvider";
+} from "../src/IMongoCollectionProviderOptions";
+import { MongoCollectionProvider } from "../src/MongoCollectionProvider";
+import { setGlobalMockTransport } from "../../../tests/MockTransport";
 
 interface TestRecord extends IMongoCollectionRecord {
   value: string;
@@ -30,6 +31,7 @@ describe(MongoCollectionProvider.name, () => {
   let provider: MongoCollectionProvider<ObjectID, TestRecord>;
 
   beforeAll(async () => {
+    setGlobalMockTransport();
     connection = await MongoClient.connect(process.env.MONGO_URL as string, {
       useNewUrlParser: true,
       useUnifiedTopology: true,

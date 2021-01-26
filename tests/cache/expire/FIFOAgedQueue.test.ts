@@ -1,7 +1,12 @@
 import { FIFOAgedQueue } from "../../../src/cache/expire/FIFOAgedQueue";
+import { setGlobalMockTransport } from "../../MockTransport";
 
 describe(FIFOAgedQueue.name, () => {
   let queue: FIFOAgedQueue<string>;
+
+  beforeAll(() => {
+    setGlobalMockTransport();
+  });
 
   beforeEach(() => {
     queue = new FIFOAgedQueue();

@@ -1,7 +1,12 @@
 import { MemoryStorageProvider } from "../../src/storage/MemoryStorageProvider";
+import { setGlobalMockTransport } from "../MockTransport";
 
 describe(MemoryStorageProvider.name, () => {
   let provider: MemoryStorageProvider<string, string>;
+
+  beforeAll(() => {
+    setGlobalMockTransport();
+  });
 
   beforeEach(() => {
     provider = new MemoryStorageProvider();

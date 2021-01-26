@@ -27,7 +27,7 @@ export class OverwriteAgedDeleteStrategy<TKey, TValue>
           return this.executeDelete(key);
         }
 
-        AgingCacheWriteStrategy.logger.debug(
+        this.logger.debug(
           // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           `Delete deferred: key=${key},ageToSet=${
             lowestAgedValue ? lowestAgedValue.age : "null"

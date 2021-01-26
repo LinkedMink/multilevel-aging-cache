@@ -1,11 +1,10 @@
-const { defaults: tsjPreset } = require("ts-jest/presets");
-
 module.exports = {
-  preset: "@shelf/jest-mongodb",
+  preset: "ts-jest",
   testEnvironment: "node",
   verbose: true,
   moduleFileExtensions: ["js", "jsx", "json", "ts", "tsx", "node"],
   testMatch: ["**/tests/**/(*.test|*.spec).ts"],
+  testPathIgnorePatterns: ["/node_modules/", "/plugins/"],
   collectCoverage: true,
   collectCoverageFrom: ["src/**/!(*.spec|*.test|*.enum|index).ts"],
   coverageThreshold: {
@@ -17,5 +16,7 @@ module.exports = {
     },
   },
   testEnvironment: "node",
-  transform: tsjPreset.transform,
+  transform: {
+    "^.+\\.tsx?$": "ts-jest",
+  },
 };

@@ -6,10 +6,15 @@ import {
   ISubscribableStorageProvider,
   StorageProviderUpdateHandler,
 } from "../../src/storage/ISubscribableStorageProvider";
+import { setGlobalMockTransport } from "../MockTransport";
 
 describe(StorageHierarchy.name, () => {
   let levels: ISubscribableStorageProvider<string, string>[];
   let hierarchy: StorageHierarchy<string, string>;
+
+  beforeAll(() => {
+    setGlobalMockTransport();
+  });
 
   beforeEach(() => {
     levels = [

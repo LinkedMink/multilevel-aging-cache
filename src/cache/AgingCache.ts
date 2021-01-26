@@ -13,7 +13,7 @@ import {
  */
 export class AgingCache<TKey, TValue>
   implements IAgingCache<TKey, TValue>, IDisposable {
-  private static readonly logger = Logger.get(AgingCache.name);
+  private readonly logger = Logger.get(AgingCache.name);
   private readonly purgeInterval: number;
   private purgeTimer?: NodeJS.Timeout;
   private purgePromise?: Promise<void>;
@@ -43,7 +43,7 @@ export class AgingCache<TKey, TValue>
    * is no longer guaranteed to be usable.
    */
   public dispose(): Promise<void> | void {
-    AgingCache.logger.info(`Cleaning up cache`);
+    this.logger.info(`Cleaning up cache`);
 
     if (this.purgeTimer) {
       clearInterval(this.purgeTimer);
@@ -59,7 +59,7 @@ export class AgingCache<TKey, TValue>
    */
   public get(key: TKey, force = false): Promise<TValue | null> {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    AgingCache.logger.debug(`Getting Key: ${key}`);
+    this.logger.debug(`Getting Key: ${key}`);
     return this.hierarchy.getAtLevel(key, undefined, !force).then(agedValue => {
       if (agedValue) {
         return agedValue.value;
@@ -80,7 +80,7 @@ export class AgingCache<TKey, TValue>
     force = false
   ): Promise<AgingCacheWriteStatus> {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    AgingCache.logger.debug(`Setting Key: ${key}`);
+    this.logger.debug(`Setting Key: ${key}`);
     if (this.evictQueue.isNextExpired()) {
       void this.evict();
     }
@@ -94,7 +94,7 @@ export class AgingCache<TKey, TValue>
    */
   public delete(key: TKey, force = false): Promise<AgingCacheWriteStatus> {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    AgingCache.logger.debug(`Deleting Key: ${key}`);
+    this.logger.debug(`Deleting Key: ${key}`);
     return this.deleteStrategy.delete(key, force);
   }
 
@@ -102,7 +102,7 @@ export class AgingCache<TKey, TValue>
    * @returns The keys that are currently in the cache
    */
   public keys(): Promise<TKey[]> {
-    AgingCache.logger.debug("Getting Key List");
+    this.logger.debug("Getting Key List");
     return this.hierarchy.getKeysAtTopLevel();
   }
 
@@ -112,7 +112,7 @@ export class AgingCache<TKey, TValue>
    */
   public purge = (): Promise<void> => {
     if (!this.purgePromise) {
-      AgingCache.logger.debug(`Starting Purge: ${Date.now()}`);
+      this.logger.debug(`Starting Purge: ${Date.now()}`);
       this.purgePromise = this.purgeNext().then(
         () => (this.purgePromise = undefined)
       );
@@ -137,7 +137,7 @@ export class AgingCache<TKey, TValue>
     const nextKey = this.evictQueue.next();
     if (nextKey) {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      AgingCache.logger.debug(`Evicting Key: ${nextKey}`);
+      this.logger.debug(`Evicting Key: ${nextKey}`);
       return this.delete(nextKey);
     }
 

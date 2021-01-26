@@ -1,0 +1,28 @@
+{
+  "name": "@linkedmink/multilevel-aging-cache-ioredis",
+  "version": "0.4.3",
+  "description": "Package implements IORedis for multilevel-aging-cache",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "author": {
+    "name": "Harlan Sang",
+    "email": "harlan@linkedmink.space"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LinkedMink/multilevel-aging-cache"
+  },
+  "scripts": {
+    "build": "tsc --project ./tsconfig.json",
+    "test": "jest",
+    "lint": "eslint -c ../../.eslintrc.js --ext .ts src",
+    "format": "prettier --write src/**/*.ts tests/**/*.ts *.js *.json",
+    "link": "npm run build && npm link",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "@linkedmink/multilevel-aging-cache": "0.4.3",
+    "ioredis": "4.x"
+  }
+}
