@@ -21,6 +21,7 @@ import { Logger } from "./shared/Logger";
 
 import {
   IStorageHierarchy,
+  IStorageHierarchyWriteStatus,
   StorageHierarchyUpdatePolicy,
 } from "./storage/IStorageHierarchy";
 import { IStorageProvider } from "./storage/IStorageProvider";
@@ -49,6 +50,7 @@ export {
   IDisposable,
   Logger,
   IStorageHierarchy,
+  IStorageHierarchyWriteStatus,
   StorageHierarchyUpdatePolicy,
   IStorageProvider,
   ISubscribableStorageProvider,

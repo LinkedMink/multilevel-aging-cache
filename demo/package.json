@@ -20,6 +20,6 @@
   },
   "dependencies": {
     "@linkedmink/multilevel-aging-cache": "0.4.3",
-    "@linkedmink/multilevel-aging-cache-redis": "0.3.0"
+    "@linkedmink/multilevel-aging-cache-ioredis": "0.3.0"
   }
 }

@@ -1,5 +1,13 @@
-import { AgingCacheWriteStatus } from "../cache/IAgingCache";
 import { IAgedValue } from "../cache/expire/IAgedQueue";
+
+/**
+ * Describes the layers written to in a set/delete operation
+ */
+export interface IStorageHierarchyWriteStatus {
+  isPersisted: boolean;
+  isPublished: boolean;
+  writtenLevels: number;
+}
 
 /**
  * When an update arrives from a higher level cache, how should we update lower level caches?
@@ -25,6 +33,15 @@ export enum StorageHierarchyUpdatePolicy {
  */
 export interface IStorageHierarchy<TKey, TValue> {
   /**
+   * @returns Number of storage layers
+   */
+  readonly totalLevels: number;
+  /**
+   * @returns If this storage hierarchy can be used for permenant storage
+   */
+  readonly isPersistable: boolean;
+
+  /**
    * @param key The key to retrieve
    * @param level The level at which to retrieve the key
    * @param isAscending To go up the hierarchy (true) or down (false) from level
@@ -48,7 +65,7 @@ export interface IStorageHierarchy<TKey, TValue> {
     value: IAgedValue<TValue>,
     level?: number,
     isAscending?: boolean
-  ): Promise<AgingCacheWriteStatus>;
+  ): Promise<IStorageHierarchyWriteStatus>;
 
   /**
    * @param key The key to delete
@@ -60,7 +77,7 @@ export interface IStorageHierarchy<TKey, TValue> {
     key: TKey,
     level?: number,
     isAscending?: boolean
-  ): Promise<AgingCacheWriteStatus>;
+  ): Promise<IStorageHierarchyWriteStatus>;
 
   /**
    * @param level The level at which to search
@@ -94,5 +111,5 @@ export interface IStorageHierarchy<TKey, TValue> {
   setBelowTopLevel(
     key: TKey,
     value: IAgedValue<TValue>
-  ): Promise<AgingCacheWriteStatus>;
+  ): Promise<IStorageHierarchyWriteStatus>;
 }

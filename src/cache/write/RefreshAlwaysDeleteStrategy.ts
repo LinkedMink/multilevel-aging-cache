@@ -13,6 +13,17 @@ export class RefreshAlwaysDeleteStrategy<TKey, TValue>
       return this.executeDelete(key);
     }
 
+    return this.deleteConditionally(key);
+  }
+
+  evict(key: TKey, evictAtLevel?: number): Promise<AgingCacheWriteStatus> {
+    return this.deleteConditionally(key, evictAtLevel);
+  }
+
+  deleteConditionally(
+    key: TKey,
+    evictAtLevel?: number
+  ): Promise<AgingCacheWriteStatus> {
     return this.hierarchy.getValueAtTopLevel(key).then(highestAgedValue => {
       if (!highestAgedValue) {
         return this.executeDelete(key);

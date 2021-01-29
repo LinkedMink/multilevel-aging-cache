@@ -11,6 +11,8 @@ export class MemoryStorageProvider<TKey, TValue>
   private readonly data = new Map<TKey, TValue>();
   private readonly ages = new Map<TKey, number>();
 
+  readonly isPersistable = false;
+
   /**
    * @param key The key to retrieve
    * @returns The value if retreiving was successful or null

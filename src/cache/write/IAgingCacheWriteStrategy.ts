@@ -23,4 +23,11 @@ export interface IAgingCacheDeleteStrategy<TKey> {
    * @returns If the write succeeded or the error condition
    */
   delete(key: TKey, force: boolean): Promise<AgingCacheWriteStatus>;
+
+  /**
+   * @param key The key to the value to delete
+   * @param evictAtLevel The level to delete below
+   * @returns If the write succeeded or the error condition
+   */
+  evict(key: TKey, evictAtLevel?: number): Promise<AgingCacheWriteStatus>;
 }

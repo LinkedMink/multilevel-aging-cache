@@ -65,7 +65,7 @@ describe(path.basename(__filename, ".test.ts"), () => {
     test("should return undefined when valid", () => {
       const options = getDefaultAgingCacheOptions();
 
-      const result = cacheFactory.checkAgingCacheOptionsValid(options);
+      const result = cacheFactory.checkAgingCacheOptionsValid(options, 2);
 
       expect(result).toBeUndefined();
     });
@@ -74,10 +74,7 @@ describe(path.basename(__filename, ".test.ts"), () => {
       const options = getDefaultAgingCacheOptions();
       options.maxEntries = 0;
 
-      const result = cacheFactory.checkAgingCacheOptionsValid(options);
-      if (!result) {
-        throw Error("Unexpected Output");
-      }
+      const result = cacheFactory.checkAgingCacheOptionsValid(options, 2);
 
       expect(result.message).toEqual("maxEntries(0): must be greater than 0");
     });
@@ -86,10 +83,7 @@ describe(path.basename(__filename, ".test.ts"), () => {
       const options = getDefaultAgingCacheOptions();
       options.purgeInterval = 9;
 
-      const result = cacheFactory.checkAgingCacheOptionsValid(options);
-      if (!result) {
-        throw Error("Unexpected Output");
-      }
+      const result = cacheFactory.checkAgingCacheOptionsValid(options, 2);
 
       expect(result.message).toEqual(
         "purgeInterval(9): must be greater than 10 seconds"
@@ -101,14 +95,24 @@ describe(path.basename(__filename, ".test.ts"), () => {
       options.ageLimit = 1;
       options.purgeInterval = 61;
 
-      const result = cacheFactory.checkAgingCacheOptionsValid(options);
-      if (!result) {
-        throw Error("Unexpected Output");
-      }
+      const result = cacheFactory.checkAgingCacheOptionsValid(options, 2);
 
       expect(result.message).toEqual(
         "maxAge(1 min): must be greater than purgeInterval(61 sec)"
       );
+    });
+
+    test("should return Error when maxEntries less than 0 or more than max", () => {
+      const options1 = getDefaultAgingCacheOptions();
+      options1.evictAtLevel = -1;
+      const options2 = getDefaultAgingCacheOptions();
+      options2.evictAtLevel = 3;
+
+      const result1 = cacheFactory.checkAgingCacheOptionsValid(options1, 2);
+      const result2 = cacheFactory.checkAgingCacheOptionsValid(options2, 2);
+
+      expect(result1.message).toEqual("evictAtLevel must be a between 0 and 2");
+      expect(result2.message).toEqual("evictAtLevel must be a between 0 and 2");
     });
   });
 });

@@ -8,7 +8,14 @@ module.exports = {
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    project: ["tsconfig.json", "tsconfig.test.json", "plugins/ioredis/tsconfig.json", "plugins/ioredis/tsconfig.test.json", "plugins/mongodb/tsconfig.json", "plugins/mongodb/tsconfig.test.json"],
+    project: [
+      "tsconfig.json",
+      "tsconfig.test.json",
+      "plugins/ioredis/tsconfig.json",
+      "plugins/ioredis/tsconfig.test.json",
+      "plugins/mongodb/tsconfig.json",
+      "plugins/mongodb/tsconfig.test.json",
+    ],
     sourceType: "module",
   },
   plugins: ["@typescript-eslint"],

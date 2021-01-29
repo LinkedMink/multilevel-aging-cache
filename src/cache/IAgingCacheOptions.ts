@@ -6,6 +6,10 @@ export enum AgingCacheReplacementPolicy {
    * Replace items in a First-in First-out manner
    */
   FIFO,
+  /**
+   * Replace items by Least Recently Used
+   */
+  LRU,
 }
 
 /**
@@ -59,6 +63,11 @@ export interface IAgingCacheOptions {
    * Determine when a value should be overwritten in the storage hierarchy on delete
    */
   deleteMode: AgingCacheWriteMode;
+  /**
+   * When evicting stale entries, delete from layers below this level. When not set,
+   * delete from all levels, thus, making this a cache only with no persistence layer.
+   */
+  evictAtLevel?: number;
 }
 
 /**

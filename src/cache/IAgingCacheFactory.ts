@@ -59,25 +59,35 @@ const deleteStrategyMap = new Map<
 ]);
 
 export function checkAgingCacheOptionsValid(
-  options: IAgingCacheOptions
+  options: IAgingCacheOptions,
+  maxLevel: number
 ): Error | undefined {
   if (options.maxEntries !== undefined && options.maxEntries < 1) {
-    return Error(`maxEntries(${options.maxEntries}): must be greater than 0`);
+    return new Error(
+      `maxEntries(${options.maxEntries}): must be greater than 0`
+    );
   }
 
   if (
     options.replacementPolicy === AgingCacheReplacementPolicy.FIFO &&
     options.ageLimit * 60 <= options.purgeInterval
   ) {
-    return Error(
+    return new Error(
       `maxAge(${options.ageLimit} min): must be greater than purgeInterval(${options.purgeInterval} sec)`
     );
   }
 
   if (options.purgeInterval < 10) {
-    return Error(
+    return new Error(
       `purgeInterval(${options.purgeInterval}): must be greater than 10 seconds`
     );
+  }
+
+  if (
+    options.evictAtLevel &&
+    (options.evictAtLevel < 0 || options.evictAtLevel > maxLevel)
+  ) {
+    return new Error(`evictAtLevel must be a between 0 and ${maxLevel}`);
   }
 }
 
@@ -94,7 +104,10 @@ export function createAgingCache<TKey, TValue>(
   if (!options) {
     options = getDefaultAgingCacheOptions();
   } else {
-    const validationError = checkAgingCacheOptionsValid(options);
+    const validationError = checkAgingCacheOptionsValid(
+      options,
+      hierarchy.totalLevels - 1
+    );
     if (validationError) {
       const logger = Logger.get(path.basename(__filename));
       logger.error(validationError.message);
@@ -130,6 +143,7 @@ export function createAgingCache<TKey, TValue>(
     evictQueue,
     setStrategy,
     deleteStrategy,
+    options.evictAtLevel,
     options.purgeInterval
   );
 }

@@ -1,0 +1,7 @@
+{
+  "extends": "../../tsconfig.test.json",
+  "compilerOptions": {
+    "outDir": "./coverage/build"
+  },
+  "include": ["tests"]
+}

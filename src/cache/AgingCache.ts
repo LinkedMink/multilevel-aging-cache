@@ -30,6 +30,7 @@ export class AgingCache<TKey, TValue>
     private readonly evictQueue: IAgedQueue<TKey>,
     private readonly setStrategy: IAgingCacheSetStrategy<TKey, TValue>,
     private readonly deleteStrategy: IAgingCacheDeleteStrategy<TKey>,
+    private readonly evictAtLevel?: number,
     purgeInterval = 30
   ) {
     this.purgeInterval = purgeInterval * 1000;
@@ -138,7 +139,7 @@ export class AgingCache<TKey, TValue>
     if (nextKey) {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       this.logger.debug(`Evicting Key: ${nextKey}`);
-      return this.delete(nextKey);
+      return this.deleteStrategy.evict(nextKey, this.evictAtLevel);
     }
 
     return Promise.resolve(AgingCacheWriteStatus.UnspecifiedError);

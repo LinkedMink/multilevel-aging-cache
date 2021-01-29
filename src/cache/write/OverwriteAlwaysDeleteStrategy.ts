@@ -11,4 +11,8 @@ export class OverwriteAlwaysDeleteStrategy<TKey, TValue>
   delete(key: TKey, force: boolean): Promise<AgingCacheWriteStatus> {
     return this.executeDelete(key);
   }
+
+  evict(key: TKey, evictAtLevel?: number): Promise<AgingCacheWriteStatus> {
+    return this.executeDelete(key, evictAtLevel);
+  }
 }

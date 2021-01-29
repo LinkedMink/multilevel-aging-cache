@@ -5,6 +5,11 @@ import { IAgedValue } from "../cache/expire/IAgedQueue";
  */
 export interface IStorageProvider<TKey, TValue> {
   /**
+   * @returns If this storage layer can be used for permenant storage
+   */
+  readonly isPersistable: boolean;
+
+  /**
    * @param key The key to retrieve
    * @returns The value if retreiving was successful or null
    */

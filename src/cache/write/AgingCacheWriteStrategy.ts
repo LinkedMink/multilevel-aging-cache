@@ -18,13 +18,17 @@ export abstract class AgingCacheWriteStrategy<TKey, TValue> {
     protected readonly evictQueue: IAgedQueue<TKey>
   ) {}
 
-  protected executeDelete = (key: TKey): Promise<AgingCacheWriteStatus> => {
-    return this.hierarchy.deleteAtLevel(key).then(status => {
-      if (status === AgingCacheWriteStatus.Success) {
+  protected executeDelete = (
+    key: TKey,
+    level?: number
+  ): Promise<AgingCacheWriteStatus> => {
+    return this.hierarchy.deleteAtLevel(key, level).then(status => {
+      if (status.writtenLevels === this.hierarchy.totalLevels) {
         this.evictQueue.delete(key);
+        return AgingCacheWriteStatus.Success;
       }
 
-      return status;
+      return AgingCacheWriteStatus.PartialWrite;
     });
   };
 
@@ -37,11 +41,12 @@ export abstract class AgingCacheWriteStrategy<TKey, TValue> {
       value,
     };
     return this.hierarchy.setAtLevel(key, agedValue).then(status => {
-      if (status === AgingCacheWriteStatus.Success) {
+      if (status.writtenLevels === this.hierarchy.totalLevels) {
         this.evictQueue.addOrReplace(key, agedValue.age);
+        return AgingCacheWriteStatus.Success;
       }
 
-      return status;
+      return AgingCacheWriteStatus.PartialWrite;
     });
   };
 
@@ -50,7 +55,7 @@ export abstract class AgingCacheWriteStrategy<TKey, TValue> {
     agedValue: IAgedValue<TValue>
   ): Promise<AgingCacheWriteStatus> => {
     return this.hierarchy.setBelowTopLevel(key, agedValue).then(status => {
-      if (status === AgingCacheWriteStatus.Success) {
+      if (status.writtenLevels === this.hierarchy.totalLevels - 1) {
         this.evictQueue.addOrReplace(key, agedValue.age);
         return Promise.resolve(AgingCacheWriteStatus.Refreshed);
       }
