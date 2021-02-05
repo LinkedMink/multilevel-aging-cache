@@ -33,6 +33,8 @@ const isIPublishUpdateMessage = (
  */
 export class RedisPubSubStorageProvider<TKey, TValue>
   implements ISubscribableStorageProvider<TKey, TValue> {
+  readonly isPersistable: boolean;
+
   private readonly logger = Logger.get(RedisPubSubStorageProvider.name);
   private readonly keyPrefix: string;
   private readonly channelName: string;
@@ -58,6 +60,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
     this.keyPrefix = config.keyPrefix;
     this.keySerializer = config.keySerializer;
     this.valueSerializer = config.valueSerializer;
+    this.isPersistable = config.isPersistable;
     this.channelName = config.channelName
       ? config.channelName
       : this.keyPrefix + DEFAULT_PUBLISH_CHANNEL;

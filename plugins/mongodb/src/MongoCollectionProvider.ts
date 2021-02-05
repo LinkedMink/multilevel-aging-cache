@@ -21,9 +21,7 @@ export class MongoCollectionProvider<
   TKey,
   TValue extends IMongoCollectionRecord
 > implements IStorageProvider<TKey, TValue> {
-  private readonly setMode: MongoCollectionProviderSetMode;
-  private readonly keyProperty: string;
-  private readonly modifiedDateProperty: string;
+  readonly isPersistable = true;
 
   /**
    * @param collection The collection from an active MongoClient connection with documents as values
@@ -31,12 +29,8 @@ export class MongoCollectionProvider<
    */
   constructor(
     private readonly collection: Collection,
-    options: IMongoCollectionProviderOptions<TKey, TValue>
-  ) {
-    this.keyProperty = options.keyProperty;
-    this.modifiedDateProperty = options.modifiedDateProperty;
-    this.setMode = options.setMode;
-  }
+    private readonly options: IMongoCollectionProviderOptions<TKey, TValue>
+  ) {}
 
   /**
    * @param key The key to retrieve
@@ -44,19 +38,19 @@ export class MongoCollectionProvider<
    */
   get(key: TKey): Promise<IAgedValue<TValue> | null> {
     return this.collection
-      .findOne<IMongoCollectionRecord>({ [this.keyProperty]: key })
+      .findOne<IMongoCollectionRecord>({ [this.options.keyProperty]: key })
       .then(record => {
         if (!record) {
           return null;
         }
 
-        const modifiedDate = getDotSeperatedPropertyValue(
+        const ageValue = getDotSeperatedPropertyValue(
           record,
-          this.modifiedDateProperty
+          this.options.ageProperty
         );
-        const age = modifiedDate
-          ? (record.modifiedDate as Date).getTime()
-          : new Date().getTime();
+        const age = this.options.ageToNumberFunc
+          ? this.options.ageToNumberFunc(ageValue)
+          : ageValue as number;
         return {
           age,
           value: record as TValue,
@@ -73,20 +67,22 @@ export class MongoCollectionProvider<
     const record = value.value;
     setDotSeperatedPropertyValue(
       record,
-      this.modifiedDateProperty,
-      new Date(value.age)
+      this.options.ageProperty,
+      this.options.numberToAgeFunc
+        ? this.options.numberToAgeFunc(value.age)
+        : value.age
     );
 
     let operation: Promise<UpdateWriteOpResult>;
-    if (this.setMode == MongoCollectionProviderSetMode.Replace) {
+    if (this.options.setMode == MongoCollectionProviderSetMode.Replace) {
       operation = this.collection.replaceOne(
-        { [this.keyProperty]: key },
+        { [this.options.keyProperty]: key },
         { $set: record },
         { upsert: true }
       );
     } else {
       operation = this.collection.updateOne(
-        { [this.keyProperty]: key },
+        { [this.options.keyProperty]: key },
         { $set: record },
         { upsert: true }
       );
@@ -101,7 +97,7 @@ export class MongoCollectionProvider<
    */
   delete(key: TKey): Promise<boolean> {
     return this.collection
-      .deleteOne({ [this.keyProperty]: key })
+      .deleteOne({ [this.options.keyProperty]: key })
       .then(status => {
         return status.deletedCount !== undefined && status.deletedCount > 0;
       });
@@ -112,8 +108,8 @@ export class MongoCollectionProvider<
    */
   keys(): Promise<TKey[]> {
     return this.collection
-      .find<TValue>({})
-      .map<TKey>(record => record[this.keyProperty] as TKey)
+      .find<TValue>({}, { [this.options.keyProperty]: 1 })
+      .map<TKey>(record => getDotSeperatedPropertyValue(record, this.options.keyProperty) as TKey)
       .toArray();
   }
 

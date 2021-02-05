@@ -29,6 +29,10 @@ export interface IRedisStorageProviderOptions<TKey, TValue> {
    * The name of the Redis pub/sub channel to use for key/value updates or default if undefined
    */
   channelName?: string;
+  /**
+   * Whether Redis can reliably persist data depends on how the instances are configured
+   */
+  isPersistable: boolean
 }
 
 /**
@@ -46,5 +50,6 @@ export function getStringKeyJsonValueOptions(
     keyPrefix: prefix,
     keySerializer: new StringSerializer(),
     valueSerializer: new JsonSerializer(),
+    isPersistable: true
   };
 }

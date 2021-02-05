@@ -15,6 +15,8 @@ module.exports = {
       "plugins/ioredis/tsconfig.test.json",
       "plugins/mongodb/tsconfig.json",
       "plugins/mongodb/tsconfig.test.json",
+      "plugins/mongoose/tsconfig.json",
+      "plugins/mongoose/tsconfig.test.json",
     ],
     sourceType: "module",
   },

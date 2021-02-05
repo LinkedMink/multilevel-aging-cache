@@ -15,6 +15,8 @@ const RESPONSE_OK = "OK";
  */
 export class RedisStorageProvider<TKey, TValue>
   implements IStorageProvider<TKey, TValue> {
+  readonly isPersistable: boolean;
+
   private readonly keyPrefix: string;
   private readonly keySerializer: ISerializer<TKey>;
   private readonly valueSerializer: ISerializer<TValue>;
@@ -25,11 +27,12 @@ export class RedisStorageProvider<TKey, TValue>
    */
   constructor(
     private readonly client: Redis | Cluster,
-    config: IRedisStorageProviderOptions<TKey, TValue>
+    config: IRedisStorageProviderOptions<TKey, TValue>,
   ) {
     this.keyPrefix = config.keyPrefix;
     this.keySerializer = config.keySerializer;
     this.valueSerializer = config.valueSerializer;
+    this.isPersistable = config.isPersistable;
   }
 
   /**
