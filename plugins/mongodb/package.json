@@ -1,6 +1,6 @@
 {
   "name": "@linkedmink/multilevel-aging-cache-mongodb",
-  "version": "0.4.5",
+  "version": "0.4.7",
   "description": "Package implements MongoDB for multilevel-aging-cache",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -23,7 +23,7 @@
     "doc": "typedoc"
   },
   "peerDependencies": {
-    "@linkedmink/multilevel-aging-cache": "0.4.5",
+    "@linkedmink/multilevel-aging-cache": "0.4.7",
     "mongodb": "3.x"
   }
 }
