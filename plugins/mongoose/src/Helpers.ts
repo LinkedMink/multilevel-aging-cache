@@ -1,4 +1,4 @@
-import { Error } from 'mongoose'
+import { Error } from "mongoose";
 
 export function getDotSeperatedPropertyValue(
   search: Record<string, unknown>,
@@ -38,6 +38,6 @@ export function setDotSeperatedPropertyValue(
 }
 
 export function isMongooseValidationError(value: unknown): value is Error.ValidationError {
-  const error = (value as Error.ValidationError);
-  return error.name === 'ValidationError' && error.errors !== undefined;
+  const error = value as Error.ValidationError;
+  return error.name === "ValidationError" && error.errors !== undefined;
 }

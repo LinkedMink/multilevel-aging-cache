@@ -1,8 +1,4 @@
-import {
-  ISerializer,
-  StringSerializer,
-  JsonSerializer,
-} from "@linkedmink/multilevel-aging-cache";
+import { ISerializer, StringSerializer, JsonSerializer } from "@linkedmink/multilevel-aging-cache";
 
 const DEFAULT_KEY_PREFIX = "node";
 
@@ -32,7 +28,7 @@ export interface IRedisStorageProviderOptions<TKey, TValue> {
   /**
    * Whether Redis can reliably persist data depends on how the instances are configured
    */
-  isPersistable: boolean
+  isPersistable: boolean;
 }
 
 /**
@@ -50,6 +46,6 @@ export function getStringKeyJsonValueOptions(
     keyPrefix: prefix,
     keySerializer: new StringSerializer(),
     valueSerializer: new JsonSerializer(),
-    isPersistable: true
+    isPersistable: true,
   };
 }

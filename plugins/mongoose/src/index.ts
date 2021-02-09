@@ -1,3 +1,3 @@
-export * from "./IMongooseProviderOptions"
-export * from "./MongooseProvider"
-export * from "./MongooseSerializer"
+export * from "./IMongooseProviderOptions";
+export { MongooseProvider } from "./MongooseProvider";
+export { MongooseSerializer } from "./MongooseSerializer";

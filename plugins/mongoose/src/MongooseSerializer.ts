@@ -4,8 +4,7 @@ import { ISerializer } from "@linkedmink/multilevel-aging-cache";
 /**
  * De/Serialize Mongoose objects
  */
-export class MongooseSerializer<T extends Document>
-  implements ISerializer<T> {
+export class MongooseSerializer<T extends Document> implements ISerializer<T> {
   constructor(private readonly model: Model<T>) {}
 
   serialize = (data: T): string => {

@@ -1,5 +1,5 @@
 import { IAgingCacheSetStrategy } from "./IAgingCacheWriteStrategy";
-import { AgingCacheWriteStatus } from "../IAgingCache";
+import { IAgingCacheWrite } from "../IAgingCache";
 import { AgingCacheWriteStrategy } from "./AgingCacheWriteStrategy";
 
 /**
@@ -8,11 +8,16 @@ import { AgingCacheWriteStrategy } from "./AgingCacheWriteStrategy";
 export class OverwriteAlwaysSetStrategy<TKey, TValue>
   extends AgingCacheWriteStrategy<TKey, TValue>
   implements IAgingCacheSetStrategy<TKey, TValue> {
-  set(
+  set(key: TKey, value: TValue, force: boolean): Promise<IAgingCacheWrite<TValue>> {
+    return this.executeSet(key, value);
+  }
+
+  load(
     key: TKey,
     value: TValue,
-    force: boolean
-  ): Promise<AgingCacheWriteStatus> {
-    return this.executeSet(key, value);
+    evictAtLevel?: number,
+    force?: boolean
+  ): Promise<IAgingCacheWrite<TValue>> {
+    return this.executeSet(key, value, evictAtLevel);
   }
 }

@@ -1,42 +1,31 @@
-import { EventEmitter } from "events";
 import { Document, Model, Query, Types } from "mongoose";
 
+import { IAgedValue, IStorageProvider, Logger } from "@linkedmink/multilevel-aging-cache";
+import { IMongooseProviderOptions } from "./IMongooseProviderOptions";
 import {
-  IAgedValue,
-  IStorageProvider,
-  Logger,
-} from "@linkedmink/multilevel-aging-cache";
-import { IMongooseCollectionProviderOptions } from "./IMongooseProviderOptions";
-import { getDotSeperatedPropertyValue, isMongooseValidationError, setDotSeperatedPropertyValue } from "./Helpers";
-
-export enum MongooseCollectionProviderEvent {
-  ValidationError = 'MongooseValidationError',
-  DocumentUpdated = "MongooseDocumentUpdated",
-  DocumentCreated = "MongooseDocumentCreated"
-}
+  getDotSeperatedPropertyValue,
+  isMongooseValidationError,
+  setDotSeperatedPropertyValue,
+} from "./Helpers";
 
 /**
- * Use mongodb as a persistent storage mechanism with Mongoose validation
+ * Use mongodb as a persistent storage mechanism with Mongoose documents
  */
-export class MongooseCollectionProvider<
-  TKey = Types.ObjectId,
-  TValue extends Document = Document
-> extends EventEmitter implements IStorageProvider<TKey, TValue> {
+export class MongooseProvider<TKey = Types.ObjectId, TValue extends Document = Document>
+  implements IStorageProvider<TKey, TValue> {
   readonly isPersistable = true;
 
-  private readonly logger = Logger.get(MongooseCollectionProvider.name);
-  private readonly keyProperty = this.options.keyProperty ?? '_id';
+  private readonly logger = Logger.get(MongooseProvider.name);
+  private readonly keyProperty = this.options.keyProperty ?? "_id";
 
   /**
-   * @param model
+   * @param model The object returned by 'mongoose'.model function
    * @param options Configuration for this data provider
    */
   constructor(
     private readonly model: Model<TValue>,
-    private readonly options: IMongooseCollectionProviderOptions<TKey, TValue>
-  ) {
-    super()
-  }
+    private readonly options: IMongooseProviderOptions<TKey, TValue>
+  ) {}
 
   /**
    * @param key The key to retrieve
@@ -46,55 +35,49 @@ export class MongooseCollectionProvider<
     const query = this.options.keyFunc
       ? this.model.findOne(this.options.keyFunc(key))
       : this.model.findById(key);
-    
-    const result = await this.execIgnoreError(query)
-    
-    return result !== null 
-      ? this.getAgedValue(result)
-      : null
+
+    const result = await this.execIgnoreError(query);
+
+    return result !== null ? this.getAgedValue(result) : null;
   }
 
   /**
    * @param key The key to set
    * @param value The value to set
-   * @returns If setting the value was successful
+   * @returns The value written if successful or null
    */
-  set(key: TKey, value: IAgedValue<TValue>): Promise<boolean> {
+  set(key: TKey, value: IAgedValue<TValue>): Promise<IAgedValue<TValue> | null> {
     this.updateRecordAge(value);
-    const isNewDoc = value.value.isNew;
 
     return new Promise((resolve, reject) => {
       value.value.save((error, doc) => {
         if (!error) {
-          isNewDoc 
-            ? this.emit(MongooseCollectionProviderEvent.DocumentCreated, key, doc)
-            : this.emit(MongooseCollectionProviderEvent.DocumentUpdated, key, doc);
-          return resolve(true);
+          return resolve(this.getAgedValue(doc));
         }
 
         if (isMongooseValidationError(error)) {
-          this.logger.debug({ message: error });
-          this.emit(MongooseCollectionProviderEvent.ValidationError, key, value, error.errors);
+          throw error;
         } else {
-          this.logger.verbose({ message: error });
+          this.logger.info({ message: error });
         }
 
-        return resolve(false);
+        return resolve(null);
       });
-    })
+    });
   }
 
   /**
    * @param key The key to the value to delete
-   * @returns If deleting the value was successful
+   * @returns The value deleted or boolean (value | true is success). A provider
+   * is not required to return a value
    */
-  async delete(key: TKey): Promise<boolean> {
+  async delete(key: TKey): Promise<IAgedValue<TValue> | boolean> {
     const query = this.options.keyFunc
       ? this.model.findOneAndDelete(this.options.keyFunc(key))
       : this.model.findByIdAndDelete(key);
 
     const result = await this.execIgnoreError(query);
-    
+
     return result !== null;
   }
 
@@ -109,24 +92,25 @@ export class MongooseCollectionProvider<
       return [] as TKey[];
     }
 
-    return result.map(r => getDotSeperatedPropertyValue(r as Record<string, unknown>, this.keyProperty) as TKey)
+    return result.map(
+      r => getDotSeperatedPropertyValue(r as Record<string, unknown>, this.keyProperty) as TKey
+    );
   }
 
   /**
    * @returns The number of elements in this storage system
    */
   async size(): Promise<number> {
-    const result = await this.execIgnoreError(this.model.countDocuments())
+    const result = await this.execIgnoreError(this.model.countDocuments());
     return result === null ? 0 : result;
   }
 
-  private updateRecordAge = (value: IAgedValue<TValue>) => setDotSeperatedPropertyValue(
-    value.value as Record<string, unknown>,
-    this.options.ageProperty,
-    this.options.numberToAgeFunc
-      ? this.options.numberToAgeFunc(value.age)
-      : value.age
-  );
+  private updateRecordAge = (value: IAgedValue<TValue>) =>
+    setDotSeperatedPropertyValue(
+      value.value as Record<string, unknown>,
+      this.options.ageProperty,
+      this.options.numberToAgeFunc ? this.options.numberToAgeFunc(value.age) : value.age
+    );
 
   private getAgedValue = (value: TValue) => {
     const ageValue = getDotSeperatedPropertyValue(
@@ -135,15 +119,16 @@ export class MongooseCollectionProvider<
     );
     const age = this.options.ageToNumberFunc
       ? this.options.ageToNumberFunc(ageValue)
-      : ageValue as number;
+      : (ageValue as number);
 
     return { age, value };
-  }
+  };
 
   private execIgnoreError = <TResult>(
     query: Query<TResult | null, TValue>
-  ): Promise<TResult | null> => query.exec().catch(e => { 
-    this.logger.verbose({ message: e as Error });
-    return null;
-  })
+  ): Promise<TResult | null> =>
+    query.exec().catch(e => {
+      this.logger.verbose({ message: e as Error });
+      return null;
+    });
 }

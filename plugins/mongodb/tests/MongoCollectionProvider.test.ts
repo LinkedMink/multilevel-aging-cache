@@ -1,9 +1,6 @@
 import { Collection, MongoClient, ObjectID } from "mongodb";
 import { IAgedValue } from "../../../src/cache/expire/IAgedQueue";
-import {
-  getDefaultOptions,
-  IMongoCollectionRecord,
-} from "../src/IMongoCollectionProviderOptions";
+import { getDefaultOptions, IMongoCollectionRecord } from "../src/IMongoCollectionProviderOptions";
 import { MongoCollectionProvider } from "../src/MongoCollectionProvider";
 import { setGlobalMockTransport } from "../../../tests/MockTransport";
 
@@ -11,10 +8,7 @@ interface TestRecord extends IMongoCollectionRecord {
   value: string;
 }
 
-const getAgedTestRecord = (
-  id: ObjectID,
-  value: string
-): IAgedValue<TestRecord> => {
+const getAgedTestRecord = (id: ObjectID, value: string): IAgedValue<TestRecord> => {
   const age = new Date().getTime();
   return {
     age,
@@ -85,15 +79,11 @@ describe(MongoCollectionProvider.name, () => {
       new ObjectID("5fe5268f6d041f71f1d3ecf2"),
     ];
 
-    testKeys.forEach(key =>
-      provider.set(key, getAgedTestRecord(key, "TEST_VALUE"))
-    );
+    testKeys.forEach(key => provider.set(key, getAgedTestRecord(key, "TEST_VALUE")));
 
     return provider.keys().then(keys => {
       expect(keys.length).toBeGreaterThanOrEqual(testKeys.length);
-      testKeys.forEach(key =>
-        expect(keys.find(k => k.equals(key))).not.toBeUndefined()
-      );
+      testKeys.forEach(key => expect(keys.find(k => k.equals(key))).not.toBeUndefined());
     });
   });
 
@@ -105,9 +95,7 @@ describe(MongoCollectionProvider.name, () => {
       new ObjectID("5fe526aede2255840ed0fdb8"),
     ];
 
-    testKeys.forEach(key =>
-      provider.set(key, getAgedTestRecord(key, "TEST_VALUE"))
-    );
+    testKeys.forEach(key => provider.set(key, getAgedTestRecord(key, "TEST_VALUE")));
 
     return provider.size().then(size => {
       expect(size).toBeGreaterThanOrEqual(testKeys.length);

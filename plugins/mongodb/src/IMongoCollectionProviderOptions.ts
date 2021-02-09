@@ -19,16 +19,13 @@ export enum MongoCollectionProviderSetMode {
   Update,
 }
 
-export type ToNumberFunc = <T>(age: T) => number
-export type ToTypeFunc = <T>(value: number) => T
+export type ToNumberFunc = <T>(age: T) => number;
+export type ToTypeFunc = <T>(value: number) => T;
 
 /**
  * Options to configure mongodb as a storage provider
  */
-export interface IMongoCollectionProviderOptions<
-  TKey,
-  TValue extends IMongoCollectionRecord
-> {
+export interface IMongoCollectionProviderOptions<TKey, TValue extends IMongoCollectionRecord> {
   /**
    * When set() is called should the entire document be replaced or only the fields that are provided
    */
@@ -63,6 +60,6 @@ export function getDefaultOptions<
     keyProperty: DEFAULT_KEY_PROPERTY,
     ageProperty: DEFAULT_AGE_PROPERTY,
     ageToNumberFunc: ((age: Date) => age.getTime()) as ToNumberFunc,
-    numberToAgeFunc: ((age: number) => new Date(age)) as ToTypeFunc
+    numberToAgeFunc: ((age: number) => new Date(age)) as ToTypeFunc,
   };
 }

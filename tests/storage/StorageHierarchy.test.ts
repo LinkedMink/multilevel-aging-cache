@@ -17,11 +17,7 @@ describe(StorageHierarchy.name, () => {
   });
 
   beforeEach(() => {
-    levels = [
-      new MockStorageProvider(),
-      new MockStorageProvider(),
-      new MockStorageProvider(),
-    ];
+    levels = [new MockStorageProvider(), new MockStorageProvider(), new MockStorageProvider()];
     hierarchy = new StorageHierarchy(levels);
   });
 
@@ -59,9 +55,7 @@ describe(StorageHierarchy.name, () => {
 
       return promise.then(result => {
         expect(result).toBeNull();
-        levels.forEach(level =>
-          expect(level.get).toHaveBeenCalledWith(testKey)
-        );
+        levels.forEach(level => expect(level.get).toHaveBeenCalledWith(testKey));
       });
     });
 
@@ -110,9 +104,7 @@ describe(StorageHierarchy.name, () => {
 
       return promise.then(result => {
         expect(result).toEqual(AgingCacheWriteStatus.Success);
-        levels.forEach(level =>
-          expect(level.set).toHaveBeenCalledWith(testKey, testValue)
-        );
+        levels.forEach(level => expect(level.set).toHaveBeenCalledWith(testKey, testValue));
       });
     });
 
@@ -154,17 +146,13 @@ describe(StorageHierarchy.name, () => {
   describe("delete()", () => {
     test("should delete all levels when delete is called", () => {
       const testKey = "TEST_KEY";
-      levels.forEach(
-        level => (level.delete = jest.fn().mockResolvedValue(true))
-      );
+      levels.forEach(level => (level.delete = jest.fn().mockResolvedValue(true)));
 
       const promise = hierarchy.deleteAtLevel(testKey);
 
       return promise.then(result => {
         expect(result).toEqual(AgingCacheWriteStatus.Success);
-        levels.forEach(level =>
-          expect(level.delete).toHaveBeenCalledWith(testKey)
-        );
+        levels.forEach(level => expect(level.delete).toHaveBeenCalledWith(testKey));
       });
     });
 
@@ -230,9 +218,7 @@ describe(StorageHierarchy.name, () => {
     test("should value in reverse direction when getValueAtTopLevel() is called", () => {
       const testKey = "TEST_KEY";
       const testValue = { value: "TEST_VALUE", age: 0 };
-      levels.forEach(
-        level => (level.get = jest.fn().mockResolvedValue(testValue))
-      );
+      levels.forEach(level => (level.get = jest.fn().mockResolvedValue(testValue)));
 
       const promise = hierarchy.getValueAtTopLevel(testKey);
 
@@ -279,20 +265,14 @@ describe(StorageHierarchy.name, () => {
       const testKey = "TEST_KEY";
       const testValue = { value: "TEST_VALUE", age: 0 };
       levels.forEach(level => (level.set = jest.fn().mockResolvedValue(true)));
-      let subscriptionFunc: StorageProviderUpdateHandler<
-        string,
-        string
-      > = () => {
+      let subscriptionFunc: StorageProviderUpdateHandler<string, string> = () => {
         return;
       };
       levels[2].subscribe = func => {
         subscriptionFunc = func;
         return true;
       };
-      hierarchy = new StorageHierarchy(
-        levels,
-        StorageHierarchyUpdatePolicy.Always
-      );
+      hierarchy = new StorageHierarchy(levels, StorageHierarchyUpdatePolicy.Always);
       const setAtLevelSpy = jest.spyOn(hierarchy, "setAtLevel");
 
       subscriptionFunc(testKey, testValue);
@@ -302,23 +282,15 @@ describe(StorageHierarchy.name, () => {
 
     test("should delete lower levels when higher level storage provider calls subscribers for update policy Always", () => {
       const testKey = "TEST_KEY";
-      levels.forEach(
-        level => (level.delete = jest.fn().mockResolvedValue(true))
-      );
-      let subscriptionFunc: StorageProviderUpdateHandler<
-        string,
-        string
-      > = () => {
+      levels.forEach(level => (level.delete = jest.fn().mockResolvedValue(true)));
+      let subscriptionFunc: StorageProviderUpdateHandler<string, string> = () => {
         return;
       };
       levels[2].subscribe = func => {
         subscriptionFunc = func;
         return true;
       };
-      hierarchy = new StorageHierarchy(
-        levels,
-        StorageHierarchyUpdatePolicy.Always
-      );
+      hierarchy = new StorageHierarchy(levels, StorageHierarchyUpdatePolicy.Always);
       const deleteAtLevelSpy = jest.spyOn(hierarchy, "deleteAtLevel");
 
       subscriptionFunc(testKey);
@@ -331,10 +303,7 @@ describe(StorageHierarchy.name, () => {
       const testValue = { value: "TEST_VALUE", age: 0 };
       const testValueUpdated = { value: "TEST_VALUE2", age: 1 };
       levels.forEach(level => (level.set = jest.fn().mockResolvedValue(true)));
-      let subscriptionFunc: StorageProviderUpdateHandler<
-        string,
-        string
-      > = () => {
+      let subscriptionFunc: StorageProviderUpdateHandler<string, string> = () => {
         return;
       };
       levels[2].subscribe = func => {
@@ -342,33 +311,21 @@ describe(StorageHierarchy.name, () => {
         return true;
       };
       levels[1].get = jest.fn().mockResolvedValue(testValue);
-      hierarchy = new StorageHierarchy(
-        levels,
-        StorageHierarchyUpdatePolicy.OnlyIfKeyExist
-      );
+      hierarchy = new StorageHierarchy(levels, StorageHierarchyUpdatePolicy.OnlyIfKeyExist);
       const setAtLevelSpy = jest.spyOn(hierarchy, "setAtLevel");
 
       subscriptionFunc(testKey, testValueUpdated);
 
       return hierarchy.dispose().then(() => {
-        expect(setAtLevelSpy).toHaveBeenCalledWith(
-          testKey,
-          testValueUpdated,
-          1
-        );
+        expect(setAtLevelSpy).toHaveBeenCalledWith(testKey, testValueUpdated, 1);
       });
     });
 
     test("should delete lower levels when higher level storage provider updates key that exist for update policy OnlyIfKeyExist", () => {
       const testKey = "TEST_KEY";
       const testValue = { value: "TEST_VALUE", age: 0 };
-      levels.forEach(
-        level => (level.delete = jest.fn().mockResolvedValue(true))
-      );
-      let subscriptionFunc: StorageProviderUpdateHandler<
-        string,
-        string
-      > = () => {
+      levels.forEach(level => (level.delete = jest.fn().mockResolvedValue(true)));
+      let subscriptionFunc: StorageProviderUpdateHandler<string, string> = () => {
         return;
       };
       levels[2].subscribe = func => {
@@ -376,10 +333,7 @@ describe(StorageHierarchy.name, () => {
         return true;
       };
       levels[1].get = jest.fn().mockResolvedValue(testValue);
-      hierarchy = new StorageHierarchy(
-        levels,
-        StorageHierarchyUpdatePolicy.OnlyIfKeyExist
-      );
+      hierarchy = new StorageHierarchy(levels, StorageHierarchyUpdatePolicy.OnlyIfKeyExist);
       const deleteAtLevelSpy = jest.spyOn(hierarchy, "deleteAtLevel");
 
       subscriptionFunc(testKey);
@@ -393,10 +347,7 @@ describe(StorageHierarchy.name, () => {
       const testKey = "TEST_KEY";
       const testValue = { value: "TEST_VALUE", age: 0 };
       levels.forEach(level => (level.set = jest.fn().mockResolvedValue(true)));
-      let subscriptionFunc: StorageProviderUpdateHandler<
-        string,
-        string
-      > = () => {
+      let subscriptionFunc: StorageProviderUpdateHandler<string, string> = () => {
         return;
       };
       levels[2].subscribe = func => {
@@ -404,10 +355,7 @@ describe(StorageHierarchy.name, () => {
         return true;
       };
       levels[1].get = jest.fn().mockResolvedValue(null);
-      hierarchy = new StorageHierarchy(
-        levels,
-        StorageHierarchyUpdatePolicy.OnlyIfKeyExist
-      );
+      hierarchy = new StorageHierarchy(levels, StorageHierarchyUpdatePolicy.OnlyIfKeyExist);
       const setAtLevelSpy = jest.spyOn(hierarchy, "setAtLevel");
 
       subscriptionFunc(testKey, testValue);

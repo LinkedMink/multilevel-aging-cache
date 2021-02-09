@@ -22,10 +22,7 @@ import {
   IAgingCacheDeleteStrategy,
 } from "./write/IAgingCacheWriteStrategy";
 
-type IAgedQueueConstructor = new <TKey>(
-  maxEntries?: number,
-  ageLimit?: number
-) => IAgedQueue<TKey>;
+type IAgedQueueConstructor = new <TKey>(maxEntries?: number, ageLimit?: number) => IAgedQueue<TKey>;
 type IAgingCacheSetStrategyConstructor = new <TKey, TValue>(
   hierarchy: IStorageHierarchy<TKey, TValue>,
   evictQueue: IAgedQueue<TKey>
@@ -33,26 +30,19 @@ type IAgingCacheSetStrategyConstructor = new <TKey, TValue>(
 type IAgingCacheDeleteStrategyConstructor = new <TKey, TValue>(
   hierarchy: IStorageHierarchy<TKey, TValue>,
   evictQueue: IAgedQueue<TKey>
-) => IAgingCacheDeleteStrategy<TKey>;
+) => IAgingCacheDeleteStrategy<TKey, TValue>;
 
-const agedQueueMap = new Map<
-  AgingCacheReplacementPolicy,
-  IAgedQueueConstructor
->([[AgingCacheReplacementPolicy.FIFO, FIFOAgedQueue]]);
+const agedQueueMap = new Map<AgingCacheReplacementPolicy, IAgedQueueConstructor>([
+  [AgingCacheReplacementPolicy.FIFO, FIFOAgedQueue],
+]);
 
-const setStrategyMap = new Map<
-  AgingCacheWriteMode,
-  IAgingCacheSetStrategyConstructor
->([
+const setStrategyMap = new Map<AgingCacheWriteMode, IAgingCacheSetStrategyConstructor>([
   [AgingCacheWriteMode.RefreshAlways, RefreshAlwaysSetStrategy],
   [AgingCacheWriteMode.OverwriteAlways, OverwriteAlwaysSetStrategy],
   [AgingCacheWriteMode.OverwriteAged, OverwriteAgedSetStrategy],
 ]);
 
-const deleteStrategyMap = new Map<
-  AgingCacheWriteMode,
-  IAgingCacheDeleteStrategyConstructor
->([
+const deleteStrategyMap = new Map<AgingCacheWriteMode, IAgingCacheDeleteStrategyConstructor>([
   [AgingCacheWriteMode.RefreshAlways, RefreshAlwaysDeleteStrategy],
   [AgingCacheWriteMode.OverwriteAlways, OverwriteAlwaysDeleteStrategy],
   [AgingCacheWriteMode.OverwriteAged, OverwriteAgedDeleteStrategy],
@@ -63,9 +53,7 @@ export function checkAgingCacheOptionsValid(
   maxLevel: number
 ): Error | undefined {
   if (options.maxEntries !== undefined && options.maxEntries < 1) {
-    return new Error(
-      `maxEntries(${options.maxEntries}): must be greater than 0`
-    );
+    return new Error(`maxEntries(${options.maxEntries}): must be greater than 0`);
   }
 
   if (
@@ -78,15 +66,10 @@ export function checkAgingCacheOptionsValid(
   }
 
   if (options.purgeInterval < 10) {
-    return new Error(
-      `purgeInterval(${options.purgeInterval}): must be greater than 10 seconds`
-    );
+    return new Error(`purgeInterval(${options.purgeInterval}): must be greater than 10 seconds`);
   }
 
-  if (
-    options.evictAtLevel &&
-    (options.evictAtLevel < 0 || options.evictAtLevel > maxLevel)
-  ) {
+  if (options.evictAtLevel && (options.evictAtLevel < 0 || options.evictAtLevel > maxLevel)) {
     return new Error(`evictAtLevel must be a between 0 and ${maxLevel}`);
   }
 }
@@ -104,10 +87,7 @@ export function createAgingCache<TKey, TValue>(
   if (!options) {
     options = getDefaultAgingCacheOptions();
   } else {
-    const validationError = checkAgingCacheOptionsValid(
-      options,
-      hierarchy.totalLevels - 1
-    );
+    const validationError = checkAgingCacheOptionsValid(options, hierarchy.totalLevels - 1);
     if (validationError) {
       const logger = Logger.get(path.basename(__filename));
       logger.error(validationError.message);
@@ -117,9 +97,7 @@ export function createAgingCache<TKey, TValue>(
 
   const agedQueueConstructor = agedQueueMap.get(options.replacementPolicy);
   if (!agedQueueConstructor) {
-    throw new Error(
-      `Unsupported replacementPolicy: ${options.replacementPolicy}`
-    );
+    throw new Error(`Unsupported replacementPolicy: ${options.replacementPolicy}`);
   }
 
   const setStrategyConstructor = setStrategyMap.get(options.setMode);
@@ -132,10 +110,7 @@ export function createAgingCache<TKey, TValue>(
     throw new Error(`Unsupported deleteMode: ${options.deleteMode}`);
   }
 
-  const evictQueue = new agedQueueConstructor<TKey>(
-    options.maxEntries,
-    options.ageLimit
-  );
+  const evictQueue = new agedQueueConstructor<TKey>(options.maxEntries, options.ageLimit);
   const setStrategy = new setStrategyConstructor(hierarchy, evictQueue);
   const deleteStrategy = new deleteStrategyConstructor(hierarchy, evictQueue);
   return new AgingCache<TKey, TValue>(

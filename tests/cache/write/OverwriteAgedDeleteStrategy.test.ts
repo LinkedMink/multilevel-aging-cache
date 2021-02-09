@@ -14,10 +14,7 @@ describe(OverwriteAgedDeleteStrategy.name, () => {
   });
 
   beforeEach(() => {
-    hierarchyMock = (new MockStorageHierarchy() as unknown) as StorageHierarchy<
-      string,
-      string
-    >;
+    hierarchyMock = (new MockStorageHierarchy() as unknown) as StorageHierarchy<string, string>;
     evictQueueMock = new MockAgedQueue<string>();
     strategy = new OverwriteAgedDeleteStrategy(hierarchyMock, evictQueueMock);
   });
@@ -60,9 +57,7 @@ describe(OverwriteAgedDeleteStrategy.name, () => {
     hierarchyMock.getValueAtBottomLevel = jest
       .fn()
       .mockResolvedValue({ age: testAge, value: "TEST_VALUE" });
-    hierarchyMock.getValueAtTopLevel = jest
-      .fn()
-      .mockResolvedValue(testHighLevelValue);
+    hierarchyMock.getValueAtTopLevel = jest.fn().mockResolvedValue(testHighLevelValue);
 
     const promise = strategy.delete(testKey, false);
 
@@ -77,19 +72,14 @@ describe(OverwriteAgedDeleteStrategy.name, () => {
     const testAge = 1000000;
     const testHighLevelValue = { age: testAge + 20, value: "TEST_VALUE" };
     hierarchyMock.getValueAtBottomLevel = jest.fn().mockResolvedValue(null);
-    hierarchyMock.getValueAtTopLevel = jest
-      .fn()
-      .mockResolvedValue(testHighLevelValue);
+    hierarchyMock.getValueAtTopLevel = jest.fn().mockResolvedValue(testHighLevelValue);
 
     const promise = strategy.delete(testKey, false);
 
     return promise.then(status => {
       expect(status).toEqual(AgingCacheWriteStatus.Refreshed);
       expect(hierarchyMock.deleteAtLevel).not.toBeCalledWith(testKey);
-      expect(hierarchyMock.setBelowTopLevel).toBeCalledWith(
-        testKey,
-        testHighLevelValue
-      );
+      expect(hierarchyMock.setBelowTopLevel).toBeCalledWith(testKey, testHighLevelValue);
     });
   });
 
@@ -100,19 +90,14 @@ describe(OverwriteAgedDeleteStrategy.name, () => {
     hierarchyMock.getValueAtBottomLevel = jest
       .fn()
       .mockResolvedValue({ age: testAge, value: "TEST_VALUE" });
-    hierarchyMock.getValueAtTopLevel = jest
-      .fn()
-      .mockResolvedValue(testHighLevelValue);
+    hierarchyMock.getValueAtTopLevel = jest.fn().mockResolvedValue(testHighLevelValue);
 
     const promise = strategy.delete(testKey, false);
 
     return promise.then(status => {
       expect(status).toEqual(AgingCacheWriteStatus.Refreshed);
       expect(hierarchyMock.deleteAtLevel).not.toBeCalledWith(testKey);
-      expect(hierarchyMock.setBelowTopLevel).toBeCalledWith(
-        testKey,
-        testHighLevelValue
-      );
+      expect(hierarchyMock.setBelowTopLevel).toBeCalledWith(testKey, testHighLevelValue);
     });
   });
 });

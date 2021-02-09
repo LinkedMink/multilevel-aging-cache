@@ -77,9 +77,7 @@ export class FIFOAgedQueue<TKey> implements IAgedQueue<TKey> {
 
     const age = this.ageMap.get(next);
     if (age !== undefined && age + this.ageLimit < Date.now()) {
-      this.logger.debug(
-        `Age Limit Exceeded: age=${age},limit=${this.ageLimit}`
-      );
+      this.logger.debug(`Age Limit Exceeded: age=${age},limit=${this.ageLimit}`);
       return true;
     }
 

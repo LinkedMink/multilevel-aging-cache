@@ -23,19 +23,11 @@ describe(AgingCache.name, () => {
   });
 
   beforeEach(() => {
-    hierarchyMock = (new MockStorageHierarchy() as unknown) as StorageHierarchy<
-      string,
-      string
-    >;
+    hierarchyMock = (new MockStorageHierarchy() as unknown) as StorageHierarchy<string, string>;
     setStrategyMock = new MockAgingCacheSetStrategy();
     deleteStrategyMock = new MockAgingCacheDeleteStrategy();
     evictQueueMock = new MockAgedQueue<string>();
-    cache = new AgingCache(
-      hierarchyMock,
-      evictQueueMock,
-      setStrategyMock,
-      deleteStrategyMock
-    );
+    cache = new AgingCache(hierarchyMock, evictQueueMock, setStrategyMock, deleteStrategyMock);
   });
 
   // TODO investigate open handles on purge
@@ -83,11 +75,7 @@ describe(AgingCache.name, () => {
 
     return promise.then(value => {
       expect(value).toEqual(true);
-      expect(setStrategyMock.set).toHaveBeenCalledWith(
-        testKey,
-        testValue,
-        false
-      );
+      expect(setStrategyMock.set).toHaveBeenCalledWith(testKey, testValue, false);
     });
   });
 
@@ -96,23 +84,14 @@ describe(AgingCache.name, () => {
     const testValue = "TEST_VALUE";
     setStrategyMock.set = jest.fn().mockResolvedValue(true);
     evictQueueMock.isNextExpired = jest.fn().mockResolvedValue(true);
-    cache = new AgingCache(
-      hierarchyMock,
-      evictQueueMock,
-      setStrategyMock,
-      deleteStrategyMock
-    );
+    cache = new AgingCache(hierarchyMock, evictQueueMock, setStrategyMock, deleteStrategyMock);
     const evictSpy = jest.spyOn(cache as any, "evict");
 
     const promise = cache.set(testKey, testValue);
 
     return promise.then(value => {
       expect(value).toEqual(true);
-      expect(setStrategyMock.set).toHaveBeenCalledWith(
-        testKey,
-        testValue,
-        false
-      );
+      expect(setStrategyMock.set).toHaveBeenCalledWith(testKey, testValue, false);
       expect(evictSpy).toHaveBeenCalled();
     });
   });
@@ -206,18 +185,9 @@ describe(AgingCache.name, () => {
 
     return cache.purge().then(() => {
       expect(deleteStrategyMock.delete).toHaveBeenCalledTimes(3);
-      expect(deleteStrategyMock.delete).toHaveBeenCalledWith(
-        queueMock[0].key,
-        false
-      );
-      expect(deleteStrategyMock.delete).toHaveBeenCalledWith(
-        queueMock[1].key,
-        false
-      );
-      expect(deleteStrategyMock.delete).toHaveBeenCalledWith(
-        queueMock[2].key,
-        false
-      );
+      expect(deleteStrategyMock.delete).toHaveBeenCalledWith(queueMock[0].key, false);
+      expect(deleteStrategyMock.delete).toHaveBeenCalledWith(queueMock[1].key, false);
+      expect(deleteStrategyMock.delete).toHaveBeenCalledWith(queueMock[2].key, false);
     });
   });
 });

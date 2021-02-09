@@ -32,10 +32,7 @@ describe(RedisStorageProvider.name, () => {
   });
 
   test("should return instance when constructor parameters are valid", () => {
-    const provider = new RedisStorageProvider(
-      new Redis(),
-      getStringKeyJsonValueOptions()
-    );
+    const provider = new RedisStorageProvider(new Redis(), getStringKeyJsonValueOptions());
 
     expect(provider).toBeDefined();
   });
@@ -79,9 +76,7 @@ describe(RedisStorageProvider.name, () => {
     const testKeys = ["TEST_KEY1", "TEST_KEY2", "TEST_KEY3", "TEST_KEY4"];
     const keysSpy = jest
       .spyOn(clientMock, "keys")
-      .mockReturnValue(
-        Promise.resolve(testKeys.map(key => mockSerializer.serialize(key)))
-      );
+      .mockReturnValue(Promise.resolve(testKeys.map(key => mockSerializer.serialize(key))));
 
     const promise = provider.keys();
 
@@ -96,9 +91,7 @@ describe(RedisStorageProvider.name, () => {
     const testKeys = ["TEST_KEY1", "TEST_KEY2", "TEST_KEY3", "TEST_KEY4"];
     const keysSpy = jest
       .spyOn(clientMock, "keys")
-      .mockReturnValue(
-        Promise.resolve(testKeys.map(key => mockSerializer.serialize(key)))
-      );
+      .mockReturnValue(Promise.resolve(testKeys.map(key => mockSerializer.serialize(key))));
 
     const promise = provider.size();
 

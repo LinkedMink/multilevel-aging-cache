@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 import readline from "readline";
 import Redis from "ioredis";
 import winston from "winston";
@@ -29,16 +30,10 @@ const redisChannel = new Redis(6379, "localhost");
 
 const storageHierarchy = new StorageHierarchy<string, Record<string, unknown>>([
   new MemoryStorageProvider(),
-  new RedisPubSubStorageProvider(
-    redisClient,
-    getStringKeyJsonValueOptions(),
-    redisChannel
-  ),
+  new RedisPubSubStorageProvider(redisClient, getStringKeyJsonValueOptions(), redisChannel),
 ]);
 
-const cache = createAgingCache<string, Record<string, unknown>>(
-  storageHierarchy
-);
+const cache = createAgingCache<string, Record<string, unknown>>(storageHierarchy);
 
 const cliReadline = readline.createInterface({
   input: process.stdin,
@@ -67,10 +62,7 @@ const main = async (): Promise<number> => {
       console.log(data);
     } else if (command === "set") {
       const key = await promptInput(PROMPT_KEY);
-      const value = JSON.parse(await promptInput(PROMPT_VALUE)) as Record<
-        string,
-        unknown
-      >;
+      const value = JSON.parse(await promptInput(PROMPT_VALUE)) as Record<string, unknown>;
       const status = await cache.set(key, value, false);
       console.log(status);
     } else if (command === "delete") {

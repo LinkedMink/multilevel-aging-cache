@@ -32,11 +32,7 @@ describe(RedisPubSubStorageProvider.name, () => {
       valueSerializer: new MockSerializer(),
     };
 
-    provider = new RedisPubSubStorageProvider(
-      clientMock,
-      optionsMock,
-      channelMock
-    );
+    provider = new RedisPubSubStorageProvider(clientMock, optionsMock, channelMock);
   });
 
   test("should return instance when constructor parameters are valid", () => {
@@ -100,10 +96,7 @@ describe(RedisPubSubStorageProvider.name, () => {
         age: testValue.age,
         value: mockSerializer.serialize(testValue.value),
       });
-      expect(setSpy).toHaveBeenCalledWith(
-        mockSerializer.serialize(testKey),
-        serializedAgedValue
-      );
+      expect(setSpy).toHaveBeenCalledWith(mockSerializer.serialize(testKey), serializedAgedValue);
       expect(publishSpy).toHaveBeenCalledWith(
         optionsMock.keyPrefix + PUBLISH_CHANNEL,
         JSON.stringify({
@@ -136,9 +129,7 @@ describe(RedisPubSubStorageProvider.name, () => {
     const testKeys = ["TEST_KEY1", "TEST_KEY2", "TEST_KEY3", "TEST_KEY4"];
     const keysSpy = jest
       .spyOn(clientMock, "keys")
-      .mockReturnValue(
-        Promise.resolve(testKeys.map(key => mockSerializer.serialize(key)))
-      );
+      .mockReturnValue(Promise.resolve(testKeys.map(key => mockSerializer.serialize(key))));
 
     const promise = provider.keys();
 
@@ -153,9 +144,7 @@ describe(RedisPubSubStorageProvider.name, () => {
     const testKeys = ["TEST_KEY1", "TEST_KEY2", "TEST_KEY3", "TEST_KEY4"];
     const keysSpy = jest
       .spyOn(clientMock, "keys")
-      .mockReturnValue(
-        Promise.resolve(testKeys.map(key => mockSerializer.serialize(key)))
-      );
+      .mockReturnValue(Promise.resolve(testKeys.map(key => mockSerializer.serialize(key))));
 
     const promise = provider.size();
 
@@ -192,9 +181,7 @@ describe(RedisPubSubStorageProvider.name, () => {
   });
 
   test("should call Redis client subscribe when listen is called for the first time", () => {
-    const subscribeSpy = jest
-      .spyOn(channelMock, "subscribe")
-      .mockResolvedValue(1);
+    const subscribeSpy = jest.spyOn(channelMock, "subscribe").mockResolvedValue(1);
 
     const promise = provider.listen();
 
@@ -204,9 +191,7 @@ describe(RedisPubSubStorageProvider.name, () => {
   });
 
   test("should not call Redis client subscribe when listen is called multiple times", () => {
-    const subscribeSpy = jest
-      .spyOn(channelMock, "subscribe")
-      .mockResolvedValue(1);
+    const subscribeSpy = jest.spyOn(channelMock, "subscribe").mockResolvedValue(1);
 
     return provider.listen().then(isListening => {
       return provider.listen().then(() => {
@@ -224,11 +209,7 @@ describe(RedisPubSubStorageProvider.name, () => {
     provider.subscribe(subscriber);
 
     return provider.listen().then(isListening => {
-      channelMock.emit(
-        "message",
-        optionsMock.keyPrefix + PUBLISH_CHANNEL,
-        testMessage
-      );
+      channelMock.emit("message", optionsMock.keyPrefix + PUBLISH_CHANNEL, testMessage);
       expect(subscriber).toHaveBeenCalledWith(testKey, undefined);
     });
   });
@@ -245,11 +226,7 @@ describe(RedisPubSubStorageProvider.name, () => {
     provider.subscribe(subscriber);
 
     return provider.listen().then(isListening => {
-      channelMock.emit(
-        "message",
-        optionsMock.keyPrefix + PUBLISH_CHANNEL,
-        testMessage
-      );
+      channelMock.emit("message", optionsMock.keyPrefix + PUBLISH_CHANNEL, testMessage);
       expect(subscriber).toHaveBeenCalledWith(testKey, testValue);
     });
   });

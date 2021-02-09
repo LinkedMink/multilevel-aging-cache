@@ -3,10 +3,11 @@ import { IAgedValue } from "../cache/expire/IAgedQueue";
 /**
  * Describes the layers written to in a set/delete operation
  */
-export interface IStorageHierarchyWriteStatus {
+export interface IStorageHierarchyWrite<TValue = unknown> {
   isPersisted: boolean;
   isPublished: boolean;
   writtenLevels: number;
+  writtenValue?: IAgedValue<TValue>;
 }
 
 /**
@@ -47,11 +48,7 @@ export interface IStorageHierarchy<TKey, TValue> {
    * @param isAscending To go up the hierarchy (true) or down (false) from level
    * @returns The value if it's in the hierarchy from the level going up/down or null
    */
-  getAtLevel(
-    key: TKey,
-    level?: number,
-    isAscending?: boolean
-  ): Promise<IAgedValue<TValue> | null>;
+  getAtLevel(key: TKey, level?: number, isAscending?: boolean): Promise<IAgedValue<TValue> | null>;
 
   /**
    * @param key The key to set
@@ -65,7 +62,7 @@ export interface IStorageHierarchy<TKey, TValue> {
     value: IAgedValue<TValue>,
     level?: number,
     isAscending?: boolean
-  ): Promise<IStorageHierarchyWriteStatus>;
+  ): Promise<IStorageHierarchyWrite<TValue>>;
 
   /**
    * @param key The key to delete
@@ -77,7 +74,7 @@ export interface IStorageHierarchy<TKey, TValue> {
     key: TKey,
     level?: number,
     isAscending?: boolean
-  ): Promise<IStorageHierarchyWriteStatus>;
+  ): Promise<IStorageHierarchyWrite<TValue>>;
 
   /**
    * @param level The level at which to search
@@ -108,8 +105,5 @@ export interface IStorageHierarchy<TKey, TValue> {
    * @param value The value to set
    * @returns If the write succeeded to all levels going up/down or the error condition
    */
-  setBelowTopLevel(
-    key: TKey,
-    value: IAgedValue<TValue>
-  ): Promise<IStorageHierarchyWriteStatus>;
+  setBelowTopLevel(key: TKey, value: IAgedValue<TValue>): Promise<IStorageHierarchyWrite<TValue>>;
 }

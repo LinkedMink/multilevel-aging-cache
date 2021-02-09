@@ -1,13 +1,6 @@
-import {
+export {
   IRedisStorageProviderOptions,
   getStringKeyJsonValueOptions,
 } from "./IRedisStorageProviderOptions";
-import { RedisPubSubStorageProvider } from "./RedisPubSubStorageProvider";
-import { RedisStorageProvider } from "./RedisStorageProvider";
-
-export {
-  getStringKeyJsonValueOptions,
-  IRedisStorageProviderOptions,
-  RedisPubSubStorageProvider,
-  RedisStorageProvider,
-};
+export { RedisPubSubStorageProvider } from "./RedisPubSubStorageProvider";
+export { RedisStorageProvider } from "./RedisStorageProvider";

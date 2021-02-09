@@ -19,7 +19,8 @@
     "lint": "eslint -c ../../.eslintrc.js --ext .ts src",
     "format": "prettier --write src/**/*.ts tests/**/*.ts *.js *.json",
     "link": "npm run build && npm link",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "doc": "typedoc"
   },
   "peerDependencies": {
     "@linkedmink/multilevel-aging-cache": "0.4.5",

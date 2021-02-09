@@ -1,26 +1,18 @@
 import { Collection, UpdateWriteOpResult } from "mongodb";
 
-import {
-  IAgedValue,
-  IStorageProvider,
-} from "@linkedmink/multilevel-aging-cache";
+import { IAgedValue, IStorageProvider } from "@linkedmink/multilevel-aging-cache";
 import {
   IMongoCollectionProviderOptions,
   IMongoCollectionRecord,
   MongoCollectionProviderSetMode,
 } from "./IMongoCollectionProviderOptions";
-import {
-  getDotSeperatedPropertyValue,
-  setDotSeperatedPropertyValue,
-} from "./Helpers";
+import { getDotSeperatedPropertyValue, setDotSeperatedPropertyValue } from "./Helpers";
 
 /**
  * Use mongodb as a persistent storage mechanism
  */
-export class MongoCollectionProvider<
-  TKey,
-  TValue extends IMongoCollectionRecord
-> implements IStorageProvider<TKey, TValue> {
+export class MongoCollectionProvider<TKey, TValue extends IMongoCollectionRecord>
+  implements IStorageProvider<TKey, TValue> {
   readonly isPersistable = true;
 
   /**
@@ -38,19 +30,16 @@ export class MongoCollectionProvider<
    */
   get(key: TKey): Promise<IAgedValue<TValue> | null> {
     return this.collection
-      .findOne<IMongoCollectionRecord>({ [this.options.keyProperty]: key })
+      .findOne<IMongoCollectionRecord>({ [this.options.keyProperty]: key }, {})
       .then(record => {
         if (!record) {
           return null;
         }
 
-        const ageValue = getDotSeperatedPropertyValue(
-          record,
-          this.options.ageProperty
-        );
+        const ageValue = getDotSeperatedPropertyValue(record, this.options.ageProperty);
         const age = this.options.ageToNumberFunc
           ? this.options.ageToNumberFunc(ageValue)
-          : ageValue as number;
+          : (ageValue as number);
         return {
           age,
           value: record as TValue,
@@ -61,16 +50,14 @@ export class MongoCollectionProvider<
   /**
    * @param key The key to set
    * @param value The value to set
-   * @returns If setting the value was successful
+   * @returns The value written if successful or null
    */
-  set(key: TKey, value: IAgedValue<TValue>): Promise<boolean> {
+  set(key: TKey, value: IAgedValue<TValue>): Promise<IAgedValue<TValue> | null> {
     const record = value.value;
     setDotSeperatedPropertyValue(
       record,
       this.options.ageProperty,
-      this.options.numberToAgeFunc
-        ? this.options.numberToAgeFunc(value.age)
-        : value.age
+      this.options.numberToAgeFunc ? this.options.numberToAgeFunc(value.age) : value.age
     );
 
     let operation: Promise<UpdateWriteOpResult>;
@@ -88,19 +75,18 @@ export class MongoCollectionProvider<
       );
     }
 
-    return operation.then(status => status.modifiedCount > 0);
+    return operation.then(status => (status.modifiedCount > 0 ? value : null));
   }
 
   /**
    * @param key The key to the value to delete
-   * @returns If deleting the value was successful
+   * @returns The value deleted or boolean (value | true is success). A provider
+   * is not required to return a value
    */
-  delete(key: TKey): Promise<boolean> {
-    return this.collection
-      .deleteOne({ [this.options.keyProperty]: key })
-      .then(status => {
-        return status.deletedCount !== undefined && status.deletedCount > 0;
-      });
+  delete(key: TKey): Promise<IAgedValue<TValue> | boolean> {
+    return this.collection.deleteOne({ [this.options.keyProperty]: key }).then(status => {
+      return status.deletedCount !== undefined && status.deletedCount > 0;
+    });
   }
 
   /**

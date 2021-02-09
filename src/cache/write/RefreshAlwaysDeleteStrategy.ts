@@ -1,5 +1,5 @@
 import { IAgingCacheDeleteStrategy } from "./IAgingCacheWriteStrategy";
-import { AgingCacheWriteStatus } from "../IAgingCache";
+import { IAgingCacheWrite } from "../IAgingCache";
 import { AgingCacheWriteStrategy } from "./AgingCacheWriteStrategy";
 
 /**
@@ -7,8 +7,8 @@ import { AgingCacheWriteStrategy } from "./AgingCacheWriteStrategy";
  */
 export class RefreshAlwaysDeleteStrategy<TKey, TValue>
   extends AgingCacheWriteStrategy<TKey, TValue>
-  implements IAgingCacheDeleteStrategy<TKey> {
-  delete(key: TKey, force: boolean): Promise<AgingCacheWriteStatus> {
+  implements IAgingCacheDeleteStrategy<TKey, TValue> {
+  delete(key: TKey, force: boolean): Promise<IAgingCacheWrite<TValue>> {
     if (force) {
       return this.executeDelete(key);
     }
@@ -16,30 +16,29 @@ export class RefreshAlwaysDeleteStrategy<TKey, TValue>
     return this.deleteConditionally(key);
   }
 
-  evict(key: TKey, evictAtLevel?: number): Promise<AgingCacheWriteStatus> {
+  evict(key: TKey, evictAtLevel?: number, force?: boolean): Promise<IAgingCacheWrite<TValue>> {
+    if (force) {
+      return this.executeDelete(key, evictAtLevel);
+    }
+
     return this.deleteConditionally(key, evictAtLevel);
   }
 
-  deleteConditionally(
-    key: TKey,
-    evictAtLevel?: number
-  ): Promise<AgingCacheWriteStatus> {
+  deleteConditionally(key: TKey, evictAtLevel?: number): Promise<IAgingCacheWrite<TValue>> {
     return this.hierarchy.getValueAtTopLevel(key).then(highestAgedValue => {
       if (!highestAgedValue) {
-        return this.executeDelete(key);
+        return this.executeDelete(key, evictAtLevel);
       }
 
       return this.hierarchy.getValueAtBottomLevel(key).then(lowestAgedValue => {
         if (
           lowestAgedValue &&
-          this.evictQueue.compare(lowestAgedValue.age, highestAgedValue.age) ===
-            0
+          this.evictQueue.compare(lowestAgedValue.age, highestAgedValue.age) === 0
         ) {
-          return this.executeDelete(key);
+          return this.executeDelete(key, evictAtLevel);
         }
 
         this.logger.debug(
-          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           `Delete deferred: key=${key},ageToSet=${
             lowestAgedValue ? lowestAgedValue.age : "null"
           },ageFound=${highestAgedValue.age}`

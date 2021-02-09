@@ -8,10 +8,7 @@ import { MockStorageHierarchy } from "../Mocks";
 import { setGlobalMockTransport } from "../MockTransport";
 
 const getMockStorageHierarchy = () => {
-  return (new MockStorageHierarchy() as unknown) as StorageHierarchy<
-    string,
-    string
-  >;
+  return (new MockStorageHierarchy() as unknown) as StorageHierarchy<string, string>;
 };
 
 describe(path.basename(__filename, ".test.ts"), () => {
@@ -38,15 +35,10 @@ describe(path.basename(__filename, ".test.ts"), () => {
       const options = cacheOptions.getDefaultAgingCacheOptions();
       options.setMode = cacheOptions.AgingCacheWriteMode.RefreshAlways;
 
-      const cache = cacheFactory.createAgingCache(
-        getMockStorageHierarchy(),
-        options
-      );
+      const cache = cacheFactory.createAgingCache(getMockStorageHierarchy(), options);
 
       expect(cache).toBeDefined();
-      expect(
-        (cache as any).setStrategy instanceof RefreshAlwaysSetStrategy
-      ).toEqual(true);
+      expect((cache as any).setStrategy instanceof RefreshAlwaysSetStrategy).toEqual(true);
     });
 
     test("should check and throw error when invalid options provided", () => {
@@ -85,9 +77,7 @@ describe(path.basename(__filename, ".test.ts"), () => {
 
       const result = cacheFactory.checkAgingCacheOptionsValid(options, 2);
 
-      expect(result.message).toEqual(
-        "purgeInterval(9): must be greater than 10 seconds"
-      );
+      expect(result.message).toEqual("purgeInterval(9): must be greater than 10 seconds");
     });
 
     test("should return Error when maxEntries less than 1", () => {
@@ -97,9 +87,7 @@ describe(path.basename(__filename, ".test.ts"), () => {
 
       const result = cacheFactory.checkAgingCacheOptionsValid(options, 2);
 
-      expect(result.message).toEqual(
-        "maxAge(1 min): must be greater than purgeInterval(61 sec)"
-      );
+      expect(result.message).toEqual("maxAge(1 min): must be greater than purgeInterval(61 sec)");
     });
 
     test("should return Error when maxEntries less than 0 or more than max", () => {

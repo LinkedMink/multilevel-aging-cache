@@ -1,15 +1,11 @@
 import { IStorageProvider } from "./IStorageProvider";
-import {
-  AgedCompareFunc,
-  compareAscending,
-  IAgedValue,
-} from "../cache/expire/IAgedQueue";
+import { AgedCompareFunc, compareAscending, IAgedValue } from "../cache/expire/IAgedQueue";
 import { Logger } from "../shared/Logger";
 import { IDisposable } from "../shared/IDisposable";
 import {
   IStorageHierarchy,
   StorageHierarchyUpdatePolicy,
-  IStorageHierarchyWriteStatus,
+  IStorageHierarchyWrite,
 } from "./IStorageHierarchy";
 import {
   StorageProviderUpdateHandler,
@@ -51,9 +47,7 @@ export class StorageHierarchy<TKey, TValue>
       throw new Error("StorageHierarchy must have at least 2 storage provider");
     }
 
-    this.logger.info(
-      `Created storage hierarchy with levels: ${this.totalLevels}`
-    );
+    this.logger.info(`Created storage hierarchy with levels: ${this.totalLevels}`);
     this.publishLevel = this.subscribeAtLevel(this.totalLevels - 1);
   }
 
@@ -96,27 +90,13 @@ export class StorageHierarchy<TKey, TValue>
         if (agedValue) {
           return agedValue;
         } else {
-          this.logger.debug(
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            `Cache miss: level=${rLevel}, key=${key}`
-          );
-          return this.getAtLevel(
-            key,
-            isAscending ? rLevel + 1 : rLevel - 1,
-            isAscending
-          );
+          this.logger.debug(`Cache miss: level=${rLevel}, key=${key}`);
+          return this.getAtLevel(key, isAscending ? rLevel + 1 : rLevel - 1, isAscending);
         }
       })
       .catch(error => {
-        this.logger.debug(
-          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-          `Failed to Get: level=${rLevel}, key=${key}, error=${error}`
-        );
-        return this.getAtLevel(
-          key,
-          isAscending ? rLevel + 1 : rLevel - 1,
-          isAscending
-        );
+        this.logger.debug(`Failed to Get: level=${rLevel}, key=${key}, error=${error}`);
+        return this.getAtLevel(key, isAscending ? rLevel + 1 : rLevel - 1, isAscending);
       });
   }
 
@@ -132,32 +112,29 @@ export class StorageHierarchy<TKey, TValue>
     value: IAgedValue<TValue>,
     level?: number,
     isAscending = false
-  ): Promise<IStorageHierarchyWriteStatus> {
+  ): Promise<IStorageHierarchyWrite<TValue>> {
     const rLevel = this.getCurrentLevelOrNull(isAscending, level);
     if (rLevel === null) {
-      return Promise.resolve(this.getFullWriteStatus());
+      return Promise.resolve(this.getFullWriteStatus(value));
     }
 
     return this.levels[rLevel]
       .set(key, value)
-      .then(isSuccessful => {
-        if (isSuccessful) {
+      .then(valueWritten => {
+        if (valueWritten !== null) {
           return this.setAtLevel(
             key,
-            value,
+            valueWritten,
             isAscending ? rLevel + 1 : rLevel - 1,
             isAscending
           );
         }
 
-        return this.getPartialWriteStatus(isAscending, rLevel);
+        return this.getPartialWriteStatus(isAscending, rLevel, value);
       })
       .catch(error => {
-        this.logger.warn(
-          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-          `Error setting: level=${rLevel}, key=${key}, error=${error}`
-        );
-        return this.getPartialWriteStatus(isAscending, rLevel);
+        this.logger.warn(`Error setting: level=${rLevel}, key=${key}, error=${error}`);
+        return this.getPartialWriteStatus(isAscending, rLevel, value);
       });
   }
 
@@ -170,32 +147,26 @@ export class StorageHierarchy<TKey, TValue>
   public deleteAtLevel(
     key: TKey,
     level?: number,
-    isAscending = false
-  ): Promise<IStorageHierarchyWriteStatus> {
+    isAscending = false,
+    writtenValue?: IAgedValue<TValue>
+  ): Promise<IStorageHierarchyWrite<TValue>> {
     const rLevel = this.getCurrentLevelOrNull(isAscending, level);
     if (rLevel === null) {
-      return Promise.resolve(this.getFullWriteStatus());
+      return Promise.resolve(this.getFullWriteStatus(writtenValue));
     }
 
     return this.levels[rLevel]
       .delete(key)
       .then(isSuccessful => {
         if (isSuccessful) {
-          return this.deleteAtLevel(
-            key,
-            isAscending ? rLevel + 1 : rLevel - 1,
-            isAscending
-          );
+          return this.deleteAtLevel(key, isAscending ? rLevel + 1 : rLevel - 1, isAscending);
         }
 
-        return this.getPartialWriteStatus(isAscending, rLevel);
+        return this.getPartialWriteStatus(isAscending, rLevel, writtenValue);
       })
       .catch(error => {
-        this.logger.warn(
-          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-          `Error deleting: level=${rLevel}, key=${key}, error=${error}`
-        );
-        return this.getPartialWriteStatus(isAscending, rLevel);
+        this.logger.warn(`Error deleting: level=${rLevel}, key=${key}, error=${error}`);
+        return this.getPartialWriteStatus(isAscending, rLevel, writtenValue);
       });
   }
 
@@ -239,14 +210,11 @@ export class StorageHierarchy<TKey, TValue>
   public setBelowTopLevel(
     key: TKey,
     value: IAgedValue<TValue>
-  ): Promise<IStorageHierarchyWriteStatus> {
+  ): Promise<IStorageHierarchyWrite<TValue>> {
     return this.setAtLevel(key, value, this.totalLevels - 2);
   }
 
-  private subscribeAtLevel(
-    level: number,
-    publishLevel?: number
-  ): number | undefined {
+  private subscribeAtLevel(level: number, publishLevel?: number): number | undefined {
     if (level <= 0) {
       return publishLevel;
     }
@@ -274,12 +242,8 @@ export class StorageHierarchy<TKey, TValue>
     return this.subscribeAtLevel(nextLevel, publishLevel);
   }
 
-  private getCurrentLevelOrNull(
-    isAscending: boolean,
-    level?: number
-  ): number | null {
-    level =
-      level === undefined ? (isAscending ? 0 : this.totalLevels - 1) : level;
+  private getCurrentLevelOrNull(isAscending: boolean, level?: number): number | null {
+    level = level === undefined ? (isAscending ? 0 : this.totalLevels - 1) : level;
 
     if (isAscending && level >= this.totalLevels) {
       return null;
@@ -297,9 +261,7 @@ export class StorageHierarchy<TKey, TValue>
           s => s.writtenLevels === this.totalLevels
         );
       } else {
-        return this.deleteAtLevel(key, updateLevel).then(
-          s => s.writtenLevels === this.totalLevels
-        );
+        return this.deleteAtLevel(key, updateLevel).then(s => s.writtenLevels === this.totalLevels);
       }
     };
   }
@@ -311,26 +273,18 @@ export class StorageHierarchy<TKey, TValue>
     return (key: TKey, value?: IAgedValue<TValue>): Promise<boolean> => {
       return this.getAtLevel(key, updateLevel, false).then(agedValue => {
         if (agedValue) {
-          if (
-            value !== undefined &&
-            this.ageCompareFunc(agedValue.age, value.age) >= 0
-          ) {
+          if (value !== undefined && this.ageCompareFunc(agedValue.age, value.age) >= 0) {
             return Promise.resolve(true);
           }
           return updateUnconditionally(key, value);
         }
-        this.logger.debug(
-          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-          `Key doesn't exist, ignoring subscribed update: ${key}`
-        );
+        this.logger.debug(`Key doesn't exist, ignoring subscribed update: ${key}`);
         return Promise.resolve(false);
       });
     };
   }
 
-  private getManagedPromiseSubscribe(
-    func: SubscriberUpdateHandler<TKey, TValue>
-  ) {
+  private getManagedPromiseSubscribe(func: SubscriberUpdateHandler<TKey, TValue>) {
     return (key: TKey, value?: IAgedValue<TValue>): void => {
       const promise = func(key, value).then(() => {
         this.pendingUpdates.delete(promise);
@@ -341,25 +295,26 @@ export class StorageHierarchy<TKey, TValue>
 
   private getPartialWriteStatus(
     isAscending: boolean,
-    level: number
-  ): IStorageHierarchyWriteStatus {
+    level: number,
+    value?: IAgedValue<TValue>
+  ): IStorageHierarchyWrite<TValue> {
+    const writtenLevels = isAscending ? level : this.totalLevels - level - 1;
     return {
-      isPersisted:
-        !isAscending &&
-        level <= this.totalLevels - 2 &&
-        this.topLevel.isPersistable,
+      isPersisted: !isAscending && level <= this.totalLevels - 2 && this.topLevel.isPersistable,
       isPublished:
         this.publishLevel !== undefined &&
         (isAscending ? level > this.publishLevel : level < this.publishLevel),
-      writtenLevels: isAscending ? level : this.totalLevels - level - 1,
+      writtenLevels,
+      writtenValue: writtenLevels !== 0 ? value : undefined,
     };
   }
 
-  private getFullWriteStatus(): IStorageHierarchyWriteStatus {
+  private getFullWriteStatus(value?: IAgedValue<TValue>): IStorageHierarchyWrite<TValue> {
     return {
       isPersisted: this.topLevel.isPersistable,
       isPublished: this.publishLevel !== undefined,
       writtenLevels: this.totalLevels,
+      writtenValue: value,
     };
   }
 }

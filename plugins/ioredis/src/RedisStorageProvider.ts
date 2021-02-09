@@ -1,10 +1,6 @@
 import { Redis, Cluster } from "ioredis";
 
-import {
-  IStorageProvider,
-  ISerializer,
-  IAgedValue,
-} from "@linkedmink/multilevel-aging-cache";
+import { IStorageProvider, ISerializer, IAgedValue } from "@linkedmink/multilevel-aging-cache";
 import { IRedisStorageProviderOptions } from "./IRedisStorageProviderOptions";
 
 const RESPONSE_OK = "OK";
@@ -13,8 +9,7 @@ const RESPONSE_OK = "OK";
  * A storage provider that uses IORedis. This implemenation uses Redis pub/sub as a method to retrieve
  * updates from other nodes whenever keys change.
  */
-export class RedisStorageProvider<TKey, TValue>
-  implements IStorageProvider<TKey, TValue> {
+export class RedisStorageProvider<TKey, TValue> implements IStorageProvider<TKey, TValue> {
   readonly isPersistable: boolean;
 
   private readonly keyPrefix: string;
@@ -27,7 +22,7 @@ export class RedisStorageProvider<TKey, TValue>
    */
   constructor(
     private readonly client: Redis | Cluster,
-    config: IRedisStorageProviderOptions<TKey, TValue>,
+    config: IRedisStorageProviderOptions<TKey, TValue>
   ) {
     this.keyPrefix = config.keyPrefix;
     this.keySerializer = config.keySerializer;
@@ -57,9 +52,9 @@ export class RedisStorageProvider<TKey, TValue>
   /**
    * @param key The key to set
    * @param value The value to set
-   * @returns If setting the value was successful
+   * @returns The value written if successful or null
    */
-  set(key: TKey, agedValue: IAgedValue<TValue>): Promise<boolean> {
+  set(key: TKey, agedValue: IAgedValue<TValue>): Promise<IAgedValue<TValue> | null> {
     const serializedKey = this.keySerializer.serialize(key);
     const serializedValue = this.valueSerializer.serialize(agedValue.value);
     const serializedAgeValue = JSON.stringify({
@@ -68,15 +63,16 @@ export class RedisStorageProvider<TKey, TValue>
     });
 
     return this.client.set(serializedKey, serializedAgeValue).then(response => {
-      return response === RESPONSE_OK;
+      return response === RESPONSE_OK ? agedValue : null;
     });
   }
 
   /**
    * @param key The key to the value to delete
-   * @returns If deleting the value was successful
+   * @returns The value deleted or boolean (value | true is success). A provider
+   * is not required to return a value
    */
-  delete(key: TKey): Promise<boolean> {
+  delete(key: TKey): Promise<IAgedValue<TValue> | boolean> {
     const serializedKey = this.keySerializer.serialize(key);
     return this.client.del(serializedKey).then(response => {
       return response > 0;

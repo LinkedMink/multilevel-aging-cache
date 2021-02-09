@@ -15,8 +15,7 @@ export type StorageProviderUpdateHandler<TKey, TValue> = (
  * A storage provider that can propogate changes through the cluster. In a distributed system where
  * data is partially stored at the node level, some systems require a mechanism to sychronize writes.
  */
-export interface ISubscribableStorageProvider<TKey, TValue>
-  extends IStorageProvider<TKey, TValue> {
+export interface ISubscribableStorageProvider<TKey, TValue> extends IStorageProvider<TKey, TValue> {
   /**
    * Whenever a key/value changes, the storage provider can notify observers, so that
    * they can react accordingly. This will add the observer until an unsubscribe() is called
@@ -35,8 +34,5 @@ export interface ISubscribableStorageProvider<TKey, TValue>
 export function isISubscribableStorageProvider<TKey, TValue>(
   provider: IStorageProvider<TKey, TValue>
 ): provider is ISubscribableStorageProvider<TKey, TValue> {
-  return (
-    (provider as ISubscribableStorageProvider<TKey, TValue>).subscribe !==
-    undefined
-  );
+  return (provider as ISubscribableStorageProvider<TKey, TValue>).subscribe !== undefined;
 }

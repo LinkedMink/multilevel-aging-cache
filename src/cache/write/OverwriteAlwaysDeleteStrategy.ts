@@ -1,5 +1,5 @@
 import { IAgingCacheDeleteStrategy } from "./IAgingCacheWriteStrategy";
-import { AgingCacheWriteStatus } from "../IAgingCache";
+import { IAgingCacheWrite } from "../IAgingCache";
 import { AgingCacheWriteStrategy } from "./AgingCacheWriteStrategy";
 
 /**
@@ -7,12 +7,12 @@ import { AgingCacheWriteStrategy } from "./AgingCacheWriteStrategy";
  */
 export class OverwriteAlwaysDeleteStrategy<TKey, TValue>
   extends AgingCacheWriteStrategy<TKey, TValue>
-  implements IAgingCacheDeleteStrategy<TKey> {
-  delete(key: TKey, force: boolean): Promise<AgingCacheWriteStatus> {
+  implements IAgingCacheDeleteStrategy<TKey, TValue> {
+  delete(key: TKey, force: boolean): Promise<IAgingCacheWrite<TValue>> {
     return this.executeDelete(key);
   }
 
-  evict(key: TKey, evictAtLevel?: number): Promise<AgingCacheWriteStatus> {
+  evict(key: TKey, evictAtLevel?: number, force?: boolean): Promise<IAgingCacheWrite<TValue>> {
     return this.executeDelete(key, evictAtLevel);
   }
 }

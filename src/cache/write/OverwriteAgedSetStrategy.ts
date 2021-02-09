@@ -1,5 +1,5 @@
 import { IAgingCacheSetStrategy } from "./IAgingCacheWriteStrategy";
-import { AgingCacheWriteStatus } from "../IAgingCache";
+import { IAgingCacheWrite } from "../IAgingCache";
 import { AgingCacheWriteStrategy } from "./AgingCacheWriteStrategy";
 
 /**
@@ -8,26 +8,39 @@ import { AgingCacheWriteStrategy } from "./AgingCacheWriteStrategy";
 export class OverwriteAgedSetStrategy<TKey, TValue>
   extends AgingCacheWriteStrategy<TKey, TValue>
   implements IAgingCacheSetStrategy<TKey, TValue> {
-  set(
-    key: TKey,
-    value: TValue,
-    force: boolean
-  ): Promise<AgingCacheWriteStatus> {
+  set(key: TKey, value: TValue, force: boolean): Promise<IAgingCacheWrite<TValue>> {
     if (force) {
       return this.executeSet(key, value);
     }
 
+    return this.setConditionally(key, value);
+  }
+
+  load(
+    key: TKey,
+    value: TValue,
+    evictAtLevel?: number,
+    force?: boolean
+  ): Promise<IAgingCacheWrite<TValue>> {
+    if (force) {
+      return this.executeSet(key, value, evictAtLevel);
+    }
+
+    return this.setConditionally(key, value, evictAtLevel);
+  }
+
+  private setConditionally(
+    key: TKey,
+    value: TValue,
+    evictAtLevel?: number
+  ): Promise<IAgingCacheWrite<TValue>> {
     const currentAge = this.evictQueue.getInitialAge(key);
     return this.hierarchy.getValueAtTopLevel(key).then(highestAgedValue => {
-      if (
-        !highestAgedValue ||
-        this.evictQueue.compare(highestAgedValue.age, currentAge) <= 0
-      ) {
-        return this.executeSet(key, value);
+      if (!highestAgedValue || this.evictQueue.compare(highestAgedValue.age, currentAge) <= 0) {
+        return this.executeSet(key, value, evictAtLevel);
       }
 
       this.logger.debug(
-        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         `Set deferred: key=${key},ageToSet=${currentAge},ageFound=${highestAgedValue.age}`
       );
       return this.setFromHighestLevel(key, highestAgedValue);

@@ -28,3 +28,9 @@ See the [demo program](https://github.com/LinkedMink/multilevel-aging-cache/blob
 for an example of how to use the library.
 
 TODO add more detail
+
+## Documentation
+* [Core](https://linkedmink.github.io/multilevel-aging-cache)
+* [ioredis](https://linkedmink.github.io/multilevel-aging-cache/plugins/ioredis)
+* [mongodb](https://linkedmink.github.io/multilevel-aging-cache/plugins/mongodb)
+* [mongoose](https://linkedmink.github.io/multilevel-aging-cache/plugins/mongoose)

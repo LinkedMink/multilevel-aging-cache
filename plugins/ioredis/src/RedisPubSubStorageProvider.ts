@@ -21,9 +21,7 @@ interface IPublishUpdateMessage extends IPublishDeleteMessage {
   value: string;
 }
 
-const isIPublishUpdateMessage = (
-  value: unknown
-): value is IPublishUpdateMessage => {
+const isIPublishUpdateMessage = (value: unknown): value is IPublishUpdateMessage => {
   return (value as IPublishUpdateMessage).value !== undefined;
 };
 
@@ -40,10 +38,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
   private readonly channelName: string;
   private readonly keySerializer: ISerializer<TKey>;
   private readonly valueSerializer: ISerializer<TValue>;
-  private readonly updateHandlers: StorageProviderUpdateHandler<
-    TKey,
-    TValue
-  >[] = [];
+  private readonly updateHandlers: StorageProviderUpdateHandler<TKey, TValue>[] = [];
   private isListening = false;
 
   /**
@@ -87,10 +82,10 @@ export class RedisPubSubStorageProvider<TKey, TValue>
 
   /**
    * @param key The key to set
-   * @param value The value to set
+   * @returns The value written if successful or null
    * @returns If setting the value was successful
    */
-  set(key: TKey, agedValue: IAgedValue<TValue>): Promise<boolean> {
+  set(key: TKey, agedValue: IAgedValue<TValue>): Promise<IAgedValue<TValue> | null> {
     const serializedKey = this.keySerializer.serialize(key);
     const serializedValue = this.valueSerializer.serialize(agedValue.value);
     const serializedAgeValue = JSON.stringify({
@@ -106,36 +101,31 @@ export class RedisPubSubStorageProvider<TKey, TValue>
           age: agedValue.age,
           value: serializedValue,
         });
-        return this.channel
-          .publish(this.channelName, message)
-          .then(channelCount => {
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            this.logger.debug(`Published Set: ${key}`);
-            return true;
-          });
+        return this.channel.publish(this.channelName, message).then(channelCount => {
+          this.logger.debug(`Published Set: ${key}`);
+          return agedValue;
+        });
       }
 
-      return isSuccessful;
+      return isSuccessful ? agedValue : null;
     });
   }
 
   /**
    * @param key The key to the value to delete
-   * @returns If deleting the value was successful
+   * @returns The value deleted or boolean (value | true is success). A provider
+   * is not required to return a value
    */
-  delete(key: TKey): Promise<boolean> {
+  delete(key: TKey): Promise<IAgedValue<TValue> | boolean> {
     const serializedKey = this.keySerializer.serialize(key);
     return this.client.del(serializedKey).then(response => {
       const isSuccessful = response > 0;
       if (isSuccessful) {
         const message = JSON.stringify({ key: serializedKey });
-        return this.channel
-          .publish(this.channelName, message)
-          .then(channelCount => {
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            this.logger.debug(`Published Delete: ${key}`);
-            return true;
-          });
+        return this.channel.publish(this.channelName, message).then(channelCount => {
+          this.logger.debug(`Published Delete: ${key}`);
+          return true;
+        });
       }
 
       return isSuccessful;
@@ -167,9 +157,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
   subscribe(handler: StorageProviderUpdateHandler<TKey, TValue>): boolean {
     const index = this.updateHandlers.indexOf(handler);
     if (index >= 0) {
-      this.logger.warn(
-        "Attempted to subscribe function that is already subscribed"
-      );
+      this.logger.warn("Attempted to subscribe function that is already subscribed");
       return false;
     }
 
@@ -188,9 +176,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
       return true;
     }
 
-    this.logger.warn(
-      "Attempted to unsubscribe with function that was never subscribed"
-    );
+    this.logger.warn("Attempted to unsubscribe with function that was never subscribed");
     return false;
   }
 
@@ -222,9 +208,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
 
   private handleChannelMessage = (channel: string, message: string): void => {
     if (channel !== this.channelName) {
-      this.logger.warn(
-        `Message from foreign channel: ${channel}, message=${message}`
-      );
+      this.logger.warn(`Message from foreign channel: ${channel}, message=${message}`);
       return;
     }
 

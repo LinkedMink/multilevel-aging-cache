@@ -2,15 +2,15 @@ import { Document, FilterQuery, Types } from "mongoose";
 
 const DEFAULT_AGE_PROPERTY = "modifiedDate";
 
-export type ToNumberFunc = <T>(age: T) => number
-export type ToTypeFunc = <T>(value: number) => T
+export type ToNumberFunc = <T>(age: T) => number;
+export type ToTypeFunc = <T>(value: number) => T;
 
-export type FilterQueryFunc<TKey, TValue extends Document> = (key: TKey) => FilterQuery<TValue>
+export type FilterQueryFunc<TKey, TValue extends Document> = (key: TKey) => FilterQuery<TValue>;
 
 /**
  * Options to configure Mongoose (mongodb) as a storage provider
  */
-export interface IMongooseCollectionProviderOptions<
+export interface IMongooseProviderOptions<
   TKey = Types.ObjectId,
   TValue extends Document = Document
 > {
@@ -39,9 +39,10 @@ export interface IMongooseCollectionProviderOptions<
 /**
  * Default options to use Mongoosedb _id ObjectID as the key and update as a write policy
  */
-export function getDefaultOptions<
-  TValue extends Document = Document
->(): IMongooseCollectionProviderOptions<Types.ObjectId, TValue> {
+export function getDefaultOptions<TValue extends Document = Document>(): IMongooseProviderOptions<
+  Types.ObjectId,
+  TValue
+> {
   return {
     ageProperty: DEFAULT_AGE_PROPERTY,
     ageToNumberFunc: ((age: Date) => age.getTime()) as ToNumberFunc,

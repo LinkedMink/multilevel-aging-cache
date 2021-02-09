@@ -10,9 +10,7 @@ import { ISubscribableStorageProvider } from "../src/storage/ISubscribableStorag
 
 export class MockSerializer implements ISerializer<string> {
   static testSerializePrefix = "TEST12345_";
-  serialize = jest.fn(
-    (data: string) => MockSerializer.testSerializePrefix + data
-  );
+  serialize = jest.fn((data: string) => MockSerializer.testSerializePrefix + data);
   deserialize = jest.fn((data: string) =>
     data.substring(MockSerializer.testSerializePrefix.length)
   );
@@ -30,8 +28,7 @@ export class MockStorageProvider<TKey, TValue>
   unsubscribe = jest.fn().mockReturnValue(true);
 }
 
-export class MockStorageHierarchy<TKey, TValue>
-  implements IStorageHierarchy<TKey, TValue> {
+export class MockStorageHierarchy<TKey, TValue> implements IStorageHierarchy<TKey, TValue> {
   isPersistable = true;
   totalLevels = 2;
   getAtLevel = jest.fn().mockResolvedValue(null);
@@ -49,8 +46,7 @@ export class MockAgingCacheSetStrategy<TKey, TValue>
   set = jest.fn().mockResolvedValue(AgingCacheWriteStatus.Success);
 }
 
-export class MockAgingCacheDeleteStrategy<TKey>
-  implements IAgingCacheDeleteStrategy<TKey> {
+export class MockAgingCacheDeleteStrategy<TKey> implements IAgingCacheDeleteStrategy<TKey> {
   delete = jest.fn().mockResolvedValue(AgingCacheWriteStatus.Success);
   evict = jest.fn().mockResolvedValue(AgingCacheWriteStatus.Success);
 }
