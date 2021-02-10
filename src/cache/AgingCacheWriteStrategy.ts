@@ -1,7 +1,7 @@
-import { Logger } from "../../shared/Logger";
-import { IAgedValue, IAgedQueue } from "../expire/IAgedQueue";
-import { AgingCacheWriteStatus, IAgingCacheWrite } from "../IAgingCache";
-import { IStorageHierarchy, IStorageHierarchyWrite } from "../../storage/IStorageHierarchy";
+import { Logger } from "../shared/Logger";
+import { IAgedValue, IAgedQueue } from "../queue/IAgedQueue";
+import { AgingCacheWriteStatus, IAgingCacheWrite } from "./IAgingCache";
+import { IStorageHierarchy, IStorageHierarchyWrite } from "../storage/IStorageHierarchy";
 
 /**
  * Keep common methods and data for each set/delete strategy here

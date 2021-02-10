@@ -1,5 +1,5 @@
 import { IStorageProvider } from "./IStorageProvider";
-import { AgedCompareFunc, compareAscending, IAgedValue } from "../cache/expire/IAgedQueue";
+import { AgedCompareFunc, compareAscending, IAgedValue } from "../queue/IAgedQueue";
 import { Logger } from "../shared/Logger";
 import { IDisposable } from "../shared/IDisposable";
 import {

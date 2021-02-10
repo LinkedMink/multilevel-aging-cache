@@ -6,7 +6,7 @@ const DEFAULT_AGE_PROPERTY = "modifiedDate";
 /**
  * A MongoDB record that has fields to track when it's written.
  */
-export interface IMongoCollectionRecord {
+export interface IMongoRecord {
   _id?: ObjectID;
   [property: string]: unknown;
 }
@@ -14,7 +14,7 @@ export interface IMongoCollectionRecord {
 /**
  * When set() is called should the entire document be replaced or only the fields that are provided
  */
-export enum MongoCollectionProviderSetMode {
+export enum MongoProviderSetMode {
   Replace,
   Update,
 }
@@ -25,11 +25,11 @@ export type ToTypeFunc = <T>(value: number) => T;
 /**
  * Options to configure mongodb as a storage provider
  */
-export interface IMongoCollectionProviderOptions<TKey, TValue extends IMongoCollectionRecord> {
+export interface IMongoProviderOptions<TKey, TValue extends IMongoRecord> {
   /**
    * When set() is called should the entire document be replaced or only the fields that are provided
    */
-  setMode: MongoCollectionProviderSetMode;
+  setMode: MongoProviderSetMode;
   /**
    * The property (with . seperators for nested properties) to use as the search key on a document
    */
@@ -51,12 +51,12 @@ export interface IMongoCollectionProviderOptions<TKey, TValue extends IMongoColl
 /**
  * Default options to use mongodb _id ObjectID as the key and update as a write policy
  */
-export function getDefaultOptions<
+export function getDefaultOptions<TKey, TValue extends IMongoRecord>(): IMongoProviderOptions<
   TKey,
-  TValue extends IMongoCollectionRecord
->(): IMongoCollectionProviderOptions<TKey, TValue> {
+  TValue
+> {
   return {
-    setMode: MongoCollectionProviderSetMode.Update,
+    setMode: MongoProviderSetMode.Update,
     keyProperty: DEFAULT_KEY_PROPERTY,
     ageProperty: DEFAULT_AGE_PROPERTY,
     ageToNumberFunc: ((age: Date) => age.getTime()) as ToNumberFunc,

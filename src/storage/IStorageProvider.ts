@@ -1,4 +1,4 @@
-import { IAgedValue } from "../cache/expire/IAgedQueue";
+import { IAgedValue } from "../queue/IAgedQueue";
 
 /**
  * Represents a key/value storage system

@@ -1,5 +1,3 @@
-import { IAgedValue } from "./expire/IAgedQueue";
-
 /**
  * Describes what happened during a write to an aging cache
  */

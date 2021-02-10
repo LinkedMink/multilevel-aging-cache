@@ -1,26 +1,26 @@
 import path from "path";
-import { IAgingCache } from "./IAgingCache";
+import { IAgingCache } from "./cache/IAgingCache";
 import {
   getDefaultAgingCacheOptions,
   AgingCacheWriteMode,
   IAgingCacheOptions,
   AgingCacheReplacementPolicy,
-} from "./IAgingCacheOptions";
-import { RefreshAlwaysSetStrategy } from "./write/RefreshAlwaysSetStrategy";
-import { OverwriteAlwaysSetStrategy } from "./write/OverwriteAlwaysSetStrategy";
-import { OverwriteAgedSetStrategy } from "./write/OverwriteAgedSetStrategy";
-import { RefreshAlwaysDeleteStrategy } from "./write/RefreshAlwaysDeleteStrategy";
-import { OverwriteAlwaysDeleteStrategy } from "./write/OverwriteAlwaysDeleteStrategy";
-import { OverwriteAgedDeleteStrategy } from "./write/OverwriteAgedDeleteStrategy";
-import { Logger } from "../shared/Logger";
-import { AgingCache } from "./AgingCache";
-import { IStorageHierarchy } from "../storage/IStorageHierarchy";
-import { IAgedQueue } from "./expire/IAgedQueue";
-import { FIFOAgedQueue } from "./expire/FIFOAgedQueue";
+} from "./cache/IAgingCacheOptions";
+import { RefreshAlwaysSetStrategy } from "./cache/RefreshAlwaysSetStrategy";
+import { OverwriteAlwaysSetStrategy } from "./cache/OverwriteAlwaysSetStrategy";
+import { OverwriteAgedSetStrategy } from "./cache/OverwriteAgedSetStrategy";
+import { RefreshAlwaysDeleteStrategy } from "./cache/RefreshAlwaysDeleteStrategy";
+import { OverwriteAlwaysDeleteStrategy } from "./cache/OverwriteAlwaysDeleteStrategy";
+import { OverwriteAgedDeleteStrategy } from "./cache/OverwriteAgedDeleteStrategy";
+import { Logger } from "./shared/Logger";
+import { AgingCache } from "./cache/AgingCache";
+import { IStorageHierarchy } from "./storage/IStorageHierarchy";
+import { IAgedQueue } from "./queue/IAgedQueue";
+import { FIFOAgedQueue } from "./queue/FIFOAgedQueue";
 import {
   IAgingCacheSetStrategy,
   IAgingCacheDeleteStrategy,
-} from "./write/IAgingCacheWriteStrategy";
+} from "./cache/IAgingCacheWriteStrategy";
 
 type IAgedQueueConstructor = new <TKey>(maxEntries?: number, ageLimit?: number) => IAgedQueue<TKey>;
 type IAgingCacheSetStrategyConstructor = new <TKey, TValue>(
@@ -57,6 +57,7 @@ export function checkAgingCacheOptionsValid(
   }
 
   if (
+    options.ageLimit &&
     options.replacementPolicy === AgingCacheReplacementPolicy.FIFO &&
     options.ageLimit * 60 <= options.purgeInterval
   ) {

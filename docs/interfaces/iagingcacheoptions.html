@@ -103,17 +103,17 @@
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="agelimit" class="tsd-anchor"></a>
-					<h3>age<wbr>Limit</h3>
-					<div class="tsd-signature tsd-kind-icon">age<wbr>Limit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> age<wbr>Limit</h3>
+					<div class="tsd-signature tsd-kind-icon">age<wbr>Limit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/2611fc7/src/cache/IAgingCacheOptions.ts#L49">src/cache/IAgingCacheOptions.ts:49</a></li>
+							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/993ceb1/src/cache/IAgingCacheOptions.ts#L49">src/cache/IAgingCacheOptions.ts:49</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>During a purge, the maximum value of the age marker to keep entries, varies by algorithm
-							FIFO: The maximum time to keep entries in minutes</p>
+							FIFO: The maximum time to keep entries in minutes, undefined for no limit</p>
 						</div>
 					</div>
 				</section>
@@ -123,7 +123,7 @@
 					<div class="tsd-signature tsd-kind-icon">delete<wbr>Mode<span class="tsd-signature-symbol">:</span> <a href="../enums/agingcachewritemode.html" class="tsd-signature-type" data-tsd-kind="Enumeration">AgingCacheWriteMode</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/2611fc7/src/cache/IAgingCacheOptions.ts#L65">src/cache/IAgingCacheOptions.ts:65</a></li>
+							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/993ceb1/src/cache/IAgingCacheOptions.ts#L65">src/cache/IAgingCacheOptions.ts:65</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -138,7 +138,7 @@
 					<div class="tsd-signature tsd-kind-icon">evict<wbr>AtLevel<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/2611fc7/src/cache/IAgingCacheOptions.ts#L70">src/cache/IAgingCacheOptions.ts:70</a></li>
+							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/993ceb1/src/cache/IAgingCacheOptions.ts#L70">src/cache/IAgingCacheOptions.ts:70</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -154,7 +154,7 @@
 					<div class="tsd-signature tsd-kind-icon">max<wbr>Entries<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/2611fc7/src/cache/IAgingCacheOptions.ts#L44">src/cache/IAgingCacheOptions.ts:44</a></li>
+							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/993ceb1/src/cache/IAgingCacheOptions.ts#L44">src/cache/IAgingCacheOptions.ts:44</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -170,7 +170,7 @@
 					<div class="tsd-signature tsd-kind-icon">purge<wbr>Interval<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/2611fc7/src/cache/IAgingCacheOptions.ts#L53">src/cache/IAgingCacheOptions.ts:53</a></li>
+							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/993ceb1/src/cache/IAgingCacheOptions.ts#L53">src/cache/IAgingCacheOptions.ts:53</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -185,7 +185,7 @@
 					<div class="tsd-signature tsd-kind-icon">replacement<wbr>Policy<span class="tsd-signature-symbol">:</span> <a href="../enums/agingcachereplacementpolicy.html" class="tsd-signature-type" data-tsd-kind="Enumeration">AgingCacheReplacementPolicy</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/2611fc7/src/cache/IAgingCacheOptions.ts#L57">src/cache/IAgingCacheOptions.ts:57</a></li>
+							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/993ceb1/src/cache/IAgingCacheOptions.ts#L57">src/cache/IAgingCacheOptions.ts:57</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -200,7 +200,7 @@
 					<div class="tsd-signature tsd-kind-icon">set<wbr>Mode<span class="tsd-signature-symbol">:</span> <a href="../enums/agingcachewritemode.html" class="tsd-signature-type" data-tsd-kind="Enumeration">AgingCacheWriteMode</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/2611fc7/src/cache/IAgingCacheOptions.ts#L61">src/cache/IAgingCacheOptions.ts:61</a></li>
+							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/993ceb1/src/cache/IAgingCacheOptions.ts#L61">src/cache/IAgingCacheOptions.ts:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -237,6 +237,9 @@
 						<a href="../enums/storageproviderevent.html" class="tsd-kind-icon">Storage<wbr>Provider<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="../classes/fifoagedqueue.html" class="tsd-kind-icon">FIFOAged<wbr>Queue</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
 						<a href="../classes/jsonserializer.html" class="tsd-kind-icon">Json<wbr>Serializer</a>
 					</li>
 					<li class=" tsd-kind-class">
@@ -262,6 +265,9 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="iagingcache.html" class="tsd-kind-icon">IAging<wbr>Cache</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="iagingcachedeletestrategy.html" class="tsd-kind-icon">IAging<wbr>Cache<wbr>Delete<wbr>Strategy</a>
 					</li>
 				</ul>
 				<ul class="current">
@@ -293,6 +299,12 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="iagingcachesetstrategy.html" class="tsd-kind-icon">IAging<wbr>Cache<wbr>Set<wbr>Strategy</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="iagingcachewrite.html" class="tsd-kind-icon">IAging<wbr>Cache<wbr>Write</a>
+					</li>
 					<li class=" tsd-kind-interface">
 						<a href="idisposable.html" class="tsd-kind-icon">IDisposable</a>
 					</li>
@@ -310,6 +322,9 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="isubscribablestorageprovider.html" class="tsd-kind-icon">ISubscribable<wbr>Storage<wbr>Provider</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#agedcomparefunc" class="tsd-kind-icon">Aged<wbr>Compare<wbr>Func</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="../modules.html#deserializefunction" class="tsd-kind-icon">Deserialize<wbr>Function</a>

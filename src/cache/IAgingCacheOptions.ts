@@ -44,9 +44,9 @@ export interface IAgingCacheOptions {
   maxEntries?: number;
   /**
    * During a purge, the maximum value of the age marker to keep entries, varies by algorithm
-   * FIFO: The maximum time to keep entries in minutes
+   * FIFO: The maximum time to keep entries in minutes, undefined for no limit
    */
-  ageLimit: number;
+  ageLimit?: number;
   /**
    * The interval to check for old entries in seconds
    */

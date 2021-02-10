@@ -1,4 +1,7 @@
 export * from "./cache";
-export * from "./serialization";
+export * from "./queue";
+export * from "./serialize";
 export * from "./shared";
 export * from "./storage";
+
+export { createAgingCache } from "./CacheFactory";

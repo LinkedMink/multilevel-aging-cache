@@ -1,11 +1,11 @@
-import { ISerializer, StringSerializer, JsonSerializer } from "@linkedmink/multilevel-aging-cache";
+import { ISerializer, JsonSerializer, StringSerializer } from "@linkedmink/multilevel-aging-cache";
 
 const DEFAULT_KEY_PREFIX = "node";
 
 /**
  * Options to build a RedisStorageProvider
  */
-export interface IRedisStorageProviderOptions<TKey, TValue> {
+export interface IRedisProviderOptions<TKey, TValue> {
   /**
    * The storage provider uses IORedis which sets its own key prefix. This is still needed
    * to build queries, so it should be the same as the prefix to build the Redis client.
@@ -37,7 +37,7 @@ export interface IRedisStorageProviderOptions<TKey, TValue> {
  */
 export function getStringKeyJsonValueOptions(
   keyPrefix?: string
-): IRedisStorageProviderOptions<string, Record<string, unknown>> {
+): IRedisProviderOptions<string, Record<string, unknown>> {
   const prefix = keyPrefix
     ? keyPrefix
     : `${DEFAULT_KEY_PREFIX}${Math.round(Math.random() * 1000000)}`;

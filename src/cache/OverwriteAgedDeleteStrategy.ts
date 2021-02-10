@@ -1,5 +1,5 @@
 import { IAgingCacheDeleteStrategy } from "./IAgingCacheWriteStrategy";
-import { IAgingCacheWrite } from "../IAgingCache";
+import { IAgingCacheWrite } from "./IAgingCache";
 import { AgingCacheWriteStrategy } from "./AgingCacheWriteStrategy";
 
 /**

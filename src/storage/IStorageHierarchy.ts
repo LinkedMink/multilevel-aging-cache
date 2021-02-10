@@ -1,4 +1,4 @@
-import { IAgedValue } from "../cache/expire/IAgedQueue";
+import { IAgedValue } from "../queue/IAgedQueue";
 
 /**
  * Describes the layers written to in a set/delete operation

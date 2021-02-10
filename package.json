@@ -1,6 +1,6 @@
 {
   "name": "@linkedmink/multilevel-aging-cache",
-  "version": "0.4.7",
+  "version": "0.4.9",
   "description": "Package provides an interface to cache and persist data to Redis, MongoDB, memory",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,18 +19,22 @@
     "build:ioredis": "cd plugins/ioredis && npm run build",
     "build:mongodb": "cd plugins/mongodb && npm run build",
     "build:mongoose": "cd plugins/mongoose && npm run build",
+    "build:all": "npm run build && npm run build:ioredis && npm run build:mongodb && npm run build:mongoose",
     "test": "jest",
     "test:ioredis": "cd plugins/ioredis && npm run test",
     "test:mongodb": "cd plugins/mongodb && npm run test",
     "test:mongoose": "cd plugins/mongoose && npm run test",
+    "test:all": "npm run test && npm run test:ioredis && npm run test:mongodb && npm run test:mongoose",
     "lint": "eslint -c .eslintrc.js --ext .ts src",
     "lint:ioredis": "cd plugins/ioredis && npm run lint",
     "lint:mongodb": "cd plugins/mongodb && npm run lint",
     "lint:mongoose": "cd plugins/mongoose && npm run lint",
+    "lint:all": "npm run lint && npm run lint:ioredis && npm run lint:mongodb && npm run lint:mongoose",
     "format": "prettier --write src/**/*.ts tests/**/*.ts *.js *.json",
     "format:ioredis": "cd plugins/ioredis && npm run format",
     "format:mongodb": "cd plugins/mongodb && npm run format",
     "format:mongoose": "cd plugins/mongoose && npm run format",
+    "format:all": "npm run format && npm run format:ioredis && npm run format:mongodb && npm run format:mongoose",
     "link": "npm run build && npm link && npm link @linkedmink/multilevel-aging-cache",
     "link:ioredis": "cd plugins/ioredis && npm run link && cd ../../ && npm link @linkedmink/multilevel-aging-cache-ioredis",
     "link:mongodb": "cd plugins/mongodb && npm run link && cd ../../ && npm link @linkedmink/multilevel-aging-cache-mongodb",
@@ -43,7 +47,8 @@
     "doc": "typedoc",
     "doc:ioredis": "cd plugins/ioredis && npm run doc",
     "doc:mongodb": "cd plugins/mongodb && npm run doc",
-    "doc:mongoose": "cd plugins/mongoose && npm run doc"
+    "doc:mongoose": "cd plugins/mongoose && npm run doc",
+    "doc:all": "npm run doc && npm run doc:ioredis && npm run doc:mongodb && npm run doc:mongoose"
   },
   "dependencies": {
     "bintrees": "^1.0.2"

@@ -1,9 +1,10 @@
-export { IAgedValue, IAgedQueue } from "./expire/IAgedQueue";
-export { IAgingCache, AgingCacheWriteStatus } from "./IAgingCache";
-export { createAgingCache } from "./IAgingCacheFactory";
+export { AgingCacheWriteStatus, IAgingCache, IAgingCacheWrite } from "./IAgingCache";
+
 export {
   IAgingCacheOptions,
   getDefaultAgingCacheOptions,
   AgingCacheReplacementPolicy,
   AgingCacheWriteMode,
 } from "./IAgingCacheOptions";
+
+export { IAgingCacheDeleteStrategy, IAgingCacheSetStrategy } from "./IAgingCacheWriteStrategy";

@@ -1,8 +1,5 @@
-import { RedisPubSubStorageProvider } from "../src/RedisPubSubStorageProvider";
-import {
-  getStringKeyJsonValueOptions,
-  IRedisStorageProviderOptions,
-} from "../src/IRedisStorageProviderOptions";
+import { RedisPubSubProvider } from "../src/RedisPubSubProvider";
+import { getStringKeyJsonValueOptions, IRedisProviderOptions } from "../src/IRedisProviderOptions";
 import { Redis as IRedis } from "ioredis";
 import { MockSerializer } from "../../../tests/Mocks";
 import { setGlobalMockTransport } from "../../../tests/MockTransport";
@@ -11,13 +8,13 @@ const Redis = require("ioredis-mock");
 
 const PUBLISH_CHANNEL = "PublishedKey";
 
-describe(RedisPubSubStorageProvider.name, () => {
+describe(RedisPubSubProvider.name, () => {
   const mockSerializer = new MockSerializer();
 
   let clientMock: IRedis;
   let channelMock: IRedis;
-  let optionsMock: IRedisStorageProviderOptions<string, string>;
-  let provider: RedisPubSubStorageProvider<string, string>;
+  let optionsMock: IRedisProviderOptions<string, string>;
+  let provider: RedisPubSubProvider<string, string>;
 
   beforeAll(() => {
     setGlobalMockTransport();
@@ -30,16 +27,17 @@ describe(RedisPubSubStorageProvider.name, () => {
       keyPrefix: "PREFIX",
       keySerializer: new MockSerializer(),
       valueSerializer: new MockSerializer(),
+      isPersistable: true,
     };
 
-    provider = new RedisPubSubStorageProvider(clientMock, optionsMock, channelMock);
+    provider = new RedisPubSubProvider(clientMock, channelMock, optionsMock);
   });
 
   test("should return instance when constructor parameters are valid", () => {
-    const provider = new RedisPubSubStorageProvider(
+    const provider = new RedisPubSubProvider(
       new Redis(),
-      getStringKeyJsonValueOptions(),
-      new Redis()
+      new Redis(),
+      getStringKeyJsonValueOptions()
     );
 
     expect(provider).toBeDefined();

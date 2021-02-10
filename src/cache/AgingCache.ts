@@ -1,12 +1,9 @@
 import { IDisposable } from "../shared/IDisposable";
 import { IAgingCache, AgingCacheWriteStatus, KeyValueArray, IAgingCacheWrite } from "./IAgingCache";
-import { IAgedQueue } from "./expire/IAgedQueue";
+import { IAgedQueue } from "../queue/IAgedQueue";
 import { Logger } from "../shared/Logger";
 import { IStorageHierarchy } from "../storage/IStorageHierarchy";
-import {
-  IAgingCacheDeleteStrategy,
-  IAgingCacheSetStrategy,
-} from "./write/IAgingCacheWriteStrategy";
+import { IAgingCacheDeleteStrategy, IAgingCacheSetStrategy } from "./IAgingCacheWriteStrategy";
 
 /**
  * A cache that will replace entries in the order specified by the input IAgedQueue

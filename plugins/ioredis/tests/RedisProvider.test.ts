@@ -1,15 +1,12 @@
-import { RedisStorageProvider } from "../src/RedisStorageProvider";
-import {
-  getStringKeyJsonValueOptions,
-  IRedisStorageProviderOptions,
-} from "../src/IRedisStorageProviderOptions";
+import { RedisProvider } from "../src/RedisProvider";
+import { getStringKeyJsonValueOptions, IRedisProviderOptions } from "../src/IRedisProviderOptions";
 import { Redis as IRedis } from "ioredis";
 import { MockSerializer } from "../../../tests/Mocks";
 import { setGlobalMockTransport } from "../../../tests/MockTransport";
 
 const Redis = require("ioredis-mock");
 
-describe(RedisStorageProvider.name, () => {
+describe(RedisProvider.name, () => {
   const mockSerializer = new MockSerializer();
 
   beforeAll(() => {
@@ -17,8 +14,8 @@ describe(RedisStorageProvider.name, () => {
   });
 
   let clientMock: IRedis;
-  let optionsMock: IRedisStorageProviderOptions<string, string>;
-  let provider: RedisStorageProvider<string, string>;
+  let optionsMock: IRedisProviderOptions<string, string>;
+  let provider: RedisProvider<string, string>;
 
   beforeEach(() => {
     clientMock = new Redis();
@@ -26,13 +23,14 @@ describe(RedisStorageProvider.name, () => {
       keyPrefix: "PREFIX",
       keySerializer: new MockSerializer(),
       valueSerializer: new MockSerializer(),
+      isPersistable: true,
     };
 
-    provider = new RedisStorageProvider(clientMock, optionsMock);
+    provider = new RedisProvider(clientMock, optionsMock);
   });
 
   test("should return instance when constructor parameters are valid", () => {
-    const provider = new RedisStorageProvider(new Redis(), getStringKeyJsonValueOptions());
+    const provider = new RedisProvider(new Redis(), getStringKeyJsonValueOptions());
 
     expect(provider).toBeDefined();
   });

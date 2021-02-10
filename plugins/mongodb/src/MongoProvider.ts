@@ -1,17 +1,13 @@
 import { Collection, UpdateWriteOpResult } from "mongodb";
 
 import { IAgedValue, IStorageProvider } from "@linkedmink/multilevel-aging-cache";
-import {
-  IMongoCollectionProviderOptions,
-  IMongoCollectionRecord,
-  MongoCollectionProviderSetMode,
-} from "./IMongoCollectionProviderOptions";
+import { IMongoProviderOptions, IMongoRecord, MongoProviderSetMode } from "./IMongoProviderOptions";
 import { getDotSeperatedPropertyValue, setDotSeperatedPropertyValue } from "./Helpers";
 
 /**
  * Use mongodb as a persistent storage mechanism
  */
-export class MongoCollectionProvider<TKey, TValue extends IMongoCollectionRecord>
+export class MongoProvider<TKey, TValue extends IMongoRecord>
   implements IStorageProvider<TKey, TValue> {
   readonly isPersistable = true;
 
@@ -21,7 +17,7 @@ export class MongoCollectionProvider<TKey, TValue extends IMongoCollectionRecord
    */
   constructor(
     private readonly collection: Collection,
-    private readonly options: IMongoCollectionProviderOptions<TKey, TValue>
+    private readonly options: IMongoProviderOptions<TKey, TValue>
   ) {}
 
   /**
@@ -30,7 +26,7 @@ export class MongoCollectionProvider<TKey, TValue extends IMongoCollectionRecord
    */
   get(key: TKey): Promise<IAgedValue<TValue> | null> {
     return this.collection
-      .findOne<IMongoCollectionRecord>({ [this.options.keyProperty]: key }, {})
+      .findOne<IMongoRecord>({ [this.options.keyProperty]: key }, {})
       .then(record => {
         if (!record) {
           return null;
@@ -61,7 +57,7 @@ export class MongoCollectionProvider<TKey, TValue extends IMongoCollectionRecord
     );
 
     let operation: Promise<UpdateWriteOpResult>;
-    if (this.options.setMode == MongoCollectionProviderSetMode.Replace) {
+    if (this.options.setMode == MongoProviderSetMode.Replace) {
       operation = this.collection.replaceOne(
         { [this.options.keyProperty]: key },
         { $set: record },

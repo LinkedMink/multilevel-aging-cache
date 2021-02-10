@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IMongoCollectionRecord | @linkedmink/multilevel-aging-cache-mongodb</title>
+	<title>MongoProviderSetMode | @linkedmink/multilevel-aging-cache-mongodb</title>
 	<meta name="description" content="Documentation for @linkedmink/multilevel-aging-cache-mongodb">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,10 +55,10 @@
 					<a href="../modules.html">@linkedmink/multilevel-aging-cache-mongodb</a>
 				</li>
 				<li>
-					<a href="imongocollectionrecord.html">IMongoCollectionRecord</a>
+					<a href="mongoprovidersetmode.html">MongoProviderSetMode</a>
 				</li>
 			</ul>
-			<h1>Interface IMongoCollectionRecord</h1>
+			<h1>Enumeration MongoProviderSetMode</h1>
 		</div>
 	</div>
 </header>
@@ -68,24 +68,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A MongoDB record that has fields to track when it&#39;s written.</p>
-					</div>
-				</div>
-			</section>
-			<section class="tsd-panel tsd-hierarchy">
-				<h3>Hierarchy</h3>
-				<ul class="tsd-hierarchy">
-					<li>
-						<span class="target">IMongoCollectionRecord</span>
-					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel tsd-kind-interface">
-				<h3 class="tsd-before-signature">Indexable</h3>
-				<div class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">[</span>property: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">unknown</span></div>
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>A MongoDB record that has fields to track when it&#39;s written.</p>
+						<p>When set() is called should the entire document be replaced or only the fields that are provided</p>
 					</div>
 				</div>
 			</section>
@@ -94,23 +77,34 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="imongocollectionrecord.html#_id" class="tsd-kind-icon">_id</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="mongoprovidersetmode.html#replace" class="tsd-kind-icon">Replace</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="mongoprovidersetmode.html#update" class="tsd-kind-icon">Update</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="_id" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> _id</h3>
-					<div class="tsd-signature tsd-kind-icon">_id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ObjectId</span></div>
+				<h2>Enumeration members</h2>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="replace" class="tsd-anchor"></a>
+					<h3>Replace</h3>
+					<div class="tsd-signature tsd-kind-icon">Replace<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/2611fc7/plugins/mongodb/src/IMongoCollectionProviderOptions.ts#L10">IMongoCollectionProviderOptions.ts:10</a></li>
+							<li>Defined in IMongoProviderOptions.ts:18</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="update" class="tsd-anchor"></a>
+					<h3>Update</h3>
+					<div class="tsd-signature tsd-kind-icon">Update<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = 1</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in IMongoProviderOptions.ts:19</li>
 						</ul>
 					</aside>
 				</section>
@@ -126,27 +120,33 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum">
-						<a href="../enums/mongocollectionprovidersetmode.html" class="tsd-kind-icon">Mongo<wbr>Collection<wbr>Provider<wbr>Set<wbr>Mode</a>
-					</li>
-					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="../classes/mongocollectionprovider.html" class="tsd-kind-icon">Mongo<wbr>Collection<wbr>Provider</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="imongocollectionprovideroptions.html" class="tsd-kind-icon">IMongo<wbr>Collection<wbr>Provider<wbr>Options</a>
-					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="imongocollectionrecord.html" class="tsd-kind-icon">IMongo<wbr>Collection<wbr>Record</a>
+					<li class="current tsd-kind-enum">
+						<a href="mongoprovidersetmode.html" class="tsd-kind-icon">Mongo<wbr>Provider<wbr>Set<wbr>Mode</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="imongocollectionrecord.html#_id" class="tsd-kind-icon">_id</a>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="mongoprovidersetmode.html#replace" class="tsd-kind-icon">Replace</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="mongoprovidersetmode.html#update" class="tsd-kind-icon">Update</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="../classes/mongoprovider.html" class="tsd-kind-icon">Mongo<wbr>Provider</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/objectidserializer.html" class="tsd-kind-icon">Object<wbr>IdSerializer</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="../interfaces/imongoprovideroptions.html" class="tsd-kind-icon">IMongo<wbr>Provider<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/imongorecord.html" class="tsd-kind-icon">IMongo<wbr>Record</a>
+					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="../modules.html#getdefaultoptions" class="tsd-kind-icon">get<wbr>Default<wbr>Options</a>
 					</li>
@@ -160,6 +160,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
 			</ul>

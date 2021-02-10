@@ -7,7 +7,7 @@ import {
   IAgedValue,
   Logger,
 } from "@linkedmink/multilevel-aging-cache";
-import { IRedisStorageProviderOptions } from "./IRedisStorageProviderOptions";
+import { IRedisProviderOptions } from "./IRedisProviderOptions";
 
 const RESPONSE_OK = "OK";
 const DEFAULT_PUBLISH_CHANNEL = "PublishedKey";
@@ -29,36 +29,31 @@ const isIPublishUpdateMessage = (value: unknown): value is IPublishUpdateMessage
  * A storage provider that uses IORedis. This implemenation uses Redis pub/sub as a method to retrieve
  * updates from other nodes whenever keys change.
  */
-export class RedisPubSubStorageProvider<TKey, TValue>
+export class RedisPubSubProvider<TKey, TValue>
   implements ISubscribableStorageProvider<TKey, TValue> {
   readonly isPersistable: boolean;
 
-  private readonly logger = Logger.get(RedisPubSubStorageProvider.name);
-  private readonly keyPrefix: string;
-  private readonly channelName: string;
-  private readonly keySerializer: ISerializer<TKey>;
-  private readonly valueSerializer: ISerializer<TValue>;
+  private readonly logger = Logger.get(RedisPubSubProvider.name);
   private readonly updateHandlers: StorageProviderUpdateHandler<TKey, TValue>[] = [];
+  private readonly config: Required<IRedisProviderOptions<TKey, TValue>>;
   private isListening = false;
 
   /**
    * @param client The IORedis client for general read/write that has been initialized
-   * @param config The set of options for the behavior of this storage provider
    * @param channel The IORedis client for listening to updates from other nodes that has been
+   * @param config The set of options for the behavior of this storage provider
    * initialized, undefined if subscribe/unsubscribe isn't needed.
    */
   constructor(
     private readonly client: Redis | Cluster,
-    config: IRedisStorageProviderOptions<TKey, TValue>,
-    private readonly channel: Redis | Cluster
+    private readonly channel: Redis | Cluster,
+    config: IRedisProviderOptions<TKey, TValue>
   ) {
-    this.keyPrefix = config.keyPrefix;
-    this.keySerializer = config.keySerializer;
-    this.valueSerializer = config.valueSerializer;
+    this.config = {
+      ...config,
+      channelName: config.channelName ?? config.keyPrefix + DEFAULT_PUBLISH_CHANNEL,
+    };
     this.isPersistable = config.isPersistable;
-    this.channelName = config.channelName
-      ? config.channelName
-      : this.keyPrefix + DEFAULT_PUBLISH_CHANNEL;
   }
 
   /**
@@ -66,7 +61,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
    * @returns The value if retreiving was successful or null
    */
   get(key: TKey): Promise<IAgedValue<TValue> | null> {
-    const serializedKey = this.keySerializer.serialize(key);
+    const serializedKey = this.config.keySerializer.serialize(key);
     return this.client.get(serializedKey).then(value => {
       if (!value) {
         return null;
@@ -75,7 +70,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
       const agedValue = JSON.parse(value) as IAgedValue<string>;
       return {
         age: agedValue.age,
-        value: this.valueSerializer.deserialize(agedValue.value),
+        value: this.config.valueSerializer.deserialize(agedValue.value),
       };
     });
   }
@@ -86,8 +81,8 @@ export class RedisPubSubStorageProvider<TKey, TValue>
    * @returns If setting the value was successful
    */
   set(key: TKey, agedValue: IAgedValue<TValue>): Promise<IAgedValue<TValue> | null> {
-    const serializedKey = this.keySerializer.serialize(key);
-    const serializedValue = this.valueSerializer.serialize(agedValue.value);
+    const serializedKey = this.config.keySerializer.serialize(key);
+    const serializedValue = this.config.valueSerializer.serialize(agedValue.value);
     const serializedAgeValue = JSON.stringify({
       age: agedValue.age,
       value: serializedValue,
@@ -101,7 +96,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
           age: agedValue.age,
           value: serializedValue,
         });
-        return this.channel.publish(this.channelName, message).then(channelCount => {
+        return this.channel.publish(this.config.channelName, message).then(channelCount => {
           this.logger.debug(`Published Set: ${key}`);
           return agedValue;
         });
@@ -117,12 +112,12 @@ export class RedisPubSubStorageProvider<TKey, TValue>
    * is not required to return a value
    */
   delete(key: TKey): Promise<IAgedValue<TValue> | boolean> {
-    const serializedKey = this.keySerializer.serialize(key);
+    const serializedKey = this.config.keySerializer.serialize(key);
     return this.client.del(serializedKey).then(response => {
       const isSuccessful = response > 0;
       if (isSuccessful) {
         const message = JSON.stringify({ key: serializedKey });
-        return this.channel.publish(this.channelName, message).then(channelCount => {
+        return this.channel.publish(this.config.channelName, message).then(channelCount => {
           this.logger.debug(`Published Delete: ${key}`);
           return true;
         });
@@ -137,15 +132,15 @@ export class RedisPubSubStorageProvider<TKey, TValue>
    */
   keys(): Promise<TKey[]> {
     return this.client
-      .keys(`${this.keyPrefix}*`)
-      .then(keys => keys.map(this.keySerializer.deserialize));
+      .keys(`${this.config.keyPrefix}*`)
+      .then(keys => keys.map(this.config.keySerializer.deserialize));
   }
 
   /**
    * @returns The number of elements in this storage system
    */
   size(): Promise<number> {
-    return this.client.keys(`${this.keyPrefix}*`).then(keys => keys.length);
+    return this.client.keys(`${this.config.keyPrefix}*`).then(keys => keys.length);
   }
 
   /**
@@ -191,7 +186,7 @@ export class RedisPubSubStorageProvider<TKey, TValue>
       return Promise.resolve(false);
     }
 
-    return this.channel.subscribe(this.channelName).then(subscribedCount => {
+    return this.channel.subscribe(this.config.channelName).then(subscribedCount => {
       if (subscribedCount < 1) {
         this.logger.error("Redis returned no channels are subscribed to");
         return false;
@@ -200,27 +195,27 @@ export class RedisPubSubStorageProvider<TKey, TValue>
       this.channel.on("message", this.handleChannelMessage);
       this.isListening = true;
       this.logger.info(
-        `Listening to channel: ${this.channelName}, totalChannels=${subscribedCount}`
+        `Listening to channel: ${this.config.channelName}, totalChannels=${subscribedCount}`
       );
       return true;
     });
   }
 
   private handleChannelMessage = (channel: string, message: string): void => {
-    if (channel !== this.channelName) {
+    if (channel !== this.config.channelName) {
       this.logger.warn(`Message from foreign channel: ${channel}, message=${message}`);
       return;
     }
 
     this.logger.debug(`Received Message from ${channel}: ${message}`);
     const parsed = JSON.parse(message) as IPublishDeleteMessage;
-    const key = this.keySerializer.deserialize(parsed.key);
+    const key = this.config.keySerializer.deserialize(parsed.key);
 
     let agedValue: IAgedValue<TValue>;
     if (isIPublishUpdateMessage(parsed)) {
       agedValue = {
         age: parsed.age,
-        value: this.valueSerializer.deserialize(parsed.value),
+        value: this.config.valueSerializer.deserialize(parsed.value),
       };
     }
 

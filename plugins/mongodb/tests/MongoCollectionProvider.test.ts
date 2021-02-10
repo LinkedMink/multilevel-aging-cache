@@ -1,10 +1,10 @@
 import { Collection, MongoClient, ObjectID } from "mongodb";
 import { IAgedValue } from "../../../src/cache/expire/IAgedQueue";
-import { getDefaultOptions, IMongoCollectionRecord } from "../src/IMongoCollectionProviderOptions";
-import { MongoCollectionProvider } from "../src/MongoCollectionProvider";
+import { getDefaultOptions, IMongoRecord } from "../src/IMongoProviderOptions";
+import { MongoProvider } from "../src/MongoProvider";
 import { setGlobalMockTransport } from "../../../tests/MockTransport";
 
-interface TestRecord extends IMongoCollectionRecord {
+interface TestRecord extends IMongoRecord {
   value: string;
 }
 
@@ -19,10 +19,10 @@ const getAgedTestRecord = (id: ObjectID, value: string): IAgedValue<TestRecord> 
   };
 };
 
-describe(MongoCollectionProvider.name, () => {
+describe(MongoProvider.name, () => {
   let connection: MongoClient;
   let dbCollection: Collection<TestRecord>;
-  let provider: MongoCollectionProvider<ObjectID, TestRecord>;
+  let provider: MongoProvider<ObjectID, TestRecord>;
 
   beforeAll(async () => {
     setGlobalMockTransport();
@@ -38,7 +38,7 @@ describe(MongoCollectionProvider.name, () => {
   });
 
   beforeEach(() => {
-    provider = new MongoCollectionProvider(dbCollection, getDefaultOptions());
+    provider = new MongoProvider(dbCollection, getDefaultOptions());
   });
 
   test("should return instance when constructor parameters are valid", () => {

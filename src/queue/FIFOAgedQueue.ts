@@ -1,11 +1,11 @@
 import { RBTree } from "bintrees";
 
 import { compareAscending, IAgedQueue } from "./IAgedQueue";
-import { Logger } from "../../shared/Logger";
+import { Logger } from "../shared/Logger";
 
 export class FIFOAgedQueue<TKey> implements IAgedQueue<TKey> {
   private readonly logger = Logger.get(FIFOAgedQueue.name);
-  private readonly ageLimit: number;
+  private readonly ageLimit?: number;
   private readonly ageTree: RBTree<number> = new RBTree(compareAscending);
   private readonly ageMap = new Map<TKey, number>();
   private readonly ageBuckets = new Map<number, Set<TKey>>();
@@ -65,6 +65,10 @@ export class FIFOAgedQueue<TKey> implements IAgedQueue<TKey> {
    * @return True if the next key in order is expired and should be removed
    */
   isNextExpired(): boolean {
+    if (!this.maxEntries && !this.ageLimit) {
+      return false;
+    }
+
     if (this.maxEntries && this.ageMap.size > this.maxEntries) {
       this.logger.debug(`Max Entries Exceeded: ${this.maxEntries}`);
       return true;
@@ -75,10 +79,12 @@ export class FIFOAgedQueue<TKey> implements IAgedQueue<TKey> {
       return false;
     }
 
-    const age = this.ageMap.get(next);
-    if (age !== undefined && age + this.ageLimit < Date.now()) {
-      this.logger.debug(`Age Limit Exceeded: age=${age},limit=${this.ageLimit}`);
-      return true;
+    if (this.ageLimit) {
+      const age = this.ageMap.get(next);
+      if (age !== undefined && age + this.ageLimit < Date.now()) {
+        this.logger.debug(`Age Limit Exceeded: age=${age},limit=${this.ageLimit}`);
+        return true;
+      }
     }
 
     return false;

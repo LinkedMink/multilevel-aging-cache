@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { IAgedValue } from "../cache/expire/IAgedQueue";
+import { IAgedValue } from "../queue/IAgedQueue";
 import { IStorageProvider } from "./IStorageProvider";
 
 export enum StorageProviderEvent {

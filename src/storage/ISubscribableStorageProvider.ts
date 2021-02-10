@@ -1,5 +1,5 @@
 import { IStorageProvider } from "./IStorageProvider";
-import { IAgedValue } from "../cache/expire/IAgedQueue";
+import { IAgedValue } from "../queue/IAgedQueue";
 
 /**
  * A function to execute when a IStorageProvider key/value changes. Used with subscribe/unsubscribe

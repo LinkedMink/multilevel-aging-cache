@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>IStorageHierarchyWrite | @linkedmink/multilevel-aging-cache</title>
+	<title>IAgingCacheSetStrategy | @linkedmink/multilevel-aging-cache</title>
 	<meta name="description" content="Documentation for @linkedmink/multilevel-aging-cache">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,10 +55,10 @@
 					<a href="../modules.html">@linkedmink/multilevel-aging-cache</a>
 				</li>
 				<li>
-					<a href="istoragehierarchywrite.html">IStorageHierarchyWrite</a>
+					<a href="iagingcachesetstrategy.html">IAgingCacheSetStrategy</a>
 				</li>
 			</ul>
-			<h1>Interface IStorageHierarchyWrite&lt;TValue&gt;</h1>
+			<h1>Interface IAgingCacheSetStrategy&lt;TKey, TValue&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -68,7 +68,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Describes the layers written to in a set/delete operation</p>
+						<p>Implements customized cache set behavior based on the IAgingCacheOptions</p>
 					</div>
 				</div>
 			</section>
@@ -76,7 +76,10 @@
 				<h3>Type parameters</h3>
 				<ul class="tsd-type-parameters">
 					<li>
-						<h4>TValue = <span class="tsd-signature-type">unknown</span></h4>
+						<h4>TKey</h4>
+					</li>
+					<li>
+						<h4>TValue</h4>
 					</li>
 				</ul>
 			</section>
@@ -84,7 +87,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">IStorageHierarchyWrite</span>
+						<span class="target">IAgingCacheSetStrategy</span>
 					</li>
 				</ul>
 			</section>
@@ -93,58 +96,100 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="istoragehierarchywrite.html#ispersisted" class="tsd-kind-icon">is<wbr>Persisted</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="istoragehierarchywrite.html#ispublished" class="tsd-kind-icon">is<wbr>Published</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="istoragehierarchywrite.html#writtenlevels" class="tsd-kind-icon">written<wbr>Levels</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="istoragehierarchywrite.html#writtenvalue" class="tsd-kind-icon">written<wbr>Value</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="iagingcachesetstrategy.html#load" class="tsd-kind-icon">load</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="iagingcachesetstrategy.html#set" class="tsd-kind-icon">set</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="ispersisted" class="tsd-anchor"></a>
-					<h3>is<wbr>Persisted</h3>
-					<div class="tsd-signature tsd-kind-icon">is<wbr>Persisted<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/993ceb1/src/storage/IStorageHierarchy.ts#L7">src/storage/IStorageHierarchy.ts:7</a></li>
-						</ul>
-					</aside>
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="load" class="tsd-anchor"></a>
+					<h3>load</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">load<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TKey</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TValue</span>, evictAtLevel<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, force<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="iagingcachewrite.html" class="tsd-signature-type" data-tsd-kind="Interface">IAgingCacheWrite</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/cache/IAgingCacheWriteStrategy.ts:22</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>key: <span class="tsd-signature-type">TKey</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The key to the value to set</p>
+									</div>
+								</li>
+								<li>
+									<h5>value: <span class="tsd-signature-type">TValue</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The value to set</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> evictAtLevel: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The level to set below</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> force: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>If true write to levels below the persistence layer</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="iagingcachewrite.html" class="tsd-signature-type" data-tsd-kind="Interface">IAgingCacheWrite</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>If the write succeeded or the error condition</p>
+						</li>
+					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="ispublished" class="tsd-anchor"></a>
-					<h3>is<wbr>Published</h3>
-					<div class="tsd-signature tsd-kind-icon">is<wbr>Published<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/993ceb1/src/storage/IStorageHierarchy.ts#L8">src/storage/IStorageHierarchy.ts:8</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="writtenlevels" class="tsd-anchor"></a>
-					<h3>written<wbr>Levels</h3>
-					<div class="tsd-signature tsd-kind-icon">written<wbr>Levels<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/993ceb1/src/storage/IStorageHierarchy.ts#L9">src/storage/IStorageHierarchy.ts:9</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="writtenvalue" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> written<wbr>Value</h3>
-					<div class="tsd-signature tsd-kind-icon">written<wbr>Value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="iagedvalue.html" class="tsd-signature-type" data-tsd-kind="Interface">IAgedValue</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/993ceb1/src/storage/IStorageHierarchy.ts#L10">src/storage/IStorageHierarchy.ts:10</a></li>
-						</ul>
-					</aside>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
+					<a name="set" class="tsd-anchor"></a>
+					<h3>set</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
+						<li class="tsd-signature tsd-kind-icon">set<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TKey</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TValue</span>, force<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="iagingcachewrite.html" class="tsd-signature-type" data-tsd-kind="Interface">IAgingCacheWrite</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/cache/IAgingCacheWriteStrategy.ts:13</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>key: <span class="tsd-signature-type">TKey</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The key to set</p>
+									</div>
+								</li>
+								<li>
+									<h5>value: <span class="tsd-signature-type">TValue</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The value to set</p>
+									</div>
+								</li>
+								<li>
+									<h5>force: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>If true write to all levels of hierarchy unconditionally</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="iagingcachewrite.html" class="tsd-signature-type" data-tsd-kind="Interface">IAgingCacheWrite</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TValue</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>If the write succeeded or the error condition</p>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -209,9 +254,21 @@
 					<li class=" tsd-kind-interface">
 						<a href="iagingcacheoptions.html" class="tsd-kind-icon">IAging<wbr>Cache<wbr>Options</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-has-type-parameter">
 						<a href="iagingcachesetstrategy.html" class="tsd-kind-icon">IAging<wbr>Cache<wbr>Set<wbr>Strategy</a>
+						<ul>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="iagingcachesetstrategy.html#load" class="tsd-kind-icon">load</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface">
+								<a href="iagingcachesetstrategy.html#set" class="tsd-kind-icon">set</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="iagingcachewrite.html" class="tsd-kind-icon">IAging<wbr>Cache<wbr>Write</a>
 					</li>
@@ -224,27 +281,9 @@
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="istoragehierarchy.html" class="tsd-kind-icon">IStorage<wbr>Hierarchy</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-has-type-parameter">
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="istoragehierarchywrite.html" class="tsd-kind-icon">IStorage<wbr>Hierarchy<wbr>Write</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="istoragehierarchywrite.html#ispersisted" class="tsd-kind-icon">is<wbr>Persisted</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="istoragehierarchywrite.html#ispublished" class="tsd-kind-icon">is<wbr>Published</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="istoragehierarchywrite.html#writtenlevels" class="tsd-kind-icon">written<wbr>Levels</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="istoragehierarchywrite.html#writtenvalue" class="tsd-kind-icon">written<wbr>Value</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="istorageprovider.html" class="tsd-kind-icon">IStorage<wbr>Provider</a>
 					</li>

@@ -1,4 +1,4 @@
-import { IAgingCacheWrite } from "../IAgingCache";
+import { IAgingCacheWrite } from "./IAgingCache";
 
 /**
  * Implements customized cache set behavior based on the IAgingCacheOptions

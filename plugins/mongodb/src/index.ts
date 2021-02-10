@@ -1,7 +1,8 @@
 export {
-  IMongoCollectionProviderOptions,
-  IMongoCollectionRecord,
-  MongoCollectionProviderSetMode,
+  IMongoProviderOptions,
+  IMongoRecord,
+  MongoProviderSetMode,
   getDefaultOptions,
-} from "./IMongoCollectionProviderOptions";
-export { MongoCollectionProvider } from "./MongoCollectionProvider";
+} from "./IMongoProviderOptions";
+export { MongoProvider } from "./MongoProvider";
+export { ObjectIdSerializer } from "./ObjectIdSerializer";

@@ -1,7 +1,7 @@
 import { Redis, Cluster } from "ioredis";
 
-import { IStorageProvider, ISerializer, IAgedValue } from "@linkedmink/multilevel-aging-cache";
-import { IRedisStorageProviderOptions } from "./IRedisStorageProviderOptions";
+import { IStorageProvider, IAgedValue } from "@linkedmink/multilevel-aging-cache";
+import { IRedisProviderOptions } from "./IRedisProviderOptions";
 
 const RESPONSE_OK = "OK";
 
@@ -9,12 +9,8 @@ const RESPONSE_OK = "OK";
  * A storage provider that uses IORedis. This implemenation uses Redis pub/sub as a method to retrieve
  * updates from other nodes whenever keys change.
  */
-export class RedisStorageProvider<TKey, TValue> implements IStorageProvider<TKey, TValue> {
-  readonly isPersistable: boolean;
-
-  private readonly keyPrefix: string;
-  private readonly keySerializer: ISerializer<TKey>;
-  private readonly valueSerializer: ISerializer<TValue>;
+export class RedisProvider<TKey, TValue> implements IStorageProvider<TKey, TValue> {
+  readonly isPersistable = this.config.isPersistable;
 
   /**
    * @param client The IORedis client for general read/write that has been initialized
@@ -22,20 +18,15 @@ export class RedisStorageProvider<TKey, TValue> implements IStorageProvider<TKey
    */
   constructor(
     private readonly client: Redis | Cluster,
-    config: IRedisStorageProviderOptions<TKey, TValue>
-  ) {
-    this.keyPrefix = config.keyPrefix;
-    this.keySerializer = config.keySerializer;
-    this.valueSerializer = config.valueSerializer;
-    this.isPersistable = config.isPersistable;
-  }
+    private readonly config: IRedisProviderOptions<TKey, TValue>
+  ) {}
 
   /**
    * @param key The key to retrieve
    * @returns The value if retreiving was successful or null
    */
   get(key: TKey): Promise<IAgedValue<TValue> | null> {
-    const serializedKey = this.keySerializer.serialize(key);
+    const serializedKey = this.config.keySerializer.serialize(key);
     return this.client.get(serializedKey).then(value => {
       if (!value) {
         return null;
@@ -44,7 +35,7 @@ export class RedisStorageProvider<TKey, TValue> implements IStorageProvider<TKey
       const agedValue = JSON.parse(value) as IAgedValue<string>;
       return {
         age: agedValue.age,
-        value: this.valueSerializer.deserialize(agedValue.value),
+        value: this.config.valueSerializer.deserialize(agedValue.value),
       };
     });
   }
@@ -55,8 +46,8 @@ export class RedisStorageProvider<TKey, TValue> implements IStorageProvider<TKey
    * @returns The value written if successful or null
    */
   set(key: TKey, agedValue: IAgedValue<TValue>): Promise<IAgedValue<TValue> | null> {
-    const serializedKey = this.keySerializer.serialize(key);
-    const serializedValue = this.valueSerializer.serialize(agedValue.value);
+    const serializedKey = this.config.keySerializer.serialize(key);
+    const serializedValue = this.config.valueSerializer.serialize(agedValue.value);
     const serializedAgeValue = JSON.stringify({
       age: agedValue.age,
       value: serializedValue,
@@ -73,7 +64,7 @@ export class RedisStorageProvider<TKey, TValue> implements IStorageProvider<TKey
    * is not required to return a value
    */
   delete(key: TKey): Promise<IAgedValue<TValue> | boolean> {
-    const serializedKey = this.keySerializer.serialize(key);
+    const serializedKey = this.config.keySerializer.serialize(key);
     return this.client.del(serializedKey).then(response => {
       return response > 0;
     });
@@ -84,14 +75,14 @@ export class RedisStorageProvider<TKey, TValue> implements IStorageProvider<TKey
    */
   keys(): Promise<TKey[]> {
     return this.client
-      .keys(`${this.keyPrefix}*`)
-      .then(keys => keys.map(this.keySerializer.deserialize));
+      .keys(`${this.config.keyPrefix}*`)
+      .then(keys => keys.map(this.config.keySerializer.deserialize));
   }
 
   /**
    * @returns The number of elements in this storage system
    */
   size(): Promise<number> {
-    return this.client.keys(`${this.keyPrefix}*`).then(keys => keys.length);
+    return this.client.keys(`${this.config.keyPrefix}*`).then(keys => keys.length);
   }
 }
