@@ -7,7 +7,8 @@ import { AgingCacheWriteStrategy } from "./AgingCacheWriteStrategy";
  */
 export class OverwriteAgedDeleteStrategy<TKey, TValue>
   extends AgingCacheWriteStrategy<TKey, TValue>
-  implements IAgingCacheDeleteStrategy<TKey, TValue> {
+  implements IAgingCacheDeleteStrategy<TKey, TValue>
+{
   delete(key: TKey, force: boolean): Promise<IAgingCacheWrite<TValue>> {
     if (force) {
       return this.executeDelete(key);

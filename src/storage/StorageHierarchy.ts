@@ -21,7 +21,8 @@ type SubscriberUpdateHandler<TKey, TValue> = (
  * The default storage hierarchy implementation relying on IStorageProvider for actual data access
  */
 export class StorageHierarchy<TKey, TValue>
-  implements IStorageHierarchy<TKey, TValue>, IDisposable {
+  implements IStorageHierarchy<TKey, TValue>, IDisposable
+{
   readonly totalLevels = this.levels.length;
   readonly isPersistable = this.levels[this.totalLevels - 1].isPersistable;
 

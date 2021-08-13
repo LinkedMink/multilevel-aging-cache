@@ -12,7 +12,7 @@ export class MongooseSerializer<T extends Document> implements ISerializer<T> {
   };
 
   deserialize = (data: string): T => {
-    const dataObject = JSON.parse(data) as Record<string, unknown>;
+    const dataObject = JSON.parse(data) as T;
     return new this.model(dataObject);
   };
 }

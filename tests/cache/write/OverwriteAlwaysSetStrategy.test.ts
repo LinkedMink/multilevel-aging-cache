@@ -14,7 +14,7 @@ describe(OverwriteAlwaysSetStrategy.name, () => {
   });
 
   beforeEach(() => {
-    hierarchyMock = (new MockStorageHierarchy() as unknown) as StorageHierarchy<string, string>;
+    hierarchyMock = new MockStorageHierarchy() as unknown as StorageHierarchy<string, string>;
     evictQueueMock = new MockAgedQueue<string>();
     strategy = new OverwriteAlwaysSetStrategy(hierarchyMock, evictQueueMock);
   });

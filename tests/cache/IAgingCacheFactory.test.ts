@@ -8,7 +8,7 @@ import { MockStorageHierarchy } from "../Mocks";
 import { setGlobalMockTransport } from "../MockTransport";
 
 const getMockStorageHierarchy = () => {
-  return (new MockStorageHierarchy() as unknown) as StorageHierarchy<string, string>;
+  return new MockStorageHierarchy() as unknown as StorageHierarchy<string, string>;
 };
 
 describe(path.basename(__filename, ".test.ts"), () => {

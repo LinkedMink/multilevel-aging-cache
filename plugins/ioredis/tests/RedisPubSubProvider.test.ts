@@ -81,7 +81,7 @@ describe(RedisPubSubProvider.name, () => {
   test("should call Redis client set with serialized key/value when set is called", () => {
     const setSpy = jest
       .spyOn(clientMock, "set")
-      .mockReturnValue((Promise.resolve("OK") as unknown) as undefined);
+      .mockReturnValue(Promise.resolve("OK") as unknown as undefined);
     const publishSpy = jest.spyOn(channelMock, "publish").mockResolvedValue(1);
     const testKey = "TEST_KEY";
     const testValue = { value: "TEST_VALUE", age: 0 };

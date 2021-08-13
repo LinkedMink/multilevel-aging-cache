@@ -14,7 +14,7 @@ describe(OverwriteAlwaysDeleteStrategy.name, () => {
   });
 
   beforeEach(() => {
-    hierarchyMock = (new MockStorageHierarchy() as unknown) as StorageHierarchy<string, string>;
+    hierarchyMock = new MockStorageHierarchy() as unknown as StorageHierarchy<string, string>;
     evictQueueMock = new MockAgedQueue<string>();
     strategy = new OverwriteAlwaysDeleteStrategy(hierarchyMock, evictQueueMock);
   });

@@ -55,7 +55,7 @@
 					<a href="../modules.html">@linkedmink/multilevel-aging-cache</a>
 				</li>
 				<li>
-					<a href="iagedqueue.html">IAgedQueue</a>
+					<a href="IAgedQueue.html">IAgedQueue</a>
 				</li>
 			</ul>
 			<h1>Interface IAgedQueue&lt;TKey&gt;</h1>
@@ -91,7 +91,7 @@
 			<section class="tsd-panel">
 				<h3>Implemented by</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../classes/fifoagedqueue.html" class="tsd-signature-type" data-tsd-kind="Class">FIFOAgedQueue</a></li>
+					<li><a href="../classes/FIFOAgedQueue.html" class="tsd-signature-type" data-tsd-kind="Class">FIFOAgedQueue</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -101,19 +101,19 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iagedqueue.html#compare" class="tsd-kind-icon">compare</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="IAgedQueue.html#compare" class="tsd-kind-icon">compare</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="iagedqueue.html#addorreplace" class="tsd-kind-icon">add<wbr>OrReplace</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="iagedqueue.html#delete" class="tsd-kind-icon">delete</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="iagedqueue.html#getinitialage" class="tsd-kind-icon">get<wbr>Initial<wbr>Age</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="iagedqueue.html#isnextexpired" class="tsd-kind-icon">is<wbr>Next<wbr>Expired</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="iagedqueue.html#next" class="tsd-kind-icon">next</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="iagedqueue.html#size" class="tsd-kind-icon">size</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="iagedqueue.html#updateage" class="tsd-kind-icon">update<wbr>Age</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="IAgedQueue.html#addOrReplace" class="tsd-kind-icon">add<wbr>OrReplace</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="IAgedQueue.html#delete" class="tsd-kind-icon">delete</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="IAgedQueue.html#getInitialAge" class="tsd-kind-icon">get<wbr>Initial<wbr>Age</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="IAgedQueue.html#isNextExpired" class="tsd-kind-icon">is<wbr>Next<wbr>Expired</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="IAgedQueue.html#next" class="tsd-kind-icon">next</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="IAgedQueue.html#size" class="tsd-kind-icon">size</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="IAgedQueue.html#updateAge" class="tsd-kind-icon">update<wbr>Age</a></li>
 							</ul>
 						</section>
 					</div>
@@ -124,10 +124,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="compare" class="tsd-anchor"></a>
 					<h3>compare</h3>
-					<div class="tsd-signature tsd-kind-icon">compare<span class="tsd-signature-symbol">:</span> <a href="../modules.html#agedcomparefunc" class="tsd-signature-type" data-tsd-kind="Type alias">AgedCompareFunc</a></div>
+					<div class="tsd-signature tsd-kind-icon">compare<span class="tsd-signature-symbol">:</span> <a href="../modules.html#AgedCompareFunc" class="tsd-signature-type" data-tsd-kind="Type alias">AgedCompareFunc</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/queue/IAgedQueue.ts:71</li>
+							<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/b11928e/src/queue/IAgedQueue.ts#L71">src/queue/IAgedQueue.ts:71</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -148,7 +148,7 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="addorreplace" class="tsd-anchor"></a>
+					<a name="addOrReplace" class="tsd-anchor"></a>
 					<h3>add<wbr>OrReplace</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
 						<li class="tsd-signature tsd-kind-icon">add<wbr>OrReplace<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TKey</span>, age<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
@@ -157,7 +157,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/queue/IAgedQueue.ts:38</li>
+									<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/b11928e/src/queue/IAgedQueue.ts#L38">src/queue/IAgedQueue.ts:38</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -189,7 +189,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/queue/IAgedQueue.ts:48</li>
+									<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/b11928e/src/queue/IAgedQueue.ts#L48">src/queue/IAgedQueue.ts:48</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -206,7 +206,7 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="getinitialage" class="tsd-anchor"></a>
+					<a name="getInitialAge" class="tsd-anchor"></a>
 					<h3>get<wbr>Initial<wbr>Age</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
 						<li class="tsd-signature tsd-kind-icon">get<wbr>Initial<wbr>Age<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TKey</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
@@ -215,7 +215,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/queue/IAgedQueue.ts:59</li>
+									<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/b11928e/src/queue/IAgedQueue.ts#L59">src/queue/IAgedQueue.ts:59</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -233,7 +233,7 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="isnextexpired" class="tsd-anchor"></a>
+					<a name="isNextExpired" class="tsd-anchor"></a>
 					<h3>is<wbr>Next<wbr>Expired</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
 						<li class="tsd-signature tsd-kind-icon">is<wbr>Next<wbr>Expired<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
@@ -242,7 +242,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/queue/IAgedQueue.ts:53</li>
+									<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/b11928e/src/queue/IAgedQueue.ts#L53">src/queue/IAgedQueue.ts:53</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -260,7 +260,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/queue/IAgedQueue.ts:43</li>
+									<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/b11928e/src/queue/IAgedQueue.ts#L43">src/queue/IAgedQueue.ts:43</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">TKey</span></h4>
@@ -278,7 +278,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/queue/IAgedQueue.ts:76</li>
+									<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/b11928e/src/queue/IAgedQueue.ts#L76">src/queue/IAgedQueue.ts:76</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -287,7 +287,7 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="updateage" class="tsd-anchor"></a>
+					<a name="updateAge" class="tsd-anchor"></a>
 					<h3>update<wbr>Age</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
 						<li class="tsd-signature tsd-kind-icon">update<wbr>Age<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TKey</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
@@ -296,7 +296,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/queue/IAgedQueue.ts:64</li>
+									<li>Defined in <a href="https://github.com/LinkedMink/multilevel-aging-cache/blob/b11928e/src/queue/IAgedQueue.ts#L64">src/queue/IAgedQueue.ts:64</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -325,127 +325,127 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-enum">
-						<a href="../enums/agingcachereplacementpolicy.html" class="tsd-kind-icon">Aging<wbr>Cache<wbr>Replacement<wbr>Policy</a>
+						<a href="../enums/AgingCacheReplacementPolicy.html" class="tsd-kind-icon">Aging<wbr>Cache<wbr>Replacement<wbr>Policy</a>
 					</li>
 					<li class=" tsd-kind-enum">
-						<a href="../enums/agingcachewritemode.html" class="tsd-kind-icon">Aging<wbr>Cache<wbr>Write<wbr>Mode</a>
+						<a href="../enums/AgingCacheWriteMode.html" class="tsd-kind-icon">Aging<wbr>Cache<wbr>Write<wbr>Mode</a>
 					</li>
 					<li class=" tsd-kind-enum">
-						<a href="../enums/agingcachewritestatus.html" class="tsd-kind-icon">Aging<wbr>Cache<wbr>Write<wbr>Status</a>
+						<a href="../enums/AgingCacheWriteStatus.html" class="tsd-kind-icon">Aging<wbr>Cache<wbr>Write<wbr>Status</a>
 					</li>
 					<li class=" tsd-kind-enum">
-						<a href="../enums/storagehierarchyupdatepolicy.html" class="tsd-kind-icon">Storage<wbr>Hierarchy<wbr>Update<wbr>Policy</a>
+						<a href="../enums/StorageHierarchyUpdatePolicy.html" class="tsd-kind-icon">Storage<wbr>Hierarchy<wbr>Update<wbr>Policy</a>
 					</li>
 					<li class=" tsd-kind-enum">
-						<a href="../enums/storageproviderevent.html" class="tsd-kind-icon">Storage<wbr>Provider<wbr>Event</a>
+						<a href="../enums/StorageProviderEvent.html" class="tsd-kind-icon">Storage<wbr>Provider<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="../classes/fifoagedqueue.html" class="tsd-kind-icon">FIFOAged<wbr>Queue</a>
+						<a href="../classes/FIFOAgedQueue.html" class="tsd-kind-icon">FIFOAged<wbr>Queue</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="../classes/jsonserializer.html" class="tsd-kind-icon">Json<wbr>Serializer</a>
+						<a href="../classes/JsonSerializer.html" class="tsd-kind-icon">Json<wbr>Serializer</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="../classes/logger.html" class="tsd-kind-icon">Logger</a>
+						<a href="../classes/Logger.html" class="tsd-kind-icon">Logger</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="../classes/memorystorageprovider.html" class="tsd-kind-icon">Memory<wbr>Storage<wbr>Provider</a>
+						<a href="../classes/MemoryStorageProvider.html" class="tsd-kind-icon">Memory<wbr>Storage<wbr>Provider</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="../classes/storagehierarchy.html" class="tsd-kind-icon">Storage<wbr>Hierarchy</a>
+						<a href="../classes/StorageHierarchy.html" class="tsd-kind-icon">Storage<wbr>Hierarchy</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="../classes/storageprovidereventemitter.html" class="tsd-kind-icon">Storage<wbr>Provider<wbr>Event<wbr>Emitter</a>
+						<a href="../classes/StorageProviderEventEmitter.html" class="tsd-kind-icon">Storage<wbr>Provider<wbr>Event<wbr>Emitter</a>
 					</li>
 					<li class=" tsd-kind-class">
-						<a href="../classes/stringserializer.html" class="tsd-kind-icon">String<wbr>Serializer</a>
+						<a href="../classes/StringSerializer.html" class="tsd-kind-icon">String<wbr>Serializer</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-has-type-parameter">
-						<a href="iagedqueue.html" class="tsd-kind-icon">IAged<wbr>Queue</a>
+						<a href="IAgedQueue.html" class="tsd-kind-icon">IAged<wbr>Queue</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="iagedqueue.html#compare" class="tsd-kind-icon">compare</a>
+								<a href="IAgedQueue.html#compare" class="tsd-kind-icon">compare</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="iagedqueue.html#addorreplace" class="tsd-kind-icon">add<wbr>OrReplace</a>
+								<a href="IAgedQueue.html#addOrReplace" class="tsd-kind-icon">add<wbr>OrReplace</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="iagedqueue.html#delete" class="tsd-kind-icon">delete</a>
+								<a href="IAgedQueue.html#delete" class="tsd-kind-icon">delete</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="iagedqueue.html#getinitialage" class="tsd-kind-icon">get<wbr>Initial<wbr>Age</a>
+								<a href="IAgedQueue.html#getInitialAge" class="tsd-kind-icon">get<wbr>Initial<wbr>Age</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="iagedqueue.html#isnextexpired" class="tsd-kind-icon">is<wbr>Next<wbr>Expired</a>
+								<a href="IAgedQueue.html#isNextExpired" class="tsd-kind-icon">is<wbr>Next<wbr>Expired</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="iagedqueue.html#next" class="tsd-kind-icon">next</a>
+								<a href="IAgedQueue.html#next" class="tsd-kind-icon">next</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="iagedqueue.html#size" class="tsd-kind-icon">size</a>
+								<a href="IAgedQueue.html#size" class="tsd-kind-icon">size</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="iagedqueue.html#updateage" class="tsd-kind-icon">update<wbr>Age</a>
+								<a href="IAgedQueue.html#updateAge" class="tsd-kind-icon">update<wbr>Age</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="iagedvalue.html" class="tsd-kind-icon">IAged<wbr>Value</a>
+						<a href="IAgedValue.html" class="tsd-kind-icon">IAged<wbr>Value</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="iagingcache.html" class="tsd-kind-icon">IAging<wbr>Cache</a>
+						<a href="IAgingCache.html" class="tsd-kind-icon">IAging<wbr>Cache</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="iagingcachedeletestrategy.html" class="tsd-kind-icon">IAging<wbr>Cache<wbr>Delete<wbr>Strategy</a>
+						<a href="IAgingCacheDeleteStrategy.html" class="tsd-kind-icon">IAging<wbr>Cache<wbr>Delete<wbr>Strategy</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="iagingcacheoptions.html" class="tsd-kind-icon">IAging<wbr>Cache<wbr>Options</a>
+						<a href="IAgingCacheOptions.html" class="tsd-kind-icon">IAging<wbr>Cache<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="iagingcachesetstrategy.html" class="tsd-kind-icon">IAging<wbr>Cache<wbr>Set<wbr>Strategy</a>
+						<a href="IAgingCacheSetStrategy.html" class="tsd-kind-icon">IAging<wbr>Cache<wbr>Set<wbr>Strategy</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="iagingcachewrite.html" class="tsd-kind-icon">IAging<wbr>Cache<wbr>Write</a>
+						<a href="IAgingCacheWrite.html" class="tsd-kind-icon">IAging<wbr>Cache<wbr>Write</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="idisposable.html" class="tsd-kind-icon">IDisposable</a>
+						<a href="IDisposable.html" class="tsd-kind-icon">IDisposable</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="iserializer.html" class="tsd-kind-icon">ISerializer</a>
+						<a href="ISerializer.html" class="tsd-kind-icon">ISerializer</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="istoragehierarchy.html" class="tsd-kind-icon">IStorage<wbr>Hierarchy</a>
+						<a href="IStorageHierarchy.html" class="tsd-kind-icon">IStorage<wbr>Hierarchy</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="istoragehierarchywrite.html" class="tsd-kind-icon">IStorage<wbr>Hierarchy<wbr>Write</a>
+						<a href="IStorageHierarchyWrite.html" class="tsd-kind-icon">IStorage<wbr>Hierarchy<wbr>Write</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="istorageprovider.html" class="tsd-kind-icon">IStorage<wbr>Provider</a>
+						<a href="IStorageProvider.html" class="tsd-kind-icon">IStorage<wbr>Provider</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="isubscribablestorageprovider.html" class="tsd-kind-icon">ISubscribable<wbr>Storage<wbr>Provider</a>
+						<a href="ISubscribableStorageProvider.html" class="tsd-kind-icon">ISubscribable<wbr>Storage<wbr>Provider</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
-						<a href="../modules.html#agedcomparefunc" class="tsd-kind-icon">Aged<wbr>Compare<wbr>Func</a>
+						<a href="../modules.html#AgedCompareFunc" class="tsd-kind-icon">Aged<wbr>Compare<wbr>Func</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="../modules.html#deserializefunction" class="tsd-kind-icon">Deserialize<wbr>Function</a>
+						<a href="../modules.html#DeserializeFunction" class="tsd-kind-icon">Deserialize<wbr>Function</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="../modules.html#serializefunction" class="tsd-kind-icon">Serialize<wbr>Function</a>
+						<a href="../modules.html#SerializeFunction" class="tsd-kind-icon">Serialize<wbr>Function</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="../modules.html#storageproviderupdatehandler" class="tsd-kind-icon">Storage<wbr>Provider<wbr>Update<wbr>Handler</a>
+						<a href="../modules.html#StorageProviderUpdateHandler" class="tsd-kind-icon">Storage<wbr>Provider<wbr>Update<wbr>Handler</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../modules.html#createagingcache" class="tsd-kind-icon">create<wbr>Aging<wbr>Cache</a>
+						<a href="../modules.html#createAgingCache" class="tsd-kind-icon">create<wbr>Aging<wbr>Cache</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../modules.html#getdefaultagingcacheoptions" class="tsd-kind-icon">get<wbr>Default<wbr>Aging<wbr>Cache<wbr>Options</a>
+						<a href="../modules.html#getDefaultAgingCacheOptions" class="tsd-kind-icon">get<wbr>Default<wbr>Aging<wbr>Cache<wbr>Options</a>
 					</li>
 				</ul>
 			</nav>

@@ -12,7 +12,8 @@ const deserialize = <T>(data: string): T => {
  * De/Serialize JSON objects with the native JSON.stringify and JSON.parse
  */
 export class JsonSerializer<T extends Record<string, unknown> | Array<unknown>>
-  implements ISerializer<T> {
+  implements ISerializer<T>
+{
   serialize = serialize;
   deserialize = deserialize;
 }

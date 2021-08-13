@@ -12,7 +12,8 @@ export enum StorageProviderEvent {
  */
 export class StorageProviderEventEmitter<TKey, TValue>
   extends EventEmitter
-  implements IStorageProvider<TKey, TValue> {
+  implements IStorageProvider<TKey, TValue>
+{
   readonly isPersistable = false;
 
   /**

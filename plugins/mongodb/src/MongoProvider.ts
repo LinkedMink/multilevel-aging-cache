@@ -1,14 +1,18 @@
-import { Collection, UpdateWriteOpResult } from "mongodb";
+import { Collection, Document, UpdateResult } from "mongodb";
 
 import { IAgedValue, IStorageProvider } from "@linkedmink/multilevel-aging-cache";
 import { IMongoProviderOptions, IMongoRecord, MongoProviderSetMode } from "./IMongoProviderOptions";
 import { getDotSeperatedPropertyValue, setDotSeperatedPropertyValue } from "./Helpers";
 
+const isUpdateResult = (value: unknown): value is UpdateResult =>
+  (value as UpdateResult).modifiedCount !== undefined;
+
 /**
  * Use mongodb as a persistent storage mechanism
  */
 export class MongoProvider<TKey, TValue extends IMongoRecord>
-  implements IStorageProvider<TKey, TValue> {
+  implements IStorageProvider<TKey, TValue>
+{
   readonly isPersistable = true;
 
   /**
@@ -56,7 +60,7 @@ export class MongoProvider<TKey, TValue extends IMongoRecord>
       this.options.numberToAgeFunc ? this.options.numberToAgeFunc(value.age) : value.age
     );
 
-    let operation: Promise<UpdateWriteOpResult>;
+    let operation: Promise<Document | UpdateResult>;
     if (this.options.setMode == MongoProviderSetMode.Replace) {
       operation = this.collection.replaceOne(
         { [this.options.keyProperty]: key },
@@ -71,7 +75,9 @@ export class MongoProvider<TKey, TValue extends IMongoRecord>
       );
     }
 
-    return operation.then(status => (status.modifiedCount > 0 ? value : null));
+    return operation.then(status =>
+      isUpdateResult(status) ? (status.modifiedCount > 0 ? value : null) : value
+    );
   }
 
   /**

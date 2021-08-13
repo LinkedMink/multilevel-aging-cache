@@ -1,4 +1,4 @@
-import { Document, Model, Query, Types } from "mongoose";
+import { Document, EnforceDocument, Model, Query, Types } from "mongoose";
 
 import { IAgedValue, IStorageProvider, Logger } from "@linkedmink/multilevel-aging-cache";
 import { IMongooseProviderOptions } from "./IMongooseProviderOptions";
@@ -12,7 +12,8 @@ import {
  * Use mongodb as a persistent storage mechanism with Mongoose documents
  */
 export class MongooseProvider<TKey = Types.ObjectId, TValue extends Document = Document>
-  implements IStorageProvider<TKey, TValue> {
+  implements IStorageProvider<TKey, TValue>
+{
   readonly isPersistable = true;
 
   private readonly logger = Logger.get(MongooseProvider.name);
@@ -93,7 +94,11 @@ export class MongooseProvider<TKey = Types.ObjectId, TValue extends Document = D
     }
 
     return result.map(
-      r => getDotSeperatedPropertyValue(r as Record<string, unknown>, this.keyProperty) as TKey
+      r =>
+        getDotSeperatedPropertyValue(
+          r as unknown as Record<string, unknown>,
+          this.keyProperty
+        ) as TKey
     );
   }
 
@@ -125,7 +130,7 @@ export class MongooseProvider<TKey = Types.ObjectId, TValue extends Document = D
   };
 
   private execIgnoreError = <TResult>(
-    query: Query<TResult | null, TValue>
+    query: Query<TResult | null, EnforceDocument<TValue, Record<string, never>>>
   ): Promise<TResult | null> =>
     query.exec().catch(e => {
       this.logger.verbose({ message: e as Error });

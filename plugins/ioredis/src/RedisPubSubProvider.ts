@@ -30,7 +30,8 @@ const isIPublishUpdateMessage = (value: unknown): value is IPublishUpdateMessage
  * updates from other nodes whenever keys change.
  */
 export class RedisPubSubProvider<TKey, TValue>
-  implements ISubscribableStorageProvider<TKey, TValue> {
+  implements ISubscribableStorageProvider<TKey, TValue>
+{
   readonly isPersistable: boolean;
 
   private readonly logger = Logger.get(RedisPubSubProvider.name);

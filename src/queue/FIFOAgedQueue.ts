@@ -39,6 +39,10 @@ export class FIFOAgedQueue<TKey> implements IAgedQueue<TKey> {
    */
   next(): TKey | null {
     const minAge = this.ageTree.min();
+    if (!minAge) {
+      return null;
+    }
+
     const minBucket = this.ageBuckets.get(minAge);
     if (minBucket === undefined) {
       return null;

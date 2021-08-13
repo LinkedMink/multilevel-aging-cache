@@ -17,7 +17,8 @@ export class MockSerializer implements ISerializer<string> {
 }
 
 export class MockStorageProvider<TKey, TValue>
-  implements ISubscribableStorageProvider<TKey, TValue> {
+  implements ISubscribableStorageProvider<TKey, TValue>
+{
   isPersistable = true;
   get = jest.fn().mockResolvedValue(null);
   set = jest.fn().mockResolvedValue(true);
@@ -42,7 +43,8 @@ export class MockStorageHierarchy<TKey, TValue> implements IStorageHierarchy<TKe
 }
 
 export class MockAgingCacheSetStrategy<TKey, TValue>
-  implements IAgingCacheSetStrategy<TKey, TValue> {
+  implements IAgingCacheSetStrategy<TKey, TValue>
+{
   set = jest.fn().mockResolvedValue(AgingCacheWriteStatus.Success);
 }
 

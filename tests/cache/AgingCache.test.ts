@@ -23,7 +23,7 @@ describe(AgingCache.name, () => {
   });
 
   beforeEach(() => {
-    hierarchyMock = (new MockStorageHierarchy() as unknown) as StorageHierarchy<string, string>;
+    hierarchyMock = new MockStorageHierarchy() as unknown as StorageHierarchy<string, string>;
     setStrategyMock = new MockAgingCacheSetStrategy();
     deleteStrategyMock = new MockAgingCacheDeleteStrategy();
     evictQueueMock = new MockAgedQueue<string>();
