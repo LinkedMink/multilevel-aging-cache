@@ -1,6 +1,6 @@
 {
   "name": "@linkedmink/multilevel-aging-cache-mongoose",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Package implements Mongoose for multilevel-aging-cache",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -23,7 +23,7 @@
     "doc": "typedoc"
   },
   "peerDependencies": {
-    "@linkedmink/multilevel-aging-cache": "0.5.0",
+    "@linkedmink/multilevel-aging-cache": "0.5.1",
     "mongoose": ">= 5.13.0 < 5.14"
   }
 }
