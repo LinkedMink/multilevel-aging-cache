@@ -9,11 +9,11 @@ export class OverwriteAlwaysDeleteStrategy<TKey, TValue>
   extends AgingCacheWriteStrategy<TKey, TValue>
   implements IAgingCacheDeleteStrategy<TKey, TValue>
 {
-  delete(key: TKey, force: boolean): Promise<IAgingCacheWrite<TValue>> {
+  delete(key: TKey, _force: boolean): Promise<IAgingCacheWrite<TValue>> {
     return this.executeDelete(key);
   }
 
-  evict(key: TKey, evictAtLevel?: number, force?: boolean): Promise<IAgingCacheWrite<TValue>> {
+  evict(key: TKey, evictAtLevel?: number, _force?: boolean): Promise<IAgingCacheWrite<TValue>> {
     return this.executeDelete(key, evictAtLevel);
   }
 }

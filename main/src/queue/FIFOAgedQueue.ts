@@ -98,7 +98,7 @@ export class FIFOAgedQueue<TKey> implements IAgedQueue<TKey> {
    * @param key The key we want a default for
    * @return The default age that will very by algorithm
    */
-  getInitialAge(key: TKey): number {
+  getInitialAge(_key: TKey): number {
     return Date.now();
   }
 

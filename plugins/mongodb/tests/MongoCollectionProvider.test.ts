@@ -1,8 +1,8 @@
+import { IAgedValue } from '@linkedmink/multilevel-aging-cache';
 import { Collection, MongoClient, ObjectID } from 'mongodb';
-import { IAgedValue } from '../../../main/src/cache/expire/IAgedQueue';
-import { getDefaultOptions, IMongoRecord } from '../src/IMongoProviderOptions';
-import { MongoProvider } from '../src/MongoProvider';
-import { setGlobalMockTransport } from '../../../tests/MockTransport';
+import { getDefaultOptions, IMongoRecord } from 'IMongoProviderOptions';
+import { MongoProvider } from 'MongoProvider';
+import { setGlobalMockTransport } from '../../../main/tests/MockTransport';
 
 interface TestRecord extends IMongoRecord {
   value: string;

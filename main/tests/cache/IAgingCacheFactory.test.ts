@@ -1,9 +1,9 @@
 import path from 'path';
-import { getDefaultAgingCacheOptions } from '../../src/cache/IAgingCacheOptions';
-import * as cacheFactory from '../../src/cache/IAgingCacheFactory';
-import * as cacheOptions from '../../src/cache/IAgingCacheOptions';
-import { StorageHierarchy } from '../../src/storage/StorageHierarchy';
-import { RefreshAlwaysSetStrategy } from '../../src/cache/write/RefreshAlwaysSetStrategy';
+import { getDefaultAgingCacheOptions } from 'cache/IAgingCacheOptions';
+import * as cacheFactory from 'CacheFactory';
+import * as cacheOptions from 'cache/IAgingCacheOptions';
+import { StorageHierarchy } from 'storage/StorageHierarchy';
+import { RefreshAlwaysSetStrategy } from 'cache/RefreshAlwaysSetStrategy';
 import { MockStorageHierarchy } from '../Mocks';
 import { setGlobalMockTransport } from '../MockTransport';
 
@@ -68,7 +68,7 @@ describe(path.basename(__filename, '.test.ts'), () => {
 
       const result = cacheFactory.checkAgingCacheOptionsValid(options, 2);
 
-      expect(result.message).toEqual('maxEntries(0): must be greater than 0');
+      expect(result?.message).toEqual('maxEntries(0): must be greater than 0');
     });
 
     test('should return Error when purgeInterval less than 10', () => {
@@ -77,7 +77,7 @@ describe(path.basename(__filename, '.test.ts'), () => {
 
       const result = cacheFactory.checkAgingCacheOptionsValid(options, 2);
 
-      expect(result.message).toEqual('purgeInterval(9): must be greater than 10 seconds');
+      expect(result?.message).toEqual('purgeInterval(9): must be greater than 10 seconds');
     });
 
     test('should return Error when maxEntries less than 1', () => {
@@ -87,7 +87,7 @@ describe(path.basename(__filename, '.test.ts'), () => {
 
       const result = cacheFactory.checkAgingCacheOptionsValid(options, 2);
 
-      expect(result.message).toEqual('maxAge(1 min): must be greater than purgeInterval(61 sec)');
+      expect(result?.message).toEqual('maxAge(1 min): must be greater than purgeInterval(61 sec)');
     });
 
     test('should return Error when maxEntries less than 0 or more than max', () => {
@@ -99,8 +99,8 @@ describe(path.basename(__filename, '.test.ts'), () => {
       const result1 = cacheFactory.checkAgingCacheOptionsValid(options1, 2);
       const result2 = cacheFactory.checkAgingCacheOptionsValid(options2, 2);
 
-      expect(result1.message).toEqual('evictAtLevel must be a between 0 and 2');
-      expect(result2.message).toEqual('evictAtLevel must be a between 0 and 2');
+      expect(result1?.message).toEqual('evictAtLevel must be a between 0 and 2');
+      expect(result2?.message).toEqual('evictAtLevel must be a between 0 and 2');
     });
   });
 });

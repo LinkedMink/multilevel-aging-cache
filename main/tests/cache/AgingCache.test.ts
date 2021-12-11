@@ -1,6 +1,6 @@
-import { AgingCache } from '../../src/cache/AgingCache';
-import { StorageHierarchy } from '../../src/storage/StorageHierarchy';
-import { AgingCacheWriteStatus } from '../../src/cache/IAgingCache';
+import { AgingCache } from 'cache/AgingCache';
+import { StorageHierarchy } from 'storage/StorageHierarchy';
+import { AgingCacheWriteStatus } from 'cache/IAgingCache';
 import {
   MockAgingCacheSetStrategy,
   MockAgingCacheDeleteStrategy,
@@ -14,7 +14,7 @@ describe(AgingCache.name, () => {
 
   let hierarchyMock: StorageHierarchy<string, string>;
   let setStrategyMock: MockAgingCacheSetStrategy<string, string>;
-  let deleteStrategyMock: MockAgingCacheDeleteStrategy<string>;
+  let deleteStrategyMock: MockAgingCacheDeleteStrategy<string, string>;
   let evictQueueMock: MockAgedQueue<string>;
   let cache: AgingCache<string, string>;
 

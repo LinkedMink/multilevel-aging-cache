@@ -1,5 +1,3 @@
-import baseConfig from '../../main/jest.config'
+import { defaultJestConfig } from '../../jest.config';
 
-baseConfig.testPathIgnorePatterns = ['/node_modules/'];
-
-module.exports = baseConfig;
+export default defaultJestConfig;

@@ -25,8 +25,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "lint": "eslint -c ../.eslintrc.js --ext .ts ./",
-    "format": "prettier --config ../.prettierrc.js --write ./**/*.ts *.json",
+    "lint": "eslint --ext .ts src",
     "doc": "typedoc"
   },
   "dependencies": {
@@ -36,7 +35,18 @@
     "winston": "^3.0.0"
   },
   "devDependencies": {
+    "@tsconfig/node16": "^1.0.2",
     "@types/bintrees": "^1.0.3",
+    "@types/jest": "^27.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.6.0",
+    "@typescript-eslint/parser": "^5.6.0",
+    "eslint": "^8.4.1",
+    "eslint-config-prettier": "^8.3.0",
+    "jest": "^27.4.4",
+    "prettier": "^2.5.1",
+    "ts-jest": "^27.1.1",
+    "typedoc": "^0.22.10",
+    "typescript": "^4.5.3",
     "winston": "^3.3.3"
   }
 }

@@ -2,7 +2,7 @@ module.exports = {
   env: {
     node: true,
   },
-  ignorePatterns: ['*.test.ts'],
+  ignorePatterns: ['tests/**/*.ts', 'jest.config.ts'],
   overrides: [
     {
       files: ['*.ts'],
@@ -19,27 +19,21 @@ module.exports = {
       },
       plugins: ['@typescript-eslint'],
       rules: {
-        '@typescript-eslint/naming-convention': [
+        '@typescript-eslint/no-unused-vars': [
           'error',
-          {
-            selector: 'interface',
-            format: ['PascalCase'],
-            custom: {
-              regex: '^I[A-Z]',
-              match: true,
-            },
-          },
+          { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
         ],
-        '@typescript-eslint/restrict-template-expressions': [
-          'warn',
-          {
-            allowNumber: true,
-            allowBoolean: true,
-            allowAny: false,
-            allowNullish: true,
-            allowRegExp: true,
-          },
-        ],
+        //'@typescript-eslint/restrict-template-expressions': "off"
+        // '@typescript-eslint/restrict-template-expressions': [
+        //   'warn',
+        //   {
+        //     allowNumber: true,
+        //     allowBoolean: true,
+        //     allowAny: false,
+        //     allowNullish: true,
+        //     allowRegExp: true,
+        //   },
+        // ],
       },
     },
   ],

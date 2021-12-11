@@ -1,6 +1,6 @@
-import winston = require('winston');
+import winston from 'winston';
 
-import { Logger } from '../../src/shared/Logger';
+import { Logger } from 'shared/Logger';
 
 describe(Logger.name, () => {
   test('should return shared instance when label is the same', () => {

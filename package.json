@@ -24,36 +24,36 @@
   },
   "private": true,
   "scripts": {
+    "start": "ts-node-dev --inspect --respawn --transpile-only demo/index.ts",
     "build": "yarn workspaces foreach -pt run build",
     "test": "yarn workspaces foreach -pt run test",
     "lint": "yarn workspaces foreach -pt run lint",
-    "format": "yarn workspaces foreach -pt run format",
     "doc": "yarn workspaces -pt run doc",
+    "postinstall": "husky install || cd .",
     "pack:all": "yarn workspaces foreach -pt --from \"{main,plugins/*}\" run publish",
     "publish:all": "yarn workspaces foreach -pt --from \"{main,plugins/*}\" run publish",
     "publish:ioredis": "cd plugins/ioredis && npm publish --access public",
     "publish:mongodb": "cd plugins/mongodb && npm publish --access public",
     "publish:mongoose": "cd plugins/mongoose && npm publish --access public"
   },
-  "devDependencies": {
+  "optionalDependencies": {
+    "@linkedmink/multilevel-aging-cache": "workspace:*",
+    "@linkedmink/multilevel-aging-cache-ioredis": "workspace:*",
+    "@linkedmink/multilevel-aging-cache-mongoose": "workspace:*",
     "@tsconfig/node16": "^1.0.2",
-    "@types/jest": "^27.0.3",
-    "@typescript-eslint/eslint-plugin": "^5.6.0",
-    "@typescript-eslint/parser": "^5.6.0",
-    "eslint": "^8.4.1",
-    "eslint-config-prettier": "^8.3.0",
-    "jest": "^27.4.4",
-    "prettier": "^2.5.1",
-    "ts-jest": "^27.1.1",
-    "typedoc": "^0.22.10",
+    "@types/ioredis": "^4.28.3",
+    "husky": "^7.0.4",
+    "ioredis": "^4.28.2",
+    "lint-staged": "^12.1.2",
+    "mongoose": "^5.13.13",
+    "ts-node-dev": "^1.1.8",
     "typescript": "^4.5.3"
   },
   "workspaces": [
     "main",
     "plugins/ioredis",
     "plugins/mongodb",
-    "plugins/mongoose",
-    "demo"
+    "plugins/mongoose"
   ],
   "packageManager": "yarn@3.1.1"
 }

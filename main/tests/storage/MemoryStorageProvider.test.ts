@@ -1,4 +1,4 @@
-import { MemoryStorageProvider } from '../../src/storage/MemoryStorageProvider';
+import { MemoryStorageProvider } from 'storage/MemoryStorageProvider';
 import { setGlobalMockTransport } from '../MockTransport';
 
 describe(MemoryStorageProvider.name, () => {

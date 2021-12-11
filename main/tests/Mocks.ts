@@ -1,12 +1,9 @@
-import { ISerializer } from '../src/serialization/ISerializer';
-import {
-  IAgingCacheSetStrategy,
-  IAgingCacheDeleteStrategy,
-} from '../src/cache/write/IAgingCacheWriteStrategy';
-import { AgingCacheWriteStatus } from '../src/cache/IAgingCache';
-import { IStorageHierarchy } from '../src/storage/IStorageHierarchy';
-import { IAgedQueue } from '../src/cache/expire/IAgedQueue';
-import { ISubscribableStorageProvider } from '../src/storage/ISubscribableStorageProvider';
+import { ISerializer } from 'serialize/ISerializer';
+import { IAgingCacheSetStrategy, IAgingCacheDeleteStrategy } from 'cache/IAgingCacheWriteStrategy';
+import { AgingCacheWriteStatus } from 'cache/IAgingCache';
+import { IStorageHierarchy } from 'storage/IStorageHierarchy';
+import { IAgedQueue } from 'queue/IAgedQueue';
+import { ISubscribableStorageProvider } from 'storage/ISubscribableStorageProvider';
 
 export class MockSerializer implements ISerializer<string> {
   static testSerializePrefix = 'TEST12345_';
@@ -46,9 +43,12 @@ export class MockAgingCacheSetStrategy<TKey, TValue>
   implements IAgingCacheSetStrategy<TKey, TValue>
 {
   set = jest.fn().mockResolvedValue(AgingCacheWriteStatus.Success);
+  load = jest.fn().mockResolvedValue(AgingCacheWriteStatus.Success);
 }
 
-export class MockAgingCacheDeleteStrategy<TKey> implements IAgingCacheDeleteStrategy<TKey> {
+export class MockAgingCacheDeleteStrategy<TKey, TValue>
+  implements IAgingCacheDeleteStrategy<TKey, TValue>
+{
   delete = jest.fn().mockResolvedValue(AgingCacheWriteStatus.Success);
   evict = jest.fn().mockResolvedValue(AgingCacheWriteStatus.Success);
 }

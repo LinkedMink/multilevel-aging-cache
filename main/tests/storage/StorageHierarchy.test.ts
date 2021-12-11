@@ -1,11 +1,11 @@
-import { StorageHierarchy } from '../../src/storage/StorageHierarchy';
-import { AgingCacheWriteStatus } from '../../src/cache/IAgingCache';
+import { StorageHierarchy } from 'storage/StorageHierarchy';
+import { AgingCacheWriteStatus } from 'cache/IAgingCache';
 import { MockStorageProvider } from '../Mocks';
-import { StorageHierarchyUpdatePolicy } from '../../src/storage/IStorageHierarchy';
+import { StorageHierarchyUpdatePolicy } from 'storage/IStorageHierarchy';
 import {
   ISubscribableStorageProvider,
   StorageProviderUpdateHandler,
-} from '../../src/storage/ISubscribableStorageProvider';
+} from 'storage/ISubscribableStorageProvider';
 import { setGlobalMockTransport } from '../MockTransport';
 
 describe(StorageHierarchy.name, () => {

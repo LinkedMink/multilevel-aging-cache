@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import winston from 'winston';
 import Transport from 'winston-transport';
-import { Logger } from '../src/shared/Logger';
+import { Logger } from 'shared/Logger';
 
 export class MockTransport extends Transport {
   private callsValue: any[] = [];
