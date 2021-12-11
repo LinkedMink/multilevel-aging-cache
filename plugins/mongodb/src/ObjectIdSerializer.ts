@@ -1,5 +1,5 @@
-import { ObjectId } from "mongodb";
-import { ISerializer } from "@linkedmink/multilevel-aging-cache";
+import { ObjectId } from 'mongodb';
+import { ISerializer } from '@linkedmink/multilevel-aging-cache';
 
 /**
  * De/Serialize ObjectId objects

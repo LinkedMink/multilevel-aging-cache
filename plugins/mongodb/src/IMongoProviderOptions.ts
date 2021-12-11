@@ -1,7 +1,7 @@
-import { ObjectId } from "mongodb";
+import { ObjectId } from 'mongodb';
 
-const DEFAULT_KEY_PROPERTY = "_id";
-const DEFAULT_AGE_PROPERTY = "modifiedDate";
+const DEFAULT_KEY_PROPERTY = '_id';
+const DEFAULT_AGE_PROPERTY = 'modifiedDate';
 
 /**
  * A MongoDB record that has fields to track when it's written.

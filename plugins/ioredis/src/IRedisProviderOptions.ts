@@ -1,6 +1,6 @@
-import { ISerializer, JsonSerializer, StringSerializer } from "@linkedmink/multilevel-aging-cache";
+import { ISerializer, JsonSerializer, StringSerializer } from '@linkedmink/multilevel-aging-cache';
 
-const DEFAULT_KEY_PREFIX = "node";
+const DEFAULT_KEY_PREFIX = 'node';
 
 /**
  * Options to build a RedisStorageProvider

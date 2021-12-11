@@ -2,7 +2,7 @@ export function getDotSeperatedPropertyValue(
   search: Record<string, unknown>,
   path: string
 ): unknown {
-  const pathParts = path.split(".");
+  const pathParts = path.split('.');
   let currentProp = search;
   for (let i = 0; i < pathParts.length; i++) {
     if (currentProp[pathParts[i]] !== undefined) {
@@ -19,7 +19,7 @@ export function setDotSeperatedPropertyValue(
   path: string,
   setValue: unknown
 ): void {
-  const pathParts = path.split(".");
+  const pathParts = path.split('.');
   let currentProp = search;
   for (let i = 0; i < pathParts.length; i++) {
     if (i === pathParts.length - 1) {

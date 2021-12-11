@@ -1,9 +1,9 @@
-import { Redis, Cluster } from "ioredis";
+import { Redis, Cluster } from 'ioredis';
 
-import { IStorageProvider, IAgedValue } from "@linkedmink/multilevel-aging-cache";
-import { IRedisProviderOptions } from "./IRedisProviderOptions";
+import { IStorageProvider, IAgedValue } from '@linkedmink/multilevel-aging-cache';
+import { IRedisProviderOptions } from './IRedisProviderOptions';
 
-const RESPONSE_OK = "OK";
+const RESPONSE_OK = 'OK';
 
 /**
  * A storage provider that uses IORedis. This implemenation uses Redis pub/sub as a method to retrieve

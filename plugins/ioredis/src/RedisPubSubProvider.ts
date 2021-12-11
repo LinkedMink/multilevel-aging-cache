@@ -1,4 +1,4 @@
-import { Cluster, Redis } from "ioredis";
+import { Cluster, Redis } from 'ioredis';
 
 import {
   ISubscribableStorageProvider,
@@ -6,11 +6,11 @@ import {
   ISerializer,
   IAgedValue,
   Logger,
-} from "@linkedmink/multilevel-aging-cache";
-import { IRedisProviderOptions } from "./IRedisProviderOptions";
+} from '@linkedmink/multilevel-aging-cache';
+import { IRedisProviderOptions } from './IRedisProviderOptions';
 
-const RESPONSE_OK = "OK";
-const DEFAULT_PUBLISH_CHANNEL = "PublishedKey";
+const RESPONSE_OK = 'OK';
+const DEFAULT_PUBLISH_CHANNEL = 'PublishedKey';
 
 interface IPublishDeleteMessage {
   key: string;
@@ -153,7 +153,7 @@ export class RedisPubSubProvider<TKey, TValue>
   subscribe(handler: StorageProviderUpdateHandler<TKey, TValue>): boolean {
     const index = this.updateHandlers.indexOf(handler);
     if (index >= 0) {
-      this.logger.warn("Attempted to subscribe function that is already subscribed");
+      this.logger.warn('Attempted to subscribe function that is already subscribed');
       return false;
     }
 
@@ -172,7 +172,7 @@ export class RedisPubSubProvider<TKey, TValue>
       return true;
     }
 
-    this.logger.warn("Attempted to unsubscribe with function that was never subscribed");
+    this.logger.warn('Attempted to unsubscribe with function that was never subscribed');
     return false;
   }
 
@@ -183,17 +183,17 @@ export class RedisPubSubProvider<TKey, TValue>
    */
   listen(): Promise<boolean> {
     if (this.isListening) {
-      this.logger.warn("Attempted to listen when already listening");
+      this.logger.warn('Attempted to listen when already listening');
       return Promise.resolve(false);
     }
 
     return this.channel.subscribe(this.config.channelName).then(subscribedCount => {
       if (subscribedCount < 1) {
-        this.logger.error("Redis returned no channels are subscribed to");
+        this.logger.error('Redis returned no channels are subscribed to');
         return false;
       }
 
-      this.channel.on("message", this.handleChannelMessage);
+      this.channel.on('message', this.handleChannelMessage);
       this.isListening = true;
       this.logger.info(
         `Listening to channel: ${this.config.channelName}, totalChannels=${subscribedCount}`

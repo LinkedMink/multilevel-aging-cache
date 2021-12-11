@@ -1,6 +1,6 @@
-import { Document, FilterQuery, Types } from "mongoose";
+import { Document, FilterQuery, Types } from 'mongoose';
 
-const DEFAULT_AGE_PROPERTY = "modifiedDate";
+const DEFAULT_AGE_PROPERTY = 'modifiedDate';
 
 export type ToNumberFunc = <T>(age: T) => number;
 export type ToTypeFunc = <T>(value: number) => T;

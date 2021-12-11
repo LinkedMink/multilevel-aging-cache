@@ -1,5 +1,5 @@
-import { Types } from "mongoose";
-import { ISerializer } from "@linkedmink/multilevel-aging-cache";
+import { Types } from 'mongoose';
+import { ISerializer } from '@linkedmink/multilevel-aging-cache';
 
 /**
  * De/Serialize ObjectId objects

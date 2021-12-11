@@ -1,0 +1,42 @@
+{
+  "name": "@linkedmink/multilevel-aging-cache",
+  "version": "0.5.1",
+  "description": "Package provides an interface to cache and persist data to Redis, MongoDB, memory",
+  "keywords": [
+    "cache",
+    "memory",
+    "redis",
+    "mongodb",
+    "database",
+    "storage",
+    "distributed"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "author": {
+    "name": "Harlan Sang",
+    "email": "harlan@linkedmink.net"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LinkedMink/multilevel-aging-cache"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint -c ../.eslintrc.js --ext .ts ./",
+    "format": "prettier --config ../.prettierrc.js --write ./**/*.ts *.json",
+    "doc": "typedoc"
+  },
+  "dependencies": {
+    "bintrees": "^1.0.2"
+  },
+  "peerDependencies": {
+    "winston": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/bintrees": "^1.0.3",
+    "winston": "^3.3.3"
+  }
+}

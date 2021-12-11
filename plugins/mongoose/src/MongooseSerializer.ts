@@ -1,5 +1,5 @@
-import { Document, Model } from "mongoose";
-import { ISerializer } from "@linkedmink/multilevel-aging-cache";
+import { Document, Model } from 'mongoose';
+import { ISerializer } from '@linkedmink/multilevel-aging-cache';
 
 /**
  * De/Serialize Mongoose objects

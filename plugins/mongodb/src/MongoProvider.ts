@@ -1,8 +1,8 @@
-import { Collection, Document, UpdateResult } from "mongodb";
+import { Collection, Document, UpdateResult } from 'mongodb';
 
-import { IAgedValue, IStorageProvider } from "@linkedmink/multilevel-aging-cache";
-import { IMongoProviderOptions, IMongoRecord, MongoProviderSetMode } from "./IMongoProviderOptions";
-import { getDotSeperatedPropertyValue, setDotSeperatedPropertyValue } from "./Helpers";
+import { IAgedValue, IStorageProvider } from '@linkedmink/multilevel-aging-cache';
+import { IMongoProviderOptions, IMongoRecord, MongoProviderSetMode } from './IMongoProviderOptions';
+import { getDotSeperatedPropertyValue, setDotSeperatedPropertyValue } from './Helpers';
 
 const isUpdateResult = (value: unknown): value is UpdateResult =>
   (value as UpdateResult).modifiedCount !== undefined;

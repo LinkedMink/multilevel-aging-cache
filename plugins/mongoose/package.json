@@ -1,13 +1,22 @@
 {
   "name": "@linkedmink/multilevel-aging-cache-mongoose",
   "version": "0.5.1",
-  "description": "Package implements Mongoose for multilevel-aging-cache",
+  "description": "Package implements Mongoose for @linkedmink/multilevel-aging-cache",
+  "keywords": [
+    "cache",
+    "memory",
+    "redis",
+    "mongodb",
+    "database",
+    "storage",
+    "distributed"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
   "author": {
     "name": "Harlan Sang",
-    "email": "harlan@linkedmink.space"
+    "email": "harlan@linkedmink.net"
   },
   "repository": {
     "type": "git",
@@ -17,13 +26,17 @@
     "build": "tsc --project ./tsconfig.json",
     "test": "jest",
     "lint": "eslint -c ../../.eslintrc.js --ext .ts src",
-    "format": "prettier --write src/**/*.ts tests/**/*.ts *.js *.json",
-    "link": "npm run build && npm link",
-    "prepublishOnly": "npm run build",
+    "format": "prettier --config ../../.prettierrc.js --write src/**/*.ts tests/**/*.ts *.js *.json",
+    "prepublishOnly": "yarn build",
     "doc": "typedoc"
   },
   "peerDependencies": {
-    "@linkedmink/multilevel-aging-cache": "0.5.1",
-    "mongoose": ">= 5.13.0 < 5.14"
+    "@linkedmink/multilevel-aging-cache": "workspace:*",
+    "mongoose": "^5.12.0"
+  },
+  "devDependencies": {
+    "@shelf/jest-mongodb": "^2.1.1",
+    "mongodb": "^4.2.1",
+    "mongoose": "^5.13.13"
   }
 }

@@ -6,20 +6,29 @@
   "license": "MIT",
   "author": {
     "name": "Harlan Sang",
-    "email": "harlan@linkedmink.space"
+    "email": "harlan@linkedmink.net"
   },
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/LinkedMink/multilevel-aging-cache"
   },
   "scripts": {
-    "start": "npm run build && node ./dist/CliSampleApp.js",
-    "build": "tsc --project ./tsconfig.json",
-    "lint": "eslint -c ../.eslintrc.js ./CliSampleApp.ts",
-    "format": "prettier --write ./**/*.ts"
+    "start": "ts-node-dev --inspect --respawn --transpile-only index.ts",
+    "build": "tsc",
+    "lint": "eslint -c ../.eslintrc.js ./index.ts",
+    "format": "prettier --config ../.prettierrc.js --write ./**/*.ts"
   },
   "dependencies": {
-    "@linkedmink/multilevel-aging-cache": "0.5.1",
-    "@linkedmink/multilevel-aging-cache-ioredis": "0.5.1"
+    "@linkedmink/multilevel-aging-cache": "workspace:*",
+    "@linkedmink/multilevel-aging-cache-ioredis": "workspace:*",
+    "@linkedmink/multilevel-aging-cache-mongoose": "workspace:*",
+    "ioredis": "^4.28.2",
+    "mongoose": "^5.13.13"
+  },
+  "devDependencies": {
+    "@types/ioredis": "^4.28.3",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.3"
   }
 }

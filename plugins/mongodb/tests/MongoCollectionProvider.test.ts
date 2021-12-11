@@ -1,8 +1,8 @@
-import { Collection, MongoClient, ObjectID } from "mongodb";
-import { IAgedValue } from "../../../src/cache/expire/IAgedQueue";
-import { getDefaultOptions, IMongoRecord } from "../src/IMongoProviderOptions";
-import { MongoProvider } from "../src/MongoProvider";
-import { setGlobalMockTransport } from "../../../tests/MockTransport";
+import { Collection, MongoClient, ObjectID } from 'mongodb';
+import { IAgedValue } from '../../../main/src/cache/expire/IAgedQueue';
+import { getDefaultOptions, IMongoRecord } from '../src/IMongoProviderOptions';
+import { MongoProvider } from '../src/MongoProvider';
+import { setGlobalMockTransport } from '../../../tests/MockTransport';
 
 interface TestRecord extends IMongoRecord {
   value: string;
@@ -30,7 +30,7 @@ describe(MongoProvider.name, () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    dbCollection = (await connection.db()).collection<TestRecord>("TEST");
+    dbCollection = (await connection.db()).collection<TestRecord>('TEST');
   });
 
   afterAll(async () => {
@@ -41,13 +41,13 @@ describe(MongoProvider.name, () => {
     provider = new MongoProvider(dbCollection, getDefaultOptions());
   });
 
-  test("should return instance when constructor parameters are valid", () => {
+  test('should return instance when constructor parameters are valid', () => {
     expect(provider).toBeDefined();
   });
 
-  test("should set a key/value when set is called", () => {
-    const testKey = new ObjectID("5fe526653b607d92a76653c8");
-    const testValue = getAgedTestRecord(testKey, "TEST_VALUE");
+  test('should set a key/value when set is called', () => {
+    const testKey = new ObjectID('5fe526653b607d92a76653c8');
+    const testValue = getAgedTestRecord(testKey, 'TEST_VALUE');
 
     provider.set(testKey, testValue);
 
@@ -59,9 +59,9 @@ describe(MongoProvider.name, () => {
     });
   });
 
-  test("should delete a key/value when delete is called", () => {
-    const testKey = new ObjectID("5fe5267090e73a5cfd33c932");
-    const testValue = getAgedTestRecord(testKey, "TEST_VALUE");
+  test('should delete a key/value when delete is called', () => {
+    const testKey = new ObjectID('5fe5267090e73a5cfd33c932');
+    const testValue = getAgedTestRecord(testKey, 'TEST_VALUE');
 
     provider.set(testKey, testValue);
     provider.delete(testKey);
@@ -71,15 +71,15 @@ describe(MongoProvider.name, () => {
     });
   });
 
-  test("should return keys when keys is called", () => {
+  test('should return keys when keys is called', () => {
     const testKeys = [
-      new ObjectID("5fe52675f8c5dc7bfb607e4c"),
-      new ObjectID("5fe5267f815640feb568dd99"),
-      new ObjectID("5fe52687e8605e3c37c35a9f"),
-      new ObjectID("5fe5268f6d041f71f1d3ecf2"),
+      new ObjectID('5fe52675f8c5dc7bfb607e4c'),
+      new ObjectID('5fe5267f815640feb568dd99'),
+      new ObjectID('5fe52687e8605e3c37c35a9f'),
+      new ObjectID('5fe5268f6d041f71f1d3ecf2'),
     ];
 
-    testKeys.forEach(key => provider.set(key, getAgedTestRecord(key, "TEST_VALUE")));
+    testKeys.forEach(key => provider.set(key, getAgedTestRecord(key, 'TEST_VALUE')));
 
     return provider.keys().then(keys => {
       expect(keys.length).toBeGreaterThanOrEqual(testKeys.length);
@@ -87,15 +87,15 @@ describe(MongoProvider.name, () => {
     });
   });
 
-  test("should return number of keys when size is called", () => {
+  test('should return number of keys when size is called', () => {
     const testKeys = [
-      new ObjectID("5fe52698640fa041de3b19b6"),
-      new ObjectID("5fe526a000ed4636879a26bd"),
-      new ObjectID("5fe526a7293343741e3db226"),
-      new ObjectID("5fe526aede2255840ed0fdb8"),
+      new ObjectID('5fe52698640fa041de3b19b6'),
+      new ObjectID('5fe526a000ed4636879a26bd'),
+      new ObjectID('5fe526a7293343741e3db226'),
+      new ObjectID('5fe526aede2255840ed0fdb8'),
     ];
 
-    testKeys.forEach(key => provider.set(key, getAgedTestRecord(key, "TEST_VALUE")));
+    testKeys.forEach(key => provider.set(key, getAgedTestRecord(key, 'TEST_VALUE')));
 
     return provider.size().then(size => {
       expect(size).toBeGreaterThanOrEqual(testKeys.length);

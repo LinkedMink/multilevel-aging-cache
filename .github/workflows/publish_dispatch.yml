@@ -1,0 +1,31 @@
+name: Publish Dispatch
+concurrency: 
+  group: publish
+  cancel-in-progress: true
+on:
+  workflow_dispatch:
+    inputs:
+      uploadToTag:
+        type: string
+        required: true
+        description: 'Upload built Bundle to Github tag'
+      appBundleName:
+        type: string
+        required: false
+        default: app-bundle
+        description: 'Name associated with actions/upload-artifact'
+
+jobs:
+  build:
+    uses: LinkedMink/road-wave-fm-web/.github/workflows/build.yml@main
+    with:
+      uploadBuild: true
+      appBundleName: ${{ github.event.inputs.appBundleName }}
+  publish:
+    needs: [build]
+    uses: LinkedMink/road-wave-fm-web/.github/workflows/publish.yml@main
+    with:
+      uploadToTag: ${{ github.event.inputs.uploadToTag }}
+      appBundleName: ${{ github.event.inputs.appBundleName }}
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,12 +1,12 @@
-import { Document, EnforceDocument, Model, Query, Types } from "mongoose";
+import { Document, EnforceDocument, Model, Query, Types } from 'mongoose';
 
-import { IAgedValue, IStorageProvider, Logger } from "@linkedmink/multilevel-aging-cache";
-import { IMongooseProviderOptions } from "./IMongooseProviderOptions";
+import { IAgedValue, IStorageProvider, Logger } from '@linkedmink/multilevel-aging-cache';
+import { IMongooseProviderOptions } from './IMongooseProviderOptions';
 import {
   getDotSeperatedPropertyValue,
   isMongooseValidationError,
   setDotSeperatedPropertyValue,
-} from "./Helpers";
+} from './Helpers';
 
 /**
  * Use mongodb as a persistent storage mechanism with Mongoose documents
@@ -17,7 +17,7 @@ export class MongooseProvider<TKey = Types.ObjectId, TValue extends Document = D
   readonly isPersistable = true;
 
   private readonly logger = Logger.get(MongooseProvider.name);
-  private readonly keyProperty = this.options.keyProperty ?? "_id";
+  private readonly keyProperty = this.options.keyProperty ?? '_id';
 
   /**
    * @param model The object returned by 'mongoose'.model function

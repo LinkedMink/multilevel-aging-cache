@@ -1,0 +1,23 @@
+name: Publish Tag
+concurrency: 
+  group: publish
+  cancel-in-progress: true
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    uses: LinkedMink/road-wave-fm-web/.github/workflows/build.yml@main
+    with:
+      uploadBuild: true
+      appBundleName: app-bundle
+  publish:
+    needs: [build]
+    uses: LinkedMink/road-wave-fm-web/.github/workflows/publish.yml@main
+    with:
+      uploadToTag: ${GITHUB_REF#refs/*/}
+      appBundleName: app-bundle
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

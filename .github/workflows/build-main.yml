@@ -1,0 +1,13 @@
+name: Build main
+concurrency: 
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+on:
+  push:
+    branches:
+    - main
+jobs:
+  build:
+    uses: LinkedMink/road-wave-fm-web/.github/workflows/build.yml@main
+    with:
+      uploadBuild: false
