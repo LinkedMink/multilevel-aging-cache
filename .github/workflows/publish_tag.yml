@@ -9,15 +9,16 @@ on:
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/main'
     uses: LinkedMink/multilevel-aging-cache/.github/workflows/build.yml@main
     with:
       uploadBuild: true
-      appBundleName: app-bundle
   publish:
-    needs: [build]
+    if: github.ref == 'refs/heads/main'
+    needs: build
     uses: LinkedMink/multilevel-aging-cache/.github/workflows/publish.yml@main
     with:
-      uploadToTag: ${GITHUB_REF#refs/*/}
-      appBundleName: app-bundle
+      uploadToTag: ${{ github.ref_name }}
+      uploadedBuildName: ${{ needs.build.outputs.uploadedBuildName }} 
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -7,15 +7,16 @@ on:
         required: false
         default: false
         description: 'Upload distribution files to Github'
-      appBundleName:
-        type: string
-        required: false
-        default: app-bundle
-        description: 'Name associated with actions/upload-artifact'
+    outputs:
+      uploadedBuildName:
+        description: "If a build is uploaded, this name will be output"
+        value: ${{ jobs.build.outputs.uploadedBuildName }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      uploadedBuildName: ${{ steps.finish-output.outputs.uploadedBuildName }}
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
@@ -23,16 +24,23 @@ jobs:
         node-version: '16'
         cache: 'yarn'
     - name: Install
-      run: yarn install --immutable --ignore-optional
+      run: yarn install --immutable
+    - name: Build
+      run: yarn build
     - name: Lint
       run: yarn lint
     - name: Test
       run: yarn test || true
-    - name: Build
-      run: yarn build
-    - name: Upload Packages
-      if: ${{ inputs.uploadBuild }}
+    - name: Package Artifacts
+      if: inputs.uploadBuild
+      run: |
+        yarn pack:all
+        echo "::set-output name=uploadedBuildName::linkedmink-multilevel-aging-cache"
+    - name: Upload Artifacts
+      if: inputs.uploadBuild
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ inputs.appBundleName }}
-        path: dist
+        name: linkedmink-multilevel-aging-cache
+        path: |
+          main/linkedmink-multilevel-aging-cache*.tgz
+          plugins/*/linkedmink-multilevel-aging-cache*.tgz

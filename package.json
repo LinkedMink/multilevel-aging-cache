@@ -33,7 +33,7 @@
     "postinstall": "husky install || cd .",
     "pack:all": "yarn workspaces foreach --parallel run npm:pack",
     "publish:all": "yarn workspaces foreach --topological-dev --parallel run npm:publish",
-    "version:all": "yarn version -i $SEMVER && yarn workspaces foreach --topological-dev version -i $SEMVER"
+    "version:all": "yarn workspaces foreach --topological-dev version"
   },
   "dependencies": {
     "@linkedmink/multilevel-aging-cache": "workspace:*",

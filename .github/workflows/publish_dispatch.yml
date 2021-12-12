@@ -9,23 +9,17 @@ on:
         type: string
         required: true
         description: 'Upload built Bundle to Github tag'
-      appBundleName:
-        type: string
-        required: false
-        default: app-bundle
-        description: 'Name associated with actions/upload-artifact'
 
 jobs:
   build:
     uses: LinkedMink/multilevel-aging-cache/.github/workflows/build.yml@main
     with:
       uploadBuild: true
-      appBundleName: ${{ github.event.inputs.appBundleName }}
   publish:
-    needs: [build]
+    needs: build
     uses: LinkedMink/multilevel-aging-cache/.github/workflows/publish.yml@main
     with:
       uploadToTag: ${{ github.event.inputs.uploadToTag }}
-      appBundleName: ${{ github.event.inputs.appBundleName }}
+      uploadedBuildName: ${{ needs.build.outputs.uploadedBuildName }} 
     secrets:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

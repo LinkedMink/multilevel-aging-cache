@@ -6,6 +6,7 @@ on:
   push:
     branches:
     - main
+
 jobs:
   build:
     uses: LinkedMink/multilevel-aging-cache/.github/workflows/build.yml@main
