@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongodb';
+import { Document, ObjectId } from 'mongodb';
 
 const DEFAULT_KEY_PROPERTY = '_id';
 const DEFAULT_AGE_PROPERTY = 'modifiedDate';
@@ -6,9 +6,8 @@ const DEFAULT_AGE_PROPERTY = 'modifiedDate';
 /**
  * A MongoDB record that has fields to track when it's written.
  */
-export interface IMongoRecord {
+export interface IMongoRecord extends Document {
   _id?: ObjectId;
-  [property: string]: unknown;
 }
 
 /**
@@ -25,7 +24,7 @@ export type ToTypeFunc = <T>(value: number) => T;
 /**
  * Options to configure mongodb as a storage provider
  */
-export interface IMongoProviderOptions<TKey, TValue extends IMongoRecord> {
+export interface IMongoProviderOptions<> {
   /**
    * When set() is called should the entire document be replaced or only the fields that are provided
    */
@@ -51,10 +50,7 @@ export interface IMongoProviderOptions<TKey, TValue extends IMongoRecord> {
 /**
  * Default options to use mongodb _id ObjectID as the key and update as a write policy
  */
-export function getDefaultOptions<TKey, TValue extends IMongoRecord>(): IMongoProviderOptions<
-  TKey,
-  TValue
-> {
+export function getDefaultOptions() {
   return {
     setMode: MongoProviderSetMode.Update,
     keyProperty: DEFAULT_KEY_PROPERTY,

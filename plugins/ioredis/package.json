@@ -1,6 +1,6 @@
 {
   "name": "@linkedmink/multilevel-aging-cache-ioredis",
-  "version": "0.5.1",
+  "version": "0.5.2-0",
   "description": "Package implements IORedis for @linkedmink/multilevel-aging-cache",
   "keywords": [
     "cache",
@@ -11,8 +11,8 @@
     "storage",
     "distributed"
   ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "license": "MIT",
   "author": {
     "name": "Harlan Sang",
@@ -26,13 +26,16 @@
     "build": "tsc",
     "test": "jest",
     "lint": "eslint --ext .ts src",
-    "doc": "typedoc"
+    "clean": "rm -rf {coverage,dist}",
+    "npm:publish": "npm publish --access public",
+    "npm:pack": "npm pack"
   },
   "peerDependencies": {
     "@linkedmink/multilevel-aging-cache": "workspace:*",
     "ioredis": "^4.23.0"
   },
   "devDependencies": {
+    "@linkedmink/multilevel-aging-cache": "workspace:*",
     "@tsconfig/node16": "^1.0.2",
     "@types/ioredis": "^4.28.3",
     "@types/jest": "^27.0.3",
@@ -49,5 +52,6 @@
     "typedoc": "^0.22.10",
     "typescript": "^4.5.3",
     "winston": "^3.3.3"
-  }
+  },
+  "stableVersion": "0.5.1"
 }

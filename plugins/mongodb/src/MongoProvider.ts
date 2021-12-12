@@ -21,7 +21,7 @@ export class MongoProvider<TKey, TValue extends IMongoRecord>
    */
   constructor(
     private readonly collection: Collection,
-    private readonly options: IMongoProviderOptions<TKey, TValue>
+    private readonly options: IMongoProviderOptions
   ) {}
 
   /**

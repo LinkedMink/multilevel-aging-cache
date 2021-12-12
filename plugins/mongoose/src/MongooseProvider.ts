@@ -50,7 +50,7 @@ export class MongooseProvider<TKey = Types.ObjectId, TValue extends Document = D
   set(key: TKey, value: IAgedValue<TValue>): Promise<IAgedValue<TValue> | null> {
     this.updateRecordAge(value);
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _reject) => {
       value.value.save((error, doc) => {
         if (!error) {
           return resolve(this.getAgedValue(doc));

@@ -6,7 +6,7 @@ import { ISerializer } from '@linkedmink/multilevel-aging-cache';
  */
 export class ObjectIdSerializer implements ISerializer<ObjectId> {
   serialize = (data: ObjectId): string => {
-    return data.toHexString();
+    return data.toString();
   };
 
   deserialize = (data: string): ObjectId => {

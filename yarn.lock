@@ -689,6 +689,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@linkedmink/multilevel-aging-cache-ioredis@workspace:plugins/ioredis"
   dependencies:
+    "@linkedmink/multilevel-aging-cache": "workspace:*"
     "@tsconfig/node16": ^1.0.2
     "@types/ioredis": ^4.28.3
     "@types/jest": ^27.0.3
@@ -711,10 +712,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@linkedmink/multilevel-aging-cache-mongodb@workspace:plugins/mongodb":
+"@linkedmink/multilevel-aging-cache-mongodb@workspace:*, @linkedmink/multilevel-aging-cache-mongodb@workspace:plugins/mongodb":
   version: 0.0.0-use.local
   resolution: "@linkedmink/multilevel-aging-cache-mongodb@workspace:plugins/mongodb"
   dependencies:
+    "@linkedmink/multilevel-aging-cache": "workspace:*"
     "@shelf/jest-mongodb": ^2.1.1
     "@tsconfig/node16": ^1.0.2
     "@types/jest": ^27.0.3
@@ -739,6 +741,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@linkedmink/multilevel-aging-cache-mongoose@workspace:plugins/mongoose"
   dependencies:
+    "@linkedmink/multilevel-aging-cache": "workspace:*"
     "@shelf/jest-mongodb": ^2.1.1
     "@tsconfig/node16": ^1.0.2
     "@types/jest": ^27.0.3
@@ -766,38 +769,18 @@ __metadata:
   dependencies:
     "@linkedmink/multilevel-aging-cache": "workspace:*"
     "@linkedmink/multilevel-aging-cache-ioredis": "workspace:*"
+    "@linkedmink/multilevel-aging-cache-mongodb": "workspace:*"
     "@linkedmink/multilevel-aging-cache-mongoose": "workspace:*"
     "@tsconfig/node16": ^1.0.2
     "@types/ioredis": ^4.28.3
     husky: ^7.0.4
     ioredis: ^4.28.2
     lint-staged: ^12.1.2
+    mongodb: ^4.2.1
     mongoose: ^5.13.13
     ts-node-dev: ^1.1.8
+    typedoc: ^0.22.10
     typescript: ^4.5.3
-  dependenciesMeta:
-    "@linkedmink/multilevel-aging-cache":
-      optional: true
-    "@linkedmink/multilevel-aging-cache-ioredis":
-      optional: true
-    "@linkedmink/multilevel-aging-cache-mongoose":
-      optional: true
-    "@tsconfig/node16":
-      optional: true
-    "@types/ioredis":
-      optional: true
-    husky:
-      optional: true
-    ioredis:
-      optional: true
-    lint-staged:
-      optional: true
-    mongoose:
-      optional: true
-    ts-node-dev:
-      optional: true
-    typescript:
-      optional: true
   languageName: unknown
   linkType: soft
 
@@ -816,7 +799,6 @@ __metadata:
     jest: ^27.4.4
     prettier: ^2.5.1
     ts-jest: ^27.1.1
-    typedoc: ^0.22.10
     typescript: ^4.5.3
     winston: ^3.3.3
   peerDependencies:

@@ -1,8 +1,8 @@
 import { RedisProvider } from 'RedisProvider';
 import { getStringKeyJsonValueOptions, IRedisProviderOptions } from 'IRedisProviderOptions';
 import { Redis as IRedis } from 'ioredis';
-import { MockSerializer } from '../../../main/tests/Mocks';
-import { setGlobalMockTransport } from '../../../main/tests/MockTransport';
+import { MockSerializer } from './Mocks';
+import { setGlobalMockTransport } from './MockTransport';
 
 const Redis = require('ioredis-mock');
 

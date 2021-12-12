@@ -1,0 +1,8 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "name": "@LinkedMink: Multi-Level Aging Cache",
+  "includeVersion": true,
+  "entryPointStrategy": "Packages",
+  "entryPoints": ["plugins/ioredis", "plugins/mongodb", "plugins/mongoose", "main"],
+  "out": "docs"
+}

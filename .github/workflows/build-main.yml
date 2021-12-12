@@ -8,6 +8,6 @@ on:
     - main
 jobs:
   build:
-    uses: LinkedMink/road-wave-fm-web/.github/workflows/build.yml@main
+    uses: LinkedMink/multilevel-aging-cache/.github/workflows/build.yml@main
     with:
       uploadBuild: false

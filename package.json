@@ -1,6 +1,6 @@
 {
   "name": "@linkedmink/multilevel-aging-cache-workspace",
-  "version": "0.5.1",
+  "version": "0.5.2-0",
   "description": "Package provides an interface to cache and persist data to Redis, MongoDB, memory",
   "keywords": [
     "cache",
@@ -25,28 +25,32 @@
   "private": true,
   "scripts": {
     "start": "ts-node-dev --inspect --respawn --transpile-only demo/index.ts",
-    "build": "yarn workspaces foreach -pt run build",
-    "test": "yarn workspaces foreach -pt run test",
-    "lint": "yarn workspaces foreach -pt run lint",
-    "doc": "yarn workspaces -pt run doc",
+    "build": "yarn workspaces foreach --topological-dev --parallel run build",
+    "test": "yarn workspaces foreach --parallel run test",
+    "lint": "yarn workspaces foreach --parallel run lint",
+    "clean": "rm -rf docs && yarn workspaces foreach --parallel run clean",
+    "doc": "typedoc",
     "postinstall": "husky install || cd .",
-    "pack:all": "yarn workspaces foreach -pt --from \"{main,plugins/*}\" run publish",
-    "publish:all": "yarn workspaces foreach -pt --from \"{main,plugins/*}\" run publish",
-    "publish:ioredis": "cd plugins/ioredis && npm publish --access public",
-    "publish:mongodb": "cd plugins/mongodb && npm publish --access public",
-    "publish:mongoose": "cd plugins/mongoose && npm publish --access public"
+    "pack:all": "yarn workspaces foreach --parallel run npm:pack",
+    "publish:all": "yarn workspaces foreach --topological-dev --parallel run npm:publish",
+    "version:all": "yarn version -i $SEMVER && yarn workspaces foreach --topological-dev version -i $SEMVER"
   },
-  "optionalDependencies": {
+  "dependencies": {
     "@linkedmink/multilevel-aging-cache": "workspace:*",
     "@linkedmink/multilevel-aging-cache-ioredis": "workspace:*",
+    "@linkedmink/multilevel-aging-cache-mongodb": "workspace:*",
     "@linkedmink/multilevel-aging-cache-mongoose": "workspace:*",
+    "ioredis": "^4.28.2",
+    "mongodb": "^4.2.1",
+    "mongoose": "^5.13.13"
+  },
+  "devDependencies": {
     "@tsconfig/node16": "^1.0.2",
     "@types/ioredis": "^4.28.3",
     "husky": "^7.0.4",
-    "ioredis": "^4.28.2",
     "lint-staged": "^12.1.2",
-    "mongoose": "^5.13.13",
     "ts-node-dev": "^1.1.8",
+    "typedoc": "^0.22.10",
     "typescript": "^4.5.3"
   },
   "workspaces": [
@@ -55,5 +59,6 @@
     "plugins/mongodb",
     "plugins/mongoose"
   ],
-  "packageManager": "yarn@3.1.1"
+  "packageManager": "yarn@3.1.1",
+  "stableVersion": "0.5.1"
 }

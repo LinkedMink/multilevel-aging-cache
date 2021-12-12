@@ -1,8 +1,8 @@
 import { RedisPubSubProvider } from 'RedisPubSubProvider';
 import { getStringKeyJsonValueOptions, IRedisProviderOptions } from 'IRedisProviderOptions';
 import { Redis as IRedis } from 'ioredis';
-import { MockSerializer } from '../../../main/tests/Mocks';
-import { setGlobalMockTransport } from '../../../main/tests/MockTransport';
+import { MockSerializer } from './Mocks';
+import { setGlobalMockTransport } from './MockTransport';
 
 const Redis = require('ioredis-mock');
 
@@ -89,7 +89,7 @@ describe(RedisPubSubProvider.name, () => {
     const promise = provider.set(testKey, testValue);
 
     return promise.then(isSuccessful => {
-      expect(isSuccessful).toEqual(true);
+      expect(isSuccessful).toEqual({ age: 0, value: 'TEST_VALUE' });
       const serializedAgedValue = JSON.stringify({
         age: testValue.age,
         value: mockSerializer.serialize(testValue.value),

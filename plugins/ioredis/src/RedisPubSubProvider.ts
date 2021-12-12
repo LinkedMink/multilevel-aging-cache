@@ -3,7 +3,6 @@ import { Cluster, Redis } from 'ioredis';
 import {
   ISubscribableStorageProvider,
   StorageProviderUpdateHandler,
-  ISerializer,
   IAgedValue,
   Logger,
 } from '@linkedmink/multilevel-aging-cache';
@@ -97,7 +96,7 @@ export class RedisPubSubProvider<TKey, TValue>
           age: agedValue.age,
           value: serializedValue,
         });
-        return this.channel.publish(this.config.channelName, message).then(channelCount => {
+        return this.channel.publish(this.config.channelName, message).then(_channelCount => {
           this.logger.debug(`Published Set: ${key}`);
           return agedValue;
         });
@@ -118,7 +117,7 @@ export class RedisPubSubProvider<TKey, TValue>
       const isSuccessful = response > 0;
       if (isSuccessful) {
         const message = JSON.stringify({ key: serializedKey });
-        return this.channel.publish(this.config.channelName, message).then(channelCount => {
+        return this.channel.publish(this.config.channelName, message).then(_channelCount => {
           this.logger.debug(`Published Delete: ${key}`);
           return true;
         });

@@ -23,7 +23,7 @@ module.exports = {
           'error',
           { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
         ],
-        //'@typescript-eslint/restrict-template-expressions': "off"
+        '@typescript-eslint/restrict-template-expressions': 'off',
         // '@typescript-eslint/restrict-template-expressions': [
         //   'warn',
         //   {

@@ -1,6 +1,7 @@
 # Multilevel Aging Cache
 
 ![Build State](https://github.com/LinkedMink/road-wave-fm-web/actions/workflows/build-main.yml/badge.svg)
+![npm version](https://badge.fury.io/js/@linkedmink%2Fmultilevel-aging-cache.svg)
 
 This library aims to provide an interface for storing and retrieving data from a hierarchy of
 commonly used persistence mechanisms. In a storage hierarchy, different storage systems are faster
@@ -29,14 +30,13 @@ than others. Specify a hierarchy and allow the system to manage reading/writing 
 
 ## Usage
 
-See the [demo program](https://github.com/LinkedMink/multilevel-aging-cache/blob/master/demo/CliSampleApp.ts)
-for an example of how to use the library.
+See the [demo program](/demo/index.ts) for an example of how to use the library.
 
 TODO add more detail
 
 ## Documentation
 
-- [Core](https://linkedmink.github.io/multilevel-aging-cache)
+- [core](https://linkedmink.github.io/multilevel-aging-cache)
 - [ioredis](https://linkedmink.github.io/multilevel-aging-cache/plugins/ioredis)
 - [mongodb](https://linkedmink.github.io/multilevel-aging-cache/plugins/mongodb)
 - [mongoose](https://linkedmink.github.io/multilevel-aging-cache/plugins/mongoose)

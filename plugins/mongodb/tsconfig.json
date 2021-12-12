@@ -3,7 +3,12 @@
   "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
     "baseUrl": "src",
-    "outDir": "dist"
+    "outDir": "dist",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "composite": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [{ "path": "../../main" }]
 }
