@@ -35,7 +35,7 @@
     "doc": "typedoc",
     "postinstall": "husky install || cd .",
     "pack:all": "yarn workspaces foreach --verbose --parallel run npm:pack",
-    "publish:all": "yarn workspaces foreach --verbose --topological-dev --parallel npm publish --access public",
+    "publish:all": "yarn workspaces foreach --verbose --parallel --include '@linkedmink/multilevel-aging-cache{,-ioredis,-mongodb,-mongoose}' npm publish --access public",
     "version:all": "yarn workspaces foreach --verbose --topological-dev version"
   },
   "dependencies": {
