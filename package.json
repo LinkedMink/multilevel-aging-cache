@@ -1,6 +1,6 @@
 {
   "name": "@linkedmink/multilevel-aging-cache-workspace",
-  "version": "0.5.2-0",
+  "version": "0.6.0",
   "description": "Package provides an interface to cache and persist data to Redis, MongoDB, memory",
   "keywords": [
     "cache",
@@ -22,18 +22,21 @@
     "type": "git",
     "url": "https://github.com/LinkedMink/multilevel-aging-cache"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "private": true,
   "scripts": {
     "start": "ts-node-dev --inspect --respawn --transpile-only demo/index.ts",
-    "build": "yarn workspaces foreach --topological-dev --parallel run build",
-    "test": "yarn workspaces foreach --parallel run test",
-    "lint": "yarn workspaces foreach --parallel run lint",
-    "clean": "rm -rf docs && yarn workspaces foreach --parallel run clean",
+    "build": "yarn workspaces foreach --verbose --topological-dev --parallel run build",
+    "test": "yarn workspaces foreach --verbose --parallel run test",
+    "lint": "yarn workspaces foreach --verbose --parallel run lint",
+    "clean": "rm -rf docs && yarn workspaces foreach --verbose --parallel run clean",
     "doc": "typedoc",
     "postinstall": "husky install || cd .",
-    "pack:all": "yarn workspaces foreach --parallel run npm:pack",
-    "publish:all": "yarn workspaces foreach --topological-dev --parallel run npm:publish",
-    "version:all": "yarn workspaces foreach --topological-dev version"
+    "pack:all": "yarn workspaces foreach --verbose --parallel run npm:pack",
+    "publish:all": "yarn workspaces foreach --verbose --topological-dev --parallel npm publish --access public",
+    "version:all": "yarn workspaces foreach --verbose --topological-dev version"
   },
   "dependencies": {
     "@linkedmink/multilevel-aging-cache": "workspace:*",
@@ -59,6 +62,5 @@
     "plugins/mongodb",
     "plugins/mongoose"
   ],
-  "packageManager": "yarn@3.1.1",
-  "stableVersion": "0.5.1"
+  "packageManager": "yarn@3.1.1"
 }
